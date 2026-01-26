@@ -1,0 +1,33 @@
+{
+  "@@locale": "en",
+  "welcome": "Welcome",
+  "appTitle": "Chat Application",
+  "login": "Login",
+  "logout": "Logout",
+  "language": "Language",
+  "messages": "Messages",
+  "skip": "Skip",
+  "next": "Next",
+  "getStarted": "Get Started",
+  "onboardingTitle1": "All in one mobile banking application",
+  "onboardingDesc1": "Secure your account with ease.",
+  "onboardingTitle2": "Fast Registration",
+  "onboardingDesc2": "Join us in just a few steps.",
+  "onboardingTitle3": "Get Started",
+  "onboardingDesc3": "Manage your profile and data securely.",
+
+
+  "fullName": "Full Name",
+  "enterYourName": "Enter your name",
+  "email": "Email",
+  "enterYourEmail": "Enter your email",
+  "phone": "Phone",
+  "enterYourNumber": "Enter your number",
+  "password": "Password",
+  "setUpPasswordHere": "Set up password here",
+  "iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations": "I agree to the Terms of Service and Privacy Policy. I understand my data is protected under Merova regulations",
+  "register": "Register",
+  "alreadyHaveAnAccount": "Already have an account",
+
+  "protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal":"Protected by bank-grade encryption\nRegulated by Central Bank of Nepal"
+}

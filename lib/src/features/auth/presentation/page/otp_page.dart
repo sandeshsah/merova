@@ -1,0 +1,285 @@
+import 'dart:async';
+import 'package:auth/src/features/auth/presentation/page/reset_password.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import '../../../../core/themes/app_colors.dart';
+import '../../../../core/widget/custom_button.dart';
+import 'welcome_screen.dart';
+
+@RoutePage()
+class OtpPage extends StatefulWidget {
+  final String? emailOrPhone;
+  final String flow;
+  final void Function()? onPressed;
+
+  const OtpPage({
+    required this.flow,
+    this.emailOrPhone,
+    this.onPressed,
+  });
+
+  @override
+  State<OtpPage> createState() => _OtpPageState();
+}
+
+class _OtpPageState extends State<OtpPage> {
+  final List<TextEditingController> _controllers = List.generate(
+    4,
+    (_) => TextEditingController(),
+  );
+
+  Timer? _timer;
+  int _seconds = 30;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimer();
+  }
+
+  void _startTimer() {
+    _seconds = 30;
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_seconds == 0) {
+        timer.cancel();
+      } else {
+        setState(() => _seconds--);
+      }
+    });
+  }
+
+  String get otp => _controllers.map((c) => c.text).join();
+
+  void _checkAndVerifyOtp() {
+    if (otp.length == 4) {
+      _verifyOtp();
+    }
+  }
+
+  void _verifyOtp() {
+    final enteredOtp = otp.trim();
+
+    debugPrint("Entered OTP: $enteredOtp");
+
+    if (enteredOtp.length < 4) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Enter complete OTP")));
+      return;
+    }
+
+    if (enteredOtp == "1111") {
+      if (widget.flow == "register") {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (_) =>
+                WelcomeScreen(uid: widget.emailOrPhone ?? "UNKNOWN"),
+          ),
+          (_) => false,
+        );
+      } else if (widget.flow == "forgotPassword") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => ResetPassword()),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Invalid OTP")));
+    }
+  }
+
+  @override
+  void dispose() {
+    for (final c in _controllers) {
+      c.dispose();
+    }
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.primary,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
+      ),
+      body: Stack(
+        children: [
+          Positioned(
+            top: 30,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
+              ),
+              child: SafeArea(
+                top: false,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "OTP Verification",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              "We have sent an OTP code to",
+                              style: TextStyle(color: AppColors.textLight),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              widget.flow,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+
+                            /// OTP INPUTS
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: List.generate(
+                                4,
+                                (i) => _OtpBox(
+                                  controller: _controllers[i],
+                                  autoFocus: i == 0,
+                                  onChanged: _checkAndVerifyOtp,
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 32),
+
+                            /// RESEND
+                            Row(
+                              children: [
+                                const Text(
+                                  "Didn't receive code? ",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.textLight,
+                                  ),
+                                ),
+                                _seconds == 0
+                                    ? TextButton(
+                                        onPressed: _startTimer,
+                                        style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          minimumSize: Size.zero,
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                        ),
+                                        child: const Text(
+                                          "Send again",
+                                          style: TextStyle(
+                                            color: AppColors.primary,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      )
+                                    : Text(
+                                        "Send again in (${_seconds.toString().padLeft(2, '0')}.00)",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: AppColors.textLight,
+                                        ),
+                                      ),
+                              ],
+                            ),
+
+                            const SizedBox(height: 24),
+
+                            /// VERIFY BUTTON
+                            CustomButton(title: "Verify", onTap: _verifyOtp),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    /// HOME INDICATOR
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Container(
+                        width: 120,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade400,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// OTP BOX (UNDERLINE STYLE)
+class _OtpBox extends StatelessWidget {
+  final TextEditingController controller;
+  final bool autoFocus;
+  final VoidCallback onChanged;
+
+  const _OtpBox({
+    required this.controller,
+    required this.onChanged,
+    this.autoFocus = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 45,
+      child: TextField(
+        controller: controller,
+        autofocus: autoFocus,
+        maxLength: 1,
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        decoration: const InputDecoration(
+          counterText: "",
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: AppColors.border, width: 2),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: AppColors.primary, width: 3),
+          ),
+        ),
+        onChanged: (v) {
+          if (v.isNotEmpty) {
+            FocusScope.of(context).nextFocus();
+            onChanged();
+          }
+        },
+      ),
+    );
+  }
+}
