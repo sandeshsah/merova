@@ -6,7 +6,7 @@ class Dimensions {
   static const EdgeInsets paddingDefault = EdgeInsets.all(16.0);
   static const EdgeInsets countryCode = EdgeInsets.only(left: 8);
   static const EdgeInsets paddingProvider = EdgeInsets.symmetric(horizontal:  24);
-  static const double paddingLarge = 24.0;
+  static const EdgeInsets paddingLarge = EdgeInsets.all(30);
 
   // Radius
   static const double radiusSmall = 8.0;

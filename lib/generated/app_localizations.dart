@@ -260,6 +260,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Protected by bank-grade encryption\nRegulated by Central Bank of Nepal'**
   String get protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal;
+
+  /// No description provided for @loginYourAccountToGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Login your account to get started'**
+  String get loginYourAccountToGetStarted;
+
+  /// No description provided for @uid.
+  ///
+  /// In en, this message translates to:
+  /// **'UID'**
+  String get uid;
+
+  /// No description provided for @enterYourPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Your Password'**
+  String get enterYourPassword;
+
+  /// No description provided for @rememberMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember Me'**
+  String get rememberMe;
+
+  /// No description provided for @forgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password'**
+  String get forgotPassword;
+
+  /// No description provided for @pleaseEnterUIDAndPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please Enter UID And Password'**
+  String get pleaseEnterUIDAndPassword;
+
+  /// No description provided for @orsignInWith.
+  ///
+  /// In en, this message translates to:
+  /// **'Or Sign in with'**
+  String get orsignInWith;
+
+  /// No description provided for @useBiometricToLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Use biometric to login'**
+  String get useBiometricToLogin;
+
+  /// No description provided for @dontHaveAnAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t Have An Account'**
+  String get dontHaveAnAccount;
 }
 
 class _AppLocalizationsDelegate

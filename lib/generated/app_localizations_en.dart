@@ -91,4 +91,32 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal =>
       'Protected by bank-grade encryption\nRegulated by Central Bank of Nepal';
+
+  @override
+  String get loginYourAccountToGetStarted =>
+      'Login your account to get started';
+
+  @override
+  String get uid => 'UID';
+
+  @override
+  String get enterYourPassword => 'Enter Your Password';
+
+  @override
+  String get rememberMe => 'Remember Me';
+
+  @override
+  String get forgotPassword => 'Forgot Password';
+
+  @override
+  String get pleaseEnterUIDAndPassword => 'Please Enter UID And Password';
+
+  @override
+  String get orsignInWith => 'Or Sign in with';
+
+  @override
+  String get useBiometricToLogin => 'Use biometric to login';
+
+  @override
+  String get dontHaveAnAccount => 'Don\'t Have An Account';
 }

@@ -20,15 +20,15 @@ class ButtonNavBar extends StatelessWidget {
     return Stack(
       alignment: Alignment.bottomCenter,
       children: [
-        // The actual BottomNavigationBar
         Container(
+          height: 70.h,
           decoration: BoxDecoration(
             color: AppColors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             shape: BoxShape.rectangle,
             boxShadow: [
               BoxShadow(
-                color: AppColors.black,
+                color: AppColors.boxShadow,
                 blurRadius: 10,
                 offset: Offset(0, -2),
               ),
@@ -37,10 +37,10 @@ class ButtonNavBar extends StatelessWidget {
           child: PaddingProviderWidget(
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            currentIndex: currentIndex > 2 ? currentIndex - 1 : currentIndex,
+            currentIndex: currentIndex == 2 ? 0 : currentIndex,
             onTap: (index) {
               if (index == 2) return; // middle scanner tapped separately
-              onIndexChanged(index > 2 ? index - 1 : index);
+              onIndexChanged(index);
             },
             backgroundColor: AppColors.transparent,
             elevation: 0,
@@ -62,8 +62,8 @@ class ButtonNavBar extends StatelessWidget {
                 label: 'Government',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined),
-                label: 'Settings',
+                icon: Icon(Icons.person),
+                label: 'Profile',
               ),
             ],
             selectedItemColor: AppColors.primary,
@@ -80,7 +80,7 @@ class ButtonNavBar extends StatelessWidget {
           child: GestureDetector(
             onTap: onScannerTap,
             child: Container(
-              height: 60.w,
+              height: 60,
               width: 60,
               decoration: BoxDecoration(
                 color: AppColors.primary,

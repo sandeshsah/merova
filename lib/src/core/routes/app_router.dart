@@ -14,18 +14,18 @@ part 'app_router.gr.dart';
 class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => [
-    // AutoRoute(
-    //   page: SplashRoute.page,
-    //   initial: AppEnvironment.initialRoute == null ||
-    //       AppEnvironment.initialRoute == 'splash',
-    // ),
-    // AutoRoute(
-    //   page: OnboardingRoute.page,
-    //   initial: AppEnvironment.initialRoute == 'onboarding',
-    // ),
+    AutoRoute(
+      page: SplashRoute.page,
+      initial: AppEnvironment.initialRoute == null ||
+          AppEnvironment.initialRoute == 'splash',
+    ),
+    AutoRoute(
+      page: OnboardingRoute.page,
+      initial: AppEnvironment.initialRoute == 'onboarding',
+    ),
     AutoRoute(
       page: LoginRoute.page,
-      initial: true,
+      initial: AppEnvironment.initialRoute == "login",
     ),
     AutoRoute(
       page: RegisterRoute.page,

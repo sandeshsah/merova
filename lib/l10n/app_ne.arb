@@ -26,5 +26,16 @@
     "setUpPasswordHere": "पासवर्ड यहाँ सेट गर्नुहोस्",
     "iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations": "म सेवा सर्त र गोपनीयता नीति स्वीकार गर्दछु। म बुझ्छु कि मेरो डेटा मेरोवा नियमहरू अन्तर्गत सुरक्षित छ।",
     "register": "दर्ता गर्नुहोस्",
-    "alreadyHaveAnAccount": "पहिले नै खाता छ"
+    "alreadyHaveAnAccount": "पहिले नै खाता छ",
+
+    "loginYourAccountToGetStarted":"सुरु गर्न आफ्नो खातामा लग इन गर्नुहोस्",
+    "uid": "विशिष्ट पहिचान नम्बर",
+    "enterYourPassword": "आफ्नो पासवर्ड प्रविष्ट गर्नुहोस्",
+    "rememberMe": "Remember me",
+    "forgotPassword": "पासवर्ड बिर्सनुभयो",
+    "pleaseEnterUIDAndPassword": "कृपया फोन नम्बर र पासवर्ड प्रविष्ट गर्नुहोस्",
+    "orsignInWith": "वा यससँग साइन इन गर्नुहोस्",
+    "useBiometricToLogin":"लगइन गर्न बायोमेट्रिक प्रयोग गर्नुहोस्",
+    "dontHaveAnAccount": "तपाईंको खाता छैन",
+    "protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal": "नेपाल केन्द्रीय बैंकद्वारा नियमन गरिएको बैंक स्तरको एन्क्रिप्सनले सुरक्षित"
 }

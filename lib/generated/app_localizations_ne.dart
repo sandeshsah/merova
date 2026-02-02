@@ -91,5 +91,34 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal =>
-      'Protected by bank-grade encryption\nRegulated by Central Bank of Nepal';
+      'नेपाल केन्द्रीय बैंकद्वारा नियमन गरिएको बैंक स्तरको एन्क्रिप्सनले सुरक्षित';
+
+  @override
+  String get loginYourAccountToGetStarted =>
+      'सुरु गर्न आफ्नो खातामा लग इन गर्नुहोस्';
+
+  @override
+  String get uid => 'विशिष्ट पहिचान नम्बर';
+
+  @override
+  String get enterYourPassword => 'आफ्नो पासवर्ड प्रविष्ट गर्नुहोस्';
+
+  @override
+  String get rememberMe => 'Remember me';
+
+  @override
+  String get forgotPassword => 'पासवर्ड बिर्सनुभयो';
+
+  @override
+  String get pleaseEnterUIDAndPassword =>
+      'कृपया फोन नम्बर र पासवर्ड प्रविष्ट गर्नुहोस्';
+
+  @override
+  String get orsignInWith => 'वा यससँग साइन इन गर्नुहोस्';
+
+  @override
+  String get useBiometricToLogin => 'लगइन गर्न बायोमेट्रिक प्रयोग गर्नुहोस्';
+
+  @override
+  String get dontHaveAnAccount => 'तपाईंको खाता छैन';
 }

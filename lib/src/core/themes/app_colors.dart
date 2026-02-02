@@ -19,6 +19,7 @@ class AppColors {
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color grey = Colors.grey;
+  static const Color boxShadow = Colors.black12;
 
   // Borders / Divider
   static const Color border = Color(0xFFE5E7EB);

@@ -20,7 +20,7 @@ class AppTextStyles {
   static TextStyle subtitle = GoogleFonts.poppins(
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: AppColors.black,
+    color: AppColors.textWhite,
   );
 
   // Body Text
@@ -47,7 +47,7 @@ class AppTextStyles {
   static const TextStyle title = TextStyle(
     fontSize: 24,
     fontWeight: FontWeight.bold,
-    color: AppColors.textPrimary,
+    color: AppColors.textWhite,
   );
 
   static const TextStyle label = TextStyle(

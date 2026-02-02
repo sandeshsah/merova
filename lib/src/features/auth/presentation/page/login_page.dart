@@ -37,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   String _countryFlag = "";
 
   bool _rememberMe = false;
+  String _selectedLanguage = "English";
 
   @override
   void initState() {
@@ -230,24 +231,37 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(context.tr.welcome!, style: AppTextStyles.title),
+                  Text(context.tr.welcome, style: AppTextStyles.title),
                   const SizedBox(height: 4),
                   Text(
-                    "Login your account to get started",
+                    context.tr.loginYourAccountToGetStarted,
                     style: AppTextStyles.subtitle,
                   ),
                 ],
               ),
+              actions: [
+                // Message Icon
+                IconButton(
+                  icon: const Icon(Icons.message_outlined),
+                  onPressed: () {
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Messages coming soon!")),
+                    );
+                  },
+                ),
+                const SizedBox(width: 8),
+              ],
             ),
             body: SafeArea(
               child: SingleChildScrollView(
-                child: PaddingProviderWidget(
+                padding: Dimensions.paddingLarge,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomTextFormField(
-                        label: "UID",
-                        hint: "Enter Phone No",
+                        label: tr.uid,
+                        hint: tr.enterYourNumber,
                         controller: UIdController,
                         keyboardType: TextInputType.number,
                         prefix: Padding(
@@ -259,8 +273,8 @@ class _LoginPageState extends State<LoginPage> {
 
                       const SizedBox(height: 20),
                       CustomTextFormField(
-                        label: "Password",
-                        hint: "Enter your password",
+                        label: tr.password,
+                        hint: tr.enterYourPassword,
                         controller: passwordController,
                         keyboardType: TextInputType.text,
                         isPassword: true,
@@ -278,7 +292,7 @@ class _LoginPageState extends State<LoginPage> {
                             },
                             activeColor: AppColors.primary,
                           ),
-                          const Text('Remember me'),
+                           Text(tr.rememberMe),
                           const Spacer(),
                           TextButton(
                             onPressed: () {
@@ -289,8 +303,8 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               );
                             },
-                            child: const Text(
-                              "Forgot Password?",
+                            child:  Text(
+                             tr.forgotPassword,
                               style: TextStyle(
                                 fontSize: 13,
                                 color: AppColors.primary,
@@ -345,9 +359,9 @@ class _LoginPageState extends State<LoginPage> {
 
                               if (uid.isEmpty || pass.isEmpty) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                   SnackBar(
                                     content: Text(
-                                      "Please enter UID and Password",
+                                      tr.pleaseEnterUIDAndPassword,
                                     ),
                                   ),
                                 );
@@ -365,7 +379,7 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       ),
                       const SizedBox(height: 24),
-                      const DividerWithText(text: "Or Sign in with"),
+                       DividerWithText(text: tr.orsignInWith),
                       const SizedBox(height: 24),
                       Center(
                         child: Column(
@@ -386,7 +400,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            const Text("Use biometric to login"),
+                             Text(context.tr.useBiometricToLogin),
                           ],
                         ),
                       ),
@@ -403,10 +417,10 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Text.rich(
                             TextSpan(
-                              text: "Don't have an account? ",
+                              text: tr.dontHaveAnAccount,
                               children: [
                                 TextSpan(
-                                  text: "Register",
+                                  text: tr.register,
                                   style: TextStyle(
                                     color: AppColors.primary,
                                     fontWeight: FontWeight.w600,
@@ -435,7 +449,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               ),
-            ),
+
           );
         },
       ),

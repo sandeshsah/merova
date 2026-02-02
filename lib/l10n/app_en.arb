@@ -29,5 +29,14 @@
   "register": "Register",
   "alreadyHaveAnAccount": "Already have an account",
 
-  "protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal":"Protected by bank-grade encryption\nRegulated by Central Bank of Nepal"
+  "protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal":"Protected by bank-grade encryption\nRegulated by Central Bank of Nepal",
+  "loginYourAccountToGetStarted":"Login your account to get started",
+  "uid": "UID",
+  "enterYourPassword":"Enter Your Password",
+  "rememberMe": "Remember Me",
+  "forgotPassword": "Forgot Password",
+  "pleaseEnterUIDAndPassword": "Please Enter UID And Password",
+  "orsignInWith": "Or Sign in with",
+  "useBiometricToLogin": "Use biometric to login",
+  "dontHaveAnAccount": "Don't Have An Account"
 }

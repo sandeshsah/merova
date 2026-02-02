@@ -12,11 +12,7 @@ class OtpPage extends StatefulWidget {
   final String flow;
   final void Function()? onPressed;
 
-  const OtpPage({
-    required this.flow,
-    this.emailOrPhone,
-    this.onPressed,
-  });
+  const OtpPage({required this.flow, this.emailOrPhone, this.onPressed});
 
   @override
   State<OtpPage> createState() => _OtpPageState();
@@ -71,14 +67,19 @@ class _OtpPageState extends State<OtpPage> {
 
     if (enteredOtp == "1111") {
       if (widget.flow == "register") {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (_) =>
-                WelcomeScreen(uid: widget.emailOrPhone ?? "UNKNOWN"),
-          ),
-          (_) => false,
-        );
+        // Use the callback if provided, otherwise navigate to WelcomeScreen
+        if (widget.onPressed != null) {
+          widget.onPressed!();
+        } else {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  WelcomeScreen(uid: widget.emailOrPhone ?? "UNKNOWN"),
+            ),
+            (_) => false,
+          );
+        }
       } else if (widget.flow == "forgotPassword") {
         Navigator.push(
           context,
@@ -88,7 +89,7 @@ class _OtpPageState extends State<OtpPage> {
     } else {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text("Invalid OTP")));
+      ).showSnackBar(const SnackBar(content: Text("Invalid OTP. Try 1111")));
     }
   }
 
@@ -149,7 +150,7 @@ class _OtpPageState extends State<OtpPage> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              widget.flow,
+                              widget.emailOrPhone ?? widget.flow,
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),

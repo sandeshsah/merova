@@ -1,4 +1,5 @@
 import 'package:auth/src/core/localization/localization_cubit.dart';
+import 'package:auth/src/core/themes/app_colors.dart';
 import 'package:auth/src/core/themes/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,10 +20,10 @@ class OnboardingHeader extends StatelessWidget {
             builder: (context, locale) {
               return TextButton.icon(
                 onPressed: () => _showLanguageDialog(context, locale),
-                icon: Icon(Icons.language, color: Colors.white, size: 20.sp),
+                icon: Icon(Icons.language, color: AppColors.white, size: 20.sp),
                 label: Text(
                   locale.languageCode.toUpperCase(),
-                  style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                  style: TextStyle(color: AppColors.white, fontSize: 14.sp),
                 ),
               );
             },
@@ -50,6 +51,7 @@ class OnboardingHeader extends StatelessWidget {
   void _showLanguageDialog(BuildContext context, Locale currentLocale) {
     showDialog(
       context: context,
+      //barrierColor: AppColors.grey,
       builder: (context) => AlertDialog(
         title: const Text('Select Language'),
         content: Column(
