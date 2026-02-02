@@ -1,9 +1,9 @@
-import 'package:auth/src/core/localization/localization_cubit.dart';
-import 'package:auth/src/core/themes/app_colors.dart';
-import 'package:auth/src/core/themes/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:merova/src/core/localization/localization_cubit.dart';
+import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/core/themes/theme_cubit.dart';
 
 class OnboardingHeader extends StatelessWidget {
   const OnboardingHeader({super.key});

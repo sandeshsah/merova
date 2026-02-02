@@ -1,11 +1,12 @@
-import 'package:auth/src/core/themes/app_colors.dart';
-import 'package:auth/src/core/widget/balance_card.dart';
-import 'package:auth/src/core/widget/button_nav_bar.dart';
-import 'package:auth/src/core/widget/feature_button.dart';
-import 'package:auth/src/core/widget/padding_provider_widget.dart';
-import 'package:auth/src/core/widget/transaction_item.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/core/widget/balance_card.dart';
+import 'package:merova/src/core/widget/button_nav_bar.dart';
+import 'package:merova/src/core/widget/feature_button.dart';
+import 'package:merova/src/core/widget/padding_provider_widget.dart';
+import 'package:merova/src/core/widget/transaction_item.dart';
+import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -24,13 +25,14 @@ class _HomePageState extends State<HomePage> {
     const Center(child: Text('OTP Page')),
     const Center(child: Text('Scanner Page')),
     const Center(child: Text('Government Page')),
-    const Center(child: Text('Settings Page')),
+    const ProfilePages(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+      extendBody: true,
       body: _currentIndex == 0
           ? _HomeContent(
               isBalanceVisible: _isBalanceVisible,

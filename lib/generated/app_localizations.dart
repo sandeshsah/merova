@@ -314,6 +314,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Don\'t Have An Account'**
   String get dontHaveAnAccount;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
 }
 
 class _AppLocalizationsDelegate

@@ -1,5 +1,6 @@
-import 'package:auth/src/core/enums/app_enum.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
 import '../../domain/usescase/login_usecase.dart';
 import '../../domain/usescase/register_usecase.dart';
 import 'auth_event.dart';

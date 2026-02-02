@@ -1,9 +1,10 @@
-import 'package:auth/src/core/themes/app_colors.dart';
-import 'package:auth/src/core/widget/padding_provider_widget.dart';
-import 'package:auth/src/core/widget/auth_text_field.dart';
-import 'package:auth/src/core/widget/custom_button.dart';
-import 'package:auth/src/features/auth/presentation/page/password_reset_success_page.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/core/widget/auth_text_field.dart';
+import 'package:merova/src/core/widget/custom_button.dart';
+import 'package:merova/src/core/widget/padding_provider_widget.dart';
+
+import 'password_reset_success_page.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});

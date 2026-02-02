@@ -1,7 +1,8 @@
-import 'package:auth/src/core/themes/app_colors.dart';
-import 'package:auth/src/features/auth/presentation/page/otp_page.dart';
-import 'package:auth/src/core/widget/custom_button.dart';
+
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/core/widget/custom_button.dart';
+import 'package:merova/src/features/auth/presentation/page/otp_page.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});

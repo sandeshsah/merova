@@ -1,11 +1,9 @@
-import 'package:auth/generated/app_localizations.dart';
-import 'package:auth/src/core/localization/localization_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'generated/app_localizations.dart';
+import 'src/core/localization/localization_cubit.dart';
 import 'src/core/routes/app_router.dart';
 import 'src/core/themes/app_theme.dart';
 import 'src/core/themes/theme_cubit.dart';

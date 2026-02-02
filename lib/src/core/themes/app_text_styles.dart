@@ -7,7 +7,7 @@ class AppTextStyles {
   static TextStyle headline1 = GoogleFonts.poppins(
     fontSize: 26,
     fontWeight: FontWeight.w700,
-    color: AppColors.textPrimary,
+    color: AppColors.white,
   );
 
   static TextStyle headline2 = GoogleFonts.poppins(

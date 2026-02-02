@@ -1,7 +1,9 @@
-import 'package:auth/src/core/themes/app_colors.dart';
-import 'package:auth/src/core/widget/padding_provider_widget.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:merova/src/core/themes/app_colors.dart';
+
+import 'padding_provider_widget.dart';
 
 class ButtonNavBar extends StatelessWidget {
   final int currentIndex;

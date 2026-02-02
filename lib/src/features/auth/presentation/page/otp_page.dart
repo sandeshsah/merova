@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:auth/src/features/auth/presentation/page/reset_password.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/features/auth/presentation/page/reset_password.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../../core/widget/custom_button.dart';
 import 'welcome_screen.dart';

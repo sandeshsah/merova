@@ -200,3 +200,9 @@ extension ErrorCodeMessage on ErrorCode {
 //   sessionExpired,
 //   blocked;
 // }
+
+
+enum HeaderAlignment{
+  center,
+  start
+}

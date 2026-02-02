@@ -38,5 +38,7 @@
   "pleaseEnterUIDAndPassword": "Please Enter UID And Password",
   "orsignInWith": "Or Sign in with",
   "useBiometricToLogin": "Use biometric to login",
-  "dontHaveAnAccount": "Don't Have An Account"
+  "dontHaveAnAccount": "Don't Have An Account",
+
+  "profile": "Profile"
 }

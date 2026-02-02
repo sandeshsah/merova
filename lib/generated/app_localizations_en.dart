@@ -119,4 +119,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dontHaveAnAccount => 'Don\'t Have An Account';
+
+  @override
+  String get profile => 'Profile';
 }

@@ -121,4 +121,7 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get dontHaveAnAccount => 'तपाईंको खाता छैन';
+
+  @override
+  String get profile => 'प्रोफाइल';
 }

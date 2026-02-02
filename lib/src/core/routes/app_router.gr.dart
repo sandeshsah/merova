@@ -44,6 +44,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    ProfileRoutes.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfilePages(),
+      );
+    },
     RegisterRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -141,6 +147,20 @@ class OtpRouteArgs {
   String toString() {
     return 'OtpRouteArgs{flow: $flow, emailOrPhone: $emailOrPhone, onPressed: $onPressed}';
   }
+}
+
+/// generated route for
+/// [ProfilePages]
+class ProfileRoutes extends PageRouteInfo<void> {
+  const ProfileRoutes({List<PageRouteInfo>? children})
+      : super(
+          ProfileRoutes.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoutes';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

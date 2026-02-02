@@ -1,6 +1,8 @@
-import 'package:auth/generated/app_localizations.dart';
-import 'package:auth/src/features/onboarding/domain/models/onboarding_item.dart';
+
 import 'package:flutter/material.dart';
+import 'package:merova/src/features/onboarding/domain/models/onboarding_item.dart';
+
+import '../../../../../generated/app_localizations.dart';
 
 class OnboardingData {
   static List<OnboardingItem> getItems(BuildContext context) {
