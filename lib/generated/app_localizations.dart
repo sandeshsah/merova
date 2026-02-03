@@ -315,6 +315,12 @@ abstract class AppLocalizations {
   /// **'Don\'t Have An Account'**
   String get dontHaveAnAccount;
 
+  /// No description provided for @resetPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get resetPassword;
+
   /// No description provided for @profile.
   ///
   /// In en, this message translates to:

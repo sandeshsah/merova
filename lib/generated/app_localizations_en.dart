@@ -121,5 +121,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dontHaveAnAccount => 'Don\'t Have An Account';
 
   @override
+  String get resetPassword => 'Reset Password';
+
+  @override
   String get profile => 'Profile';
 }

@@ -40,5 +40,7 @@
   "useBiometricToLogin": "Use biometric to login",
   "dontHaveAnAccount": "Don't Have An Account",
 
+  "resetPassword": "Reset Password",
+
   "profile": "Profile"
 }

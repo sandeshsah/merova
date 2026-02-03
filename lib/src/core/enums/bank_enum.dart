@@ -202,7 +202,3 @@ extension ErrorCodeMessage on ErrorCode {
 // }
 
 
-enum HeaderAlignment{
-  center,
-  start
-}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:merova/src/core/enums/bank_enum.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
+import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/themes/app_text_styles.dart';
 
 class HeaderPositioned extends StatefulWidget {
@@ -65,6 +66,67 @@ class _HeaderPositionedState extends State<HeaderPositioned> {
   }
 }
 
+class AppBarBackground extends StatelessWidget {
+  final String title;
+  final String? subtitle;
+  final Widget body;
+  final bool showBack;
+  final VoidCallback? onBack;
+
+  const AppBarBackground({
+    super.key,
+    required this.title,
+    required this.body,
+    this.subtitle,
+    this.showBack = true,
+    this.onBack,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.primary,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        foregroundColor: Colors.white,
+        centerTitle: false, // better for title + subtitle
+        leading: showBack
+            ? IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: onBack ?? () => Navigator.pop(context),
+        )
+            : null,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: AppColors.white
+              ),
+            ),
+            if (subtitle != null) ...[
+              const SizedBox(height: 4),
+              Text(
+                subtitle!,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: AppColors.white,fontWeight: FontWeight.bold
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+      body: body,
+    );
+  }
+}
 
 class BodyPositioned extends StatelessWidget {
   final Widget child;

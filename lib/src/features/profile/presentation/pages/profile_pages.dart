@@ -1,21 +1,26 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:merova/src/core/enums/bank_enum.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
-import 'package:merova/src/features/auth/presentation/page/login_page.dart';
+import 'package:merova/src/core/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
+import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
 
-class ProfilePages extends StatefulWidget {
-  const ProfilePages({super.key});
+@RoutePage()
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
 
   @override
-  State<ProfilePages> createState() => _ProfilePage();
+  State<ProfilePage> createState() => _ProfilePage();
 }
 
-class _ProfilePage extends State<ProfilePages> {
+class _ProfilePage extends State<ProfilePage> {
   String fullName = "";
   String email = "";
   String phone = "";
@@ -29,30 +34,38 @@ class _ProfilePage extends State<ProfilePages> {
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
 
-    setState(() {
-      fullName = prefs.getString('fullName') ?? "";
-      email = prefs.getString('userEmail') ?? "";
-      phone = prefs.getString('userId') ?? "";
-    });
+    if (mounted) {
+      setState(() {
+        fullName = prefs.getString('fullName') ?? "";
+        email = prefs.getString('userEmail') ?? "";
+        phone = prefs.getString('userId') ?? "";
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final tr = context.tr;
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Column(
-        children: [
-          HeaderPositioned(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state.status.isUnauthenticated) {
+          context.router.replaceAll([const LoginRoute()]);
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: Column(
+          children: [
+            HeaderPositioned(
               title: tr.profile,
-            alignment: HeaderAlignment.center,
-          ),
-          Expanded(child: _content(context)),
-        ],
+              alignment: HeaderAlignment.center,
+            ),
+            Expanded(child: _content(context)),
+          ],
+        ),
       ),
     );
   }
-
 
   Widget _content(BuildContext context) {
     return Stack(
@@ -64,13 +77,7 @@ class _ProfilePage extends State<ProfilePages> {
             children: [
               _sectionHeader("Reward"),
               _settingsGroup([
-                _settingItem(
-                  icon: Icons.star,
-                  title: "Reward",
-                  onTap: (){
-
-                  },
-                ),
+                _settingItem(icon: Icons.star, title: "Reward", onTap: () {}),
               ]),
               const SizedBox(height: 24),
               _sectionHeader("Personal Setting"),
@@ -80,10 +87,10 @@ class _ProfilePage extends State<ProfilePages> {
                   title: "Personal Information",
                   onTap: () {
                     //Navigator.push(
-                      //context,
-                      // MaterialPageRoute(
-                      //   builder: (context) => const PersonalInfoPage(),
-                      // ),
+                    //context,
+                    // MaterialPageRoute(
+                    //   builder: (context) => const PersonalInfoPage(),
+                    // ),
                     //);
                   },
                 ),
@@ -119,14 +126,11 @@ class _ProfilePage extends State<ProfilePages> {
               _settingsGroup([
                 _separator(),
                 _settingItem(
-                    icon: Icons.lock_outline,
-                    title: "Change password",
+                  icon: Icons.lock_outline,
+                  title: "Change password",
                 ),
                 _separator(),
-                _settingItem(
-                    icon: Icons.fingerprint,
-                    title: "Use Biometric",
-                ),
+                _settingItem(icon: Icons.fingerprint, title: "Use Biometric"),
                 _settingItem(
                   icon: Icons.shield_outlined,
                   title: "Privacy Policy",
@@ -169,19 +173,10 @@ class _ProfilePage extends State<ProfilePages> {
                   },
                 ),
                 _separator(),
-                _settingItem(icon: Icons.help_center,
-                    title: "Help"),
+                _settingItem(icon: Icons.help_center, title: "Help"),
               ]),
               const SizedBox(height: 32),
-              _signOutButton(
-                onTap: () {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()),
-                        (route) => false,
-                  );
-                },
-              ),
+              _signOutButton(),
               const SizedBox(height: 20),
             ],
           ),
@@ -254,13 +249,9 @@ class _ProfilePage extends State<ProfilePages> {
                     const SizedBox(height: 4),
                     Text(
                       email.isEmpty ? "No email provided" : email,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],
-
                 ),
               ),
             ],
@@ -354,7 +345,7 @@ class _ProfilePage extends State<ProfilePages> {
     );
   }
 
-  Widget _signOutButton({VoidCallback? onTap}) {
+  Widget _signOutButton() {
     return Container(
       width: double.infinity,
       height: 56,
@@ -364,7 +355,9 @@ class _ProfilePage extends State<ProfilePages> {
         border: Border.all(color: const Color(0xffFFE5E5)),
       ),
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          context.read<AuthBloc>().add(const AuthEvent.logoutRequested());
+        },
         borderRadius: BorderRadius.circular(16),
         child: Center(
           child: Row(

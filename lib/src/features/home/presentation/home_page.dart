@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     const Center(child: Text('OTP Page')),
     const Center(child: Text('Scanner Page')),
     const Center(child: Text('Government Page')),
-    const ProfilePages(),
+    const ProfilePage(),
   ];
 
   @override
@@ -122,9 +122,7 @@ class _HomeContent extends StatelessWidget {
                                   Icons.notifications_outlined,
                                   color: Colors.white,
                                 ),
-                                onPressed: () {
-
-                                },
+                                onPressed: () {},
                               ),
                               const SizedBox(width: 4),
                               CircleAvatar(
@@ -181,30 +179,22 @@ class _HomeContent extends StatelessWidget {
                     FeatureButton(
                       icon: Icons.send,
                       label: "Transfer",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                     FeatureButton(
                       icon: Icons.receipt_long,
                       label: "Pay Bills",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                     FeatureButton(
                       icon: Icons.phone_android,
                       label: "Mobile\nRecharge",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                     FeatureButton(
                       icon: Icons.more_horiz,
                       label: "More",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                   ],
                 ),
@@ -218,30 +208,22 @@ class _HomeContent extends StatelessWidget {
                     FeatureButton(
                       icon: Icons.account_balance,
                       label: "Bank\nTransfer",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                     FeatureButton(
                       icon: Icons.credit_card,
                       label: "Cards",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                     FeatureButton(
                       icon: Icons.savings,
                       label: "Savings",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                     FeatureButton(
                       icon: Icons.analytics,
                       label: "Analytics",
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                     ),
                   ],
                 ),
@@ -261,9 +243,7 @@ class _HomeContent extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                       child: const Text(
                         "See All",
                         style: TextStyle(
