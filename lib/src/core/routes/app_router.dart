@@ -8,8 +8,10 @@ import 'package:merova/src/features/auth/presentation/page/password_reset_succes
 import 'package:merova/src/features/auth/presentation/page/register_page.dart';
 import 'package:merova/src/features/auth/presentation/page/reset_password_page.dart';
 import 'package:merova/src/features/auth/presentation/page/welcome_screen.dart';
+import 'package:merova/src/features/fund/presentation/pages/fund_transfer.dart';
 import 'package:merova/src/features/home/presentation/home_page.dart';
 import 'package:merova/src/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:merova/src/features/payment/presentation/pages/payment_pages.dart';
 import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
 import 'package:merova/src/features/splash/presentation/pages/splash_page.dart';
 
@@ -61,6 +63,8 @@ class AppRouter extends _$AppRouter {
       page: ProfileRoute.page,
       initial: AppEnvironment.initialRoute == 'profile',
     ),
-     AutoRoute(page: WelcomeRoute.page),
+    AutoRoute(page: WelcomeRoute.page),
+    AutoRoute(page: PaymentRoutes.page),
+    AutoRoute(page: FundTransferRoute.page),
   ];
 }

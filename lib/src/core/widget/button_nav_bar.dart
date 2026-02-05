@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/core/themes/dimensions.dart';
 
 import 'padding_provider_widget.dart';
 
@@ -21,8 +22,12 @@ class ButtonNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.bottomCenter,
+      clipBehavior: Clip.none,
       children: [
-        Container(
+        // ClipPath(
+        //   clipper: BottomNavClipper(),
+        //child:
+         Container(
           height: 70.h,
           decoration: BoxDecoration(
             color: AppColors.white,
@@ -36,7 +41,7 @@ class ButtonNavBar extends StatelessWidget {
               ),
             ],
           ),
-          child: PaddingProviderWidget(
+          child: Padding(padding: Dimensions.paddingDefault,
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: currentIndex == 2 ? 0 : currentIndex,
@@ -52,8 +57,8 @@ class ButtonNavBar extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shield_outlined),
-                label: 'OTP',
+                icon: Icon(Icons.payments_rounded),
+                label: 'Payment',
               ),
               BottomNavigationBarItem(
                 icon: SizedBox.shrink(),
@@ -61,7 +66,7 @@ class ButtonNavBar extends StatelessWidget {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_balance_outlined),
-                label: 'Government',
+                label: 'Fund Transfer',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
@@ -70,11 +75,13 @@ class ButtonNavBar extends StatelessWidget {
             ],
             selectedItemColor: AppColors.primary,
             unselectedItemColor: AppColors.navButton,
-            selectedFontSize: 11,
-            unselectedFontSize: 11,
+            selectedFontSize: 10,
+            unselectedFontSize: 10,
             showUnselectedLabels: true,
           ),
-        ),),
+        ),
+        ),
+        //),
 
         // Center Scanner Button
         Positioned(
@@ -107,3 +114,50 @@ class ButtonNavBar extends StatelessWidget {
     );
   }
 }
+
+
+class BottomNavClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final double notchRadius = 20;
+    final double centerX = size.width / 2;
+
+    Path path = Path();
+    path.lineTo(0, 0);
+    path.lineTo(centerX - notchRadius * 1.5, 0);
+
+    // Left curve
+    path.quadraticBezierTo(
+      centerX - notchRadius,
+      0,
+      centerX - notchRadius,
+      notchRadius * 0.7,
+    );
+
+    // Bottom curve
+    path.arcToPoint(
+      Offset(centerX + notchRadius, notchRadius * 0.7),
+      radius: Radius.circular(notchRadius),
+      clockwise: false,
+    );
+
+    // Right curve
+    path.quadraticBezierTo(
+      centerX + notchRadius,
+      0,
+      centerX + notchRadius * 0.7,
+      0,
+    );
+
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+

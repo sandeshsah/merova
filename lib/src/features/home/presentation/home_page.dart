@@ -6,6 +6,8 @@ import 'package:merova/src/core/widget/button_nav_bar.dart';
 import 'package:merova/src/core/widget/feature_button.dart';
 import 'package:merova/src/core/widget/padding_provider_widget.dart';
 import 'package:merova/src/core/widget/transaction_item.dart';
+import 'package:merova/src/features/fund/presentation/pages/fund_transfer.dart';
+import 'package:merova/src/features/payment/presentation/pages/payment_pages.dart';
 import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
 
 @RoutePage()
@@ -22,9 +24,9 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     const _HomeContent(),
-    const Center(child: Text('OTP Page')),
+    const PaymentPages(),
     const Center(child: Text('Scanner Page')),
-    const Center(child: Text('Government Page')),
+    const FundTransferPage(),
     const ProfilePage(),
   ];
 
@@ -303,7 +305,7 @@ class _HomeContent extends StatelessWidget {
                   iconBackgroundColor: const Color(0xFF2196F3),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 90),
               ],
             ),
           ),

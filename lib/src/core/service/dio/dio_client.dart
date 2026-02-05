@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:merova/src/core/environment/app_environment.dart';
 import 'package:merova/src/core/interceptors/language_interceptor.dart';
-import 'package:merova/src/core/service/api/api_config.dart';
 import 'package:merova/src/core/storage/secure_storage.dart';
+import 'package:talker_dio_logger/talker_dio_logger.dart';
 import '../../interceptors/auth_interceptor.dart';
 import '../../interceptors/logging_interceptor.dart';
 import '../../interceptors/retry_interceptor.dart';
 import '../responses/timeout_config.dart';
-
 
 class DioClient {
   /// Creates a configured Dio instance.
@@ -21,7 +21,7 @@ class DioClient {
   }) {
     final dio = Dio(
       BaseOptions(
-        baseUrl: ApiConfig.baseUrl,
+        baseUrl: AppEnvironment.baseUrl,
         connectTimeout: TimeoutConfig.connect,
         receiveTimeout: TimeoutConfig.receive,
         sendTimeout: TimeoutConfig.send,
@@ -29,6 +29,13 @@ class DioClient {
     );
 
     final defaultInterceptors = <Interceptor>[
+      TalkerDioLogger(
+        settings: const TalkerDioLoggerSettings(
+          printRequestHeaders: true,
+          printResponseHeaders: true,
+          printResponseMessage: true,
+        ),
+      ),
       AuthInterceptor(storage),
       LanguageInterceptor(locale),
       RetryInterceptor(dio: dio),

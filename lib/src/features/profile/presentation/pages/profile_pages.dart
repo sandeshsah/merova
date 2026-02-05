@@ -12,6 +12,8 @@ import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
 
+import 'package:merova/src/core/constants/storage_keys.dart';
+
 @RoutePage()
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -36,9 +38,9 @@ class _ProfilePage extends State<ProfilePage> {
 
     if (mounted) {
       setState(() {
-        fullName = prefs.getString('fullName') ?? "";
-        email = prefs.getString('userEmail') ?? "";
-        phone = prefs.getString('userId') ?? "";
+        fullName = prefs.getString(StorageKeys.fullName) ?? "";
+        email = prefs.getString(StorageKeys.userEmail) ?? "";
+        phone = prefs.getString(StorageKeys.userId) ?? "";
       });
     }
   }
@@ -50,6 +52,11 @@ class _ProfilePage extends State<ProfilePage> {
       listener: (context, state) {
         if (state.status.isUnauthenticated) {
           context.router.replaceAll([const LoginRoute()]);
+        } else if (state.user != null) {
+          setState(() {
+            fullName = state.user?.fullName ?? fullName;
+            email = state.user?.email ?? email;
+          });
         }
       },
       child: Scaffold(
@@ -240,7 +247,7 @@ class _ProfilePage extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      fullName.isEmpty ? "User" : fullName,
+                      fullName.isEmpty ? " " : fullName,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -248,7 +255,7 @@ class _ProfilePage extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      email.isEmpty ? "No email provided" : email,
+                      email.isEmpty ? " " : email,
                       style: const TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                   ],

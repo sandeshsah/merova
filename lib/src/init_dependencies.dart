@@ -1,10 +1,15 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:merova/src/core/routes/app_router.dart';
+import 'package:merova/src/core/service/dio/dio_client.dart';
+import 'package:merova/src/core/storage/secure_storage.dart';
 import 'package:merova/src/features/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:merova/src/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:merova/src/features/auth/domain/repository/auth_repository.dart';
 import 'package:merova/src/features/auth/domain/usescase/login_usecase.dart';
 import 'package:merova/src/features/auth/domain/usescase/register_usecase.dart';
+import 'package:merova/src/features/auth/domain/usescase/verify_otp_usecase.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/profile/data/datasource/profile_remote_datasource.dart';
 import 'package:merova/src/features/profile/data/repository/profile_repository_impl.dart';
@@ -19,8 +24,21 @@ Future<void> initDependencies() async {
   // Router
   sl.registerSingleton<AppRouter>(AppRouter());
 
+  // Core Services
+  sl.registerLazySingleton<SecureStorage>(() => SecureStorage());
+
+  // Dio Client
+  sl.registerLazySingleton<Dio>(
+    () => DioClient.create(
+      storage: sl<SecureStorage>(),
+      locale: const Locale('en'), // Default locale, can be made dynamic later
+    ),
+  );
+
   // Data Sources
-  sl.registerLazySingleton<AuthRemoteDatasource>(() => AuthRemoteDatasource());
+  sl.registerLazySingleton<AuthRemoteDatasource>(
+    () => AuthRemoteDatasource(sl<Dio>()),
+  );
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
@@ -28,9 +46,16 @@ Future<void> initDependencies() async {
   // Use Cases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUseCase(sl()));
+  sl.registerLazySingleton(() => VerifyOtpUseCase(sl()));
 
   // Bloc
-  sl.registerFactory(() => AuthBloc(loginUseCase: sl(), registerUseCase: sl()));
+  sl.registerFactory(
+    () => AuthBloc(
+      loginUseCase: sl(),
+      registerUseCase: sl(),
+      verifyOtpUseCase: sl(),
+    ),
+  );
 
   // Profile Feature
   // Data Sources

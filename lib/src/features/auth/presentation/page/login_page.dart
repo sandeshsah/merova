@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/routes/app_router.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
@@ -14,12 +13,11 @@ import 'package:merova/src/core/widget/custom_button.dart';
 import 'package:merova/src/core/widget/custom_text_form_field.dart';
 import 'package:merova/src/core/widget/divider_with_text.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
-
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
-import 'forgot_password.dart';
-import 'register_page.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
+import 'package:merova/src/core/constants/storage_keys.dart';
 
 @RoutePage()
 class LoginPage extends StatefulWidget {
@@ -49,31 +47,33 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _loadSavedCredentials() async {
     final prefs = await SharedPreferences.getInstance();
-    final remember = prefs.getBool('remember') ?? false;
+    final remember = prefs.getBool(StorageKeys.remember) ?? false;
 
     if (!remember) return;
 
     setState(() {
-      rememberMe = remember;
-      isEmailSelected = prefs.getBool('isEmail') ?? true;
-      final savedIdentifier = prefs.getString('uid') ?? '';
+      isEmailSelected = prefs.getBool(StorageKeys.isEmail) ?? true;
+
+      final savedIdentifier = isEmailSelected
+          ? (prefs.getString(StorageKeys.userEmail) ?? '')
+          : (prefs.getString(StorageKeys.phoneNumber) ?? '');
       uidController.text = savedIdentifier;
-      passwordController.text = prefs.getString('password') ?? '';
-      _countryCode = prefs.getString('countryCode') ?? "+977";
-      _countryFlag = prefs.getString('countryFlag') ?? "🇳🇵";
+      passwordController.text = prefs.getString(StorageKeys.userPassword) ?? '';
+      _countryCode = prefs.getString(StorageKeys.countryCode) ?? "+977";
+      _countryFlag = prefs.getString(StorageKeys.countryFlag) ?? "🇳🇵";
+      rememberMe = true;
     });
   }
 
   void _login() {
     if (!_formKey.currentState!.validate()) return;
 
-    final uid = uidController.text.trim();
+    final identifier = uidController.text.trim();
     final password = passwordController.text.trim();
 
     context.read<AuthBloc>().add(
       AuthEvent.loginRequested(
-        UId: isEmailSelected ? uid : _countryCode + uid,
-        email: "",
+        identifier: isEmailSelected ? identifier : _countryCode + identifier,
         password: password,
       ),
     );
@@ -111,14 +111,16 @@ class _LoginPageState extends State<LoginPage> {
 
       if (authenticated) {
         final prefs = await SharedPreferences.getInstance();
-        final bool remember = prefs.getBool('remember') ?? false;
+        final bool remember = prefs.getBool(StorageKeys.remember) ?? false;
 
         if (remember) {
-          final String? savedUid = prefs.getString('userId');
-          final String? savedPassword = prefs.getString('userPassword');
+          final String? savedUid = prefs.getString(StorageKeys.userId);
+          final String? savedPassword = prefs.getString(
+            StorageKeys.userPassword,
+          );
 
           if (savedUid != null && savedPassword != null) {
-            uidController.text = savedUid.replaceAll(_countryCode, " ");
+            uidController.text = savedUid.replaceAll(_countryCode, "").trim();
             passwordController.text = savedPassword;
             if (mounted) {
               // Close bottom sheet if open
@@ -128,8 +130,7 @@ class _LoginPageState extends State<LoginPage> {
               // Use the passed blocContext here
               blocContext.read<AuthBloc>().add(
                 AuthEvent.loginRequested(
-                  UId: savedUid,
-                  email: "",
+                  identifier: savedUid,
                   password: savedPassword,
                 ),
               );
@@ -242,12 +243,15 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 24),
+
                       /// TOGGLE
                       _buildToggle(),
                       const SizedBox(height: 20),
+
                       /// EMAIL / PHONE FIELD
                       _buildUidField(context),
                       const SizedBox(height: 20),
+
                       /// PASSWORD
                       CustomTextFormField(
                         label: tr.password,
@@ -258,25 +262,25 @@ class _LoginPageState extends State<LoginPage> {
                         prefixIcon: Icons.lock_outline,
                       ),
                       const SizedBox(height: 12),
+
                       /// REMEMBER / FORGOT
                       Row(
                         children: [
                           Checkbox(
                             value: rememberMe,
-                            onChanged: (v){
-                            setState(() {
-                              rememberMe = v!;
-                              if(!rememberMe){}
-
-                                });
+                            onChanged: (v) {
+                              setState(() {
+                                rememberMe = v!;
+                              });
                             },
                             activeColor: AppColors.primary,
                           ),
                           Text(tr.rememberMe),
                           const Spacer(),
                           TextButton(
-                            onPressed: () => context.router
-                                .push(const ForgotPasswordRoute()),
+                            onPressed: () => context.router.push(
+                              const ForgotPasswordRoute(),
+                            ),
                             child: Text(
                               tr.forgotPassword,
                               style: const TextStyle(
@@ -288,34 +292,73 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       const SizedBox(height: 16),
+
                       /// LOGIN BUTTON
                       BlocConsumer<AuthBloc, AuthState>(
                         listener: (context, state) async {
-                          if (state.status.isLoggedIn) {
+                          if (state.status.isLoggedIn &&
+                              state.flow == AuthFlow.login) {
                             final prefs = await SharedPreferences.getInstance();
 
+                            // Always save fullName and email for ProfilePage regardless of rememberMe for the session
+                            if (state.user != null) {
+                              await prefs.setString(
+                                StorageKeys.fullName,
+                                state.user?.fullName ?? "",
+                              );
+                              await prefs.setString(
+                                StorageKeys.userEmail,
+                                state.user?.email ?? "",
+                              );
+                            }
+
                             if (rememberMe) {
-                              await prefs.setBool('remember', true);
-                              await prefs.setBool('isEmail', isEmailSelected);
-                              await prefs.setString('phone', uidController.text.trim());
-                              await prefs.setString('password', passwordController.text.trim());
-                              await prefs.setString('countryCode', _countryCode);
-                              await prefs.setString('countryFlag', _countryFlag);
+                              await prefs.setBool(StorageKeys.remember, true);
+                              await prefs.setBool(
+                                StorageKeys.isEmail,
+                                isEmailSelected,
+                              );
+                              if (isEmailSelected) {
+                                await prefs.setString(
+                                  StorageKeys.userEmail,
+                                  uidController.text.trim(),
+                                );
+                              } else {
+                                await prefs.setString(
+                                  StorageKeys.phoneNumber,
+                                  uidController.text.trim(),
+                                );
+                              }
+                              await prefs.setString(
+                                StorageKeys.userPassword,
+                                passwordController.text.trim(),
+                              );
+                              await prefs.setString(
+                                StorageKeys.countryCode,
+                                _countryCode,
+                              );
+                              await prefs.setString(
+                                StorageKeys.countryFlag,
+                                _countryFlag,
+                              );
 
                               final fullUid = isEmailSelected
                                   ? uidController.text.trim()
                                   : _countryCode + uidController.text.trim();
-                              await prefs.setString('userId', fullUid);
-                              await prefs.setString('userPassword', passwordController.text.trim());
-                            }else{
-                              await prefs.remove('remember');
-                              await prefs.remove('isEmail');
-                              await prefs.remove('phone');
-                              await prefs.remove('password');
-                              await prefs.remove('countryCode');
-                              await prefs.remove('countryFlag');
-                              await prefs.remove('userId');
-                              await prefs.remove('userPassword');
+                              await prefs.setString(
+                                StorageKeys.userId,
+                                fullUid,
+                              );
+                            } else {
+                              await prefs.remove(StorageKeys.remember);
+                              await prefs.remove(StorageKeys.isEmail);
+                              // We keep email/fullName for profile display if that's the UX intention,
+                              // but let's clear the credentials if rememberMe is false
+                              await prefs.remove(StorageKeys.phoneNumber);
+                              await prefs.remove(StorageKeys.userPassword);
+                              await prefs.remove(StorageKeys.countryCode);
+                              await prefs.remove(StorageKeys.countryFlag);
+                              await prefs.remove(StorageKeys.userId);
                             }
 
                             context.router.replaceAll([const HomeRoute()]);
@@ -332,6 +375,7 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 24),
                       DividerWithText(text: tr.orsignInWith),
                       const SizedBox(height: 24),
+
                       /// BIOMETRIC
                       Center(
                         child: Column(
@@ -357,10 +401,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 24),
+
                       /// REGISTER
                       Center(
                         child: GestureDetector(
-                          onTap: () => context.router.push(const RegisterRoute()),
+                          onTap: () =>
+                              context.router.push(const RegisterRoute()),
                           child: Text.rich(
                             TextSpan(
                               text: '${tr.dontHaveAnAccount}  ',
@@ -378,10 +424,12 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       const SizedBox(height: 24),
+
                       /// FOOTER
                       Center(
                         child: Text(
-                          context.tr
+                          context
+                              .tr
                               .protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal,
                           textAlign: TextAlign.center,
                           style: TextStyle(
@@ -403,7 +451,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   /// TOGGLE BUTTON
-    Widget _buildToggle() {
+  Widget _buildToggle() {
     return Container(
       height: 50,
       decoration: BoxDecoration(
@@ -438,7 +486,9 @@ class _LoginPageState extends State<LoginPage> {
           decoration: BoxDecoration(
             color: isActive ? AppColors.white : Colors.transparent,
             borderRadius: BorderRadius.circular(12),
-            border: isActive ? Border.all(color: AppColors.grey, width: 3) : null,
+            border: isActive
+                ? Border.all(color: AppColors.grey, width: 3)
+                : null,
           ),
           child: Text(
             text,
@@ -460,46 +510,40 @@ class _LoginPageState extends State<LoginPage> {
       label: isEmailSelected ? tr.email : tr.phone,
       hint: isEmailSelected ? "example@gmail.com" : "98XXXXXXXX",
       controller: uidController,
-      keyboardType:
-      isEmailSelected ? TextInputType.emailAddress : TextInputType.phone,
+      keyboardType: isEmailSelected
+          ? TextInputType.emailAddress
+          : TextInputType.phone,
       maxLength: isEmailSelected ? null : 10,
       prefixWidget: isEmailSelected
           ? null
           : GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          showCountryPicker(
-            context: context,
-            showPhoneCode: true,
-            onSelect: (country) {
-              setState(() {
-                _countryCode = '+${country.phoneCode}';
-                _countryFlag = country.flagEmoji;
-              });
-            },
-          );
-        },
-        child: Padding(
-          padding: Dimensions.textFormField,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                _countryFlag,
-                style: const TextStyle(fontSize: 16),
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                showCountryPicker(
+                  context: context,
+                  showPhoneCode: true,
+                  onSelect: (country) {
+                    setState(() {
+                      _countryCode = '+${country.phoneCode}';
+                      _countryFlag = country.flagEmoji;
+                    });
+                  },
+                );
+              },
+              child: Padding(
+                padding: Dimensions.textFormField,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(_countryFlag, style: const TextStyle(fontSize: 16)),
+                    const SizedBox(width: 6),
+                    Text(_countryCode, style: AppTextStyles.label),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.arrow_drop_down),
+                  ],
+                ),
               ),
-              const SizedBox(width: 6),
-              Text(
-                _countryCode,
-                style: AppTextStyles.label,
-              ),
-              const SizedBox(width: 4),
-              const Icon(Icons.arrow_drop_down),
-
-            ],
-          ),
-        ),
-      ),
+            ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return isEmailSelected ? "Email required" : "Phone number required";
@@ -533,10 +577,7 @@ class _LoginPageState extends State<LoginPage> {
           },
         );
       },
-      child: Text(
-        "$_countryFlag $_countryCode",
-        style: AppTextStyles.label,
-      ),
+      child: Text("$_countryFlag $_countryCode", style: AppTextStyles.label),
     );
   }
 }
