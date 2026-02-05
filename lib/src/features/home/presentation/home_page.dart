@@ -35,13 +35,13 @@ class _HomePageState extends State<HomePage> {
       extendBody: true,
       body: _currentIndex == 0
           ? _HomeContent(
-              isBalanceVisible: _isBalanceVisible,
-              onVisibilityToggle: () {
-                setState(() {
-                  _isBalanceVisible = !_isBalanceVisible;
-                });
-              },
-            )
+        isBalanceVisible: _isBalanceVisible,
+        onVisibilityToggle: () {
+          setState(() {
+            _isBalanceVisible = !_isBalanceVisible;
+          });
+        },
+      )
           : _pages[_currentIndex],
       bottomNavigationBar: ButtonNavBar(
         currentIndex: _currentIndex,

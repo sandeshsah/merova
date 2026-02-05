@@ -2,19 +2,18 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/routes/app_router.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
-import 'package:merova/src/features/auth/presentation/page/reset_password_page.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../../core/widget/custom_button.dart';
-import 'welcome_screen.dart';
 
 @RoutePage()
 class OtpPage extends StatefulWidget {
   final String? emailOrPhone;
   final String flow;
-  final void Function()? onPressed;
 
-  const OtpPage({required this.flow, this.emailOrPhone, this.onPressed});
+
+  const OtpPage({required this.flow, this.emailOrPhone,});
 
   @override
   State<OtpPage> createState() => _OtpPageState();
@@ -61,37 +60,24 @@ class _OtpPageState extends State<OtpPage> {
     debugPrint("Entered OTP: $enteredOtp");
 
     if (enteredOtp.length < 4) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Enter complete OTP")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Enter complete OTP"))
+      );
       return;
     }
 
     if (enteredOtp == "1111") {
       if (widget.flow == "register") {
-        // Use the callback if provided, otherwise navigate to WelcomeScreen
-        if (widget.onPressed != null) {
-          widget.onPressed!();
-        } else {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (_) =>
-                  WelcomeScreen(uid: widget.emailOrPhone ?? "UNKNOWN"),
-            ),
-            (_) => false,
-          );
-        }
-      } else if (widget.flow == "forgotPassword") {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => ResetPasswordPage()),
+        context.router.replace(
+          WelcomeRoute(uid: widget.emailOrPhone ?? "UNKNOWN"),
         );
+      } else if (widget.flow == "forgotPassword") {
+        context.router.replace(const ResetPasswordRoute());
       }
     } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Invalid OTP. Try 1111")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Invalid OTP. Try 1111"))
+      );
     }
   }
 
@@ -106,7 +92,8 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBarBackground(title: "OTP",
+    return AppBarBackground(
+      title: "OTP",
       body: Stack(
         children: [
           BodyPositioned(

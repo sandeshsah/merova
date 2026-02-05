@@ -5,15 +5,12 @@ import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/dimensions.dart';
 import 'package:merova/src/core/widget/custom_text_form_field.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
-import 'package:merova/src/features/auth/presentation/page/otp_page.dart';
-import 'package:merova/src/features/auth/presentation/page/welcome_screen.dart';
+import 'package:merova/src/core/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../../core/themes/app_text_styles.dart';
-import '../../../../core/widget/auth_text_field.dart';
 import '../../../../core/widget/custom_button.dart';
 import '../../../../core/widget/padding_provider_widget.dart';
-
 
 @RoutePage()
 class RegisterPage extends StatefulWidget {
@@ -72,42 +69,20 @@ class _RegisterPageState extends State<RegisterPage> {
 
       await prefs.setString('fullName', fullNameController.text.trim());
       await prefs.setString('userEmail', emailController.text.trim());
-      await prefs.setString(
-        'userId',
-        fullPhone,
-      ); // Save phone as userId for login
+      await prefs.setString('userId', fullPhone);
       await prefs.setString('userPassword', passwordController.text);
-      await prefs.setBool(
-        'remember',
-        true,
-      ); // Enable remember by default on register
-
-      //await Future.delayed(const Duration(seconds: 1));
+      await prefs.setBool('remember', true);
 
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Registration successful! OTP sent"),
-        ),
+        const SnackBar(content: Text("Registration successful! OTP sent")),
       );
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OtpPage(
-            flow: "register",
-            emailOrPhone: phoneController.text.trim(),
-            onPressed: () {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const WelcomeScreen(uid: ""),
-                ),
-                (_) => false,
-              );
-            },
-          ),
+      context.router.replace(
+        OtpRoute(
+          flow: "register",
+          emailOrPhone: fullPhone,
         ),
       );
     } catch (e) {
@@ -123,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     final tr = context.tr;
     return AppBarBackground(
-        title: tr.register,
+      title: tr.register,
       body: Stack(
         children: [
           BodyPositioned(
@@ -164,77 +139,48 @@ class _RegisterPageState extends State<RegisterPage> {
 
                           /// Full Name
                           CustomTextFormField(
-                              label: context.tr.fullName,
-                              hint: context.tr.enterYourName,
-                              controller: fullNameController,
-                              keyboardType: TextInputType.text,
-                             prefixIcon: Icons.person,
+                            label: context.tr.fullName,
+                            hint: context.tr.enterYourName,
+                            controller: fullNameController,
+                            keyboardType: TextInputType.text,
+                            prefixIcon: Icons.person,
                           ),
-                           SizedBox(height: 20),
+                          SizedBox(height: 20),
 
                           /// Email
                           CustomTextFormField(
-                              label: context.tr.email,
-                              hint: context.tr.enterYourEmail,
-                              controller: emailController,
-                              keyboardType: TextInputType.emailAddress,
-                              prefixIcon: Icons.email,
+                            label: context.tr.email,
+                            hint: context.tr.enterYourEmail,
+                            controller: emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            prefixIcon: Icons.email,
                           ),
                           const SizedBox(height: 20),
 
                           /// Phone
                           CustomTextFormField(
-                              label: context.tr.phone,
-                              hint: context.tr.enterYourNumber,
-                              controller: phoneController,
-                              keyboardType: TextInputType.phone,
-                              prefix: Padding(padding: Dimensions.countryCode,child: countryCodePicker(),),
-                              maxLength: 10,
-                              prefixIcon: Icons.phone_callback,
-
-
+                            label: context.tr.phone,
+                            hint: context.tr.enterYourNumber,
+                            controller: phoneController,
+                            keyboardType: TextInputType.phone,
+                            prefixWidget: Padding(
+                              padding: Dimensions.textFormField,
+                              child: countryCodePicker(),
+                            ),
+                            maxLength: 10,
+                            prefixIcon: Icons.phone_callback,
                           ),
-                          // const Text("Phone", style: AppTextStyles.label),
-                          // const SizedBox(height: 8),
-                          // AuthTextField(
-                          //   controller: phoneController,
-                          //   hint: "Enter Phone number",
-                          //   prefix: Padding(
-                          //     padding: const EdgeInsets.only(left: 8),
-                          //     child: countryCodePicker(),
-                          //   ),
-                          //   keyboardType: TextInputType.phone,
-                          //   maxLength: 10,
-                          // ),
                           const SizedBox(height: 20),
 
                           // Password
                           CustomTextFormField(
-                              label: context.tr.password,
-                              hint: context.tr.setUpPasswordHere,
-                              controller: passwordController,
-                              keyboardType: TextInputType.text,
-                              isPassword: true,
-                              prefixIcon: Icons.lock_outline,
+                            label: context.tr.password,
+                            hint: context.tr.setUpPasswordHere,
+                            controller: passwordController,
+                            keyboardType: TextInputType.text,
+                            isPassword: true,
+                            prefixIcon: Icons.lock_outline,
                           ),
-                          // const Text("Password", style: AppTextStyles.label),
-                          // const SizedBox(height: 8),
-                          // AuthTextField(
-                          //   controller: passwordController,
-                          //   hint: "Set up password here",
-                          //   prefix: const Icon(Icons.lock_outline),
-                          //   obscure: _obscurePassword,
-                          //   suffix: IconButton(
-                          //     icon: Icon(
-                          //       _obscurePassword
-                          //           ? Icons.visibility_off
-                          //           : Icons.visibility,
-                          //     ),
-                          //     onPressed: () => setState(
-                          //       () => _obscurePassword = !_obscurePassword,
-                          //     ),
-                          //   ),
-                          // ),
                           const SizedBox(height: 24),
 
                           // Terms Checkbox
@@ -247,9 +193,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                     setState(() => _agreeToTerms = v ?? false),
                                 activeColor: AppColors.primary,
                               ),
-                               Expanded(
-                                child: Text(context.tr.
-                                  iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations,
+                              Expanded(
+                                child: Text(
+                                  context
+                                      .tr
+                                      .iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations,
                                   style: TextStyle(fontSize: 14),
                                 ),
                               ),
@@ -269,7 +217,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                               Text(context.tr.alreadyHaveAnAccount),
+                              Text(context.tr.alreadyHaveAnAccount),
                               GestureDetector(
                                 onTap: () => Navigator.pop(context),
                                 child: Text(
