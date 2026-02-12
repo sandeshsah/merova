@@ -39,4 +39,4 @@ class SecureStorage {
 
 //usage
 //await SecureStorage().write('access_token', 'your_token_here');
-//String? token = await SecureStorage().read('access_token');
+//String? helper = await SecureStorage().read('access_token');

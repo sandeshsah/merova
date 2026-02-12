@@ -12,7 +12,7 @@ import '../responses/timeout_config.dart';
 class DioClient {
   /// Creates a configured Dio instance.
   ///
-  /// Requires a [storage] to provide auth token and a [locale] for language header.
+  /// Requires a [storage] to provide auth helper and a [locale] for language header.
   /// You may pass additional [customInterceptors] which will be appended after defaults.
   static Dio create({
     required SecureStorage storage,

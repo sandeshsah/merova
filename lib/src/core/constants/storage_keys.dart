@@ -5,6 +5,7 @@ class StorageKeys {
   static const String phoneNumber = 'phoneNumber';
   static const String userPassword = 'userPassword';
   static const String accessToken = 'access_token';
+  static const String refreshToken = 'refresh_token';
   static const String remember = 'remember';
   static const String isEmail = 'isEmail';
   static const String countryCode = 'countryCode';

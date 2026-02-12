@@ -31,7 +31,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<Dio>(
     () => DioClient.create(
       storage: sl<SecureStorage>(),
-      locale: const Locale('en'), // Default locale, can be made dynamic later
+      locale: const Locale('en'),
     ),
   );
 
@@ -41,7 +41,7 @@ Future<void> initDependencies() async {
   );
 
   // Repositories
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl( )));
 
   // Use Cases
   sl.registerLazySingleton(() => LoginUseCase(sl()));

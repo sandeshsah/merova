@@ -11,7 +11,7 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Skip adding token for public auth routes
+    // Skip adding helper for public auth routes
     final publicRoutes = [
       '/auth/login',
       '/auth/signup',

@@ -106,6 +106,18 @@ class _RegisterPageState extends State<RegisterPage> {
                         StorageKeys.userEmail,
                         emailController.text.trim(),
                       );
+                      await prefs.setString(
+                        StorageKeys.phoneNumber,
+                        phoneController.text.trim(),
+                      );
+                      await prefs.setString(
+                        StorageKeys.countryCode,
+                        _countryCode,
+                      );
+                      await prefs.setString(
+                        StorageKeys.countryFlag,
+                        _countryFlag.isEmpty ? "🇳🇵" : _countryFlag,
+                      );
 
                       final fullPhone =
                           '$_countryCode${phoneController.text.trim()}';
@@ -163,6 +175,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 controller: fullNameController,
                                 keyboardType: TextInputType.text,
                                 prefixIcon: Icons.person,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return "Full name is required";
+                                  }
+                                  return null;
+                                },
                               ),
                               SizedBox(height: 20),
 
@@ -217,6 +235,15 @@ class _RegisterPageState extends State<RegisterPage> {
                                 keyboardType: TextInputType.text,
                                 isPassword: true,
                                 prefixIcon: Icons.lock_outline,
+                                validator: (val) {
+                                  if (val == null || val.isEmpty) {
+                                    return "Password is required";
+                                  }
+                                  if (val.length < 6) {
+                                    return "Password must be at least 6 characters";
+                                  }
+                                  return null;
+                                },
                               ),
                               const SizedBox(height: 24),
 

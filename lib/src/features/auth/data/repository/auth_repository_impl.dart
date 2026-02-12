@@ -2,6 +2,7 @@ import 'package:merova/src/features/auth/domain/entity/auth_entity.dart';
 import 'package:merova/src/features/auth/domain/repository/auth_repository.dart';
 import 'package:merova/src/features/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:merova/src/features/auth/data/model/Auth_model.dart';
+import 'package:merova/src/core/helper/token_storage.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDatasource datasource;
@@ -11,6 +12,17 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<AuthEntity> Login(String identifier, String credential) async {
     final res = await datasource.login(identifier, credential);
+
+    final accessToken = res['access_token'] ?? res['accessToken'];
+    final refreshToken = res['refresh_token'] ?? res['refreshToken'];
+
+    if (accessToken != null && refreshToken != null) {
+      await TokenStorage.saveTokens(
+        accessToken: accessToken.toString(),
+        refreshToken: refreshToken.toString(),
+      );
+    }
+
     return AuthModel.fromJson(res);
   }
 
@@ -33,6 +45,17 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Map<String, dynamic>> verifyOtp(String phoneNumber, String otp) async {
     final res = await datasource.verifyOtp(phoneNumber, otp);
+
+    final accessToken = res['access_token'] ?? res['accessToken'];
+    final refreshToken = res['refresh_token'] ?? res['refreshToken'];
+
+    if (accessToken != null && refreshToken != null) {
+      await TokenStorage.saveTokens(
+        accessToken: accessToken.toString(),
+        refreshToken: refreshToken.toString(),
+      );
+    }
+
     return res;
   }
 }

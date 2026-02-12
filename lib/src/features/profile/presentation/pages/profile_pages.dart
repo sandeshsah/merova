@@ -31,6 +31,14 @@ class _ProfilePage extends State<ProfilePage> {
   void initState() {
     super.initState();
     _loadUserData();
+    final authState = context.read<AuthBloc>().state;
+    if (authState.user != null) {
+      setState(() {
+        if (authState.user!.email.isNotEmpty) {
+          email = authState.user!.email;
+        }
+      });
+    }
   }
 
   Future<void> _loadUserData() async {
@@ -40,7 +48,7 @@ class _ProfilePage extends State<ProfilePage> {
       setState(() {
         fullName = prefs.getString(StorageKeys.fullName) ?? "";
         email = prefs.getString(StorageKeys.userEmail) ?? "";
-        phone = prefs.getString(StorageKeys.userId) ?? "";
+        phone = prefs.getString(StorageKeys.phoneNumber) ?? "";
       });
     }
   }
@@ -54,8 +62,12 @@ class _ProfilePage extends State<ProfilePage> {
           context.router.replaceAll([const LoginRoute()]);
         } else if (state.user != null) {
           setState(() {
-            fullName = state.user?.fullName ?? fullName;
-            email = state.user?.email ?? email;
+            if (state.user!.fullName.isNotEmpty) {
+              fullName = state.user!.fullName;
+            }
+            if (state.user!.email.isNotEmpty) {
+              email = state.user!.email;
+            }
           });
         }
       },
@@ -247,10 +259,11 @@ class _ProfilePage extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      fullName.isEmpty ? " " : fullName,
+                      fullName.isEmpty ? "Merova User" : fullName,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: AppColors.black,
                       ),
                     ),
                     const SizedBox(height: 4),

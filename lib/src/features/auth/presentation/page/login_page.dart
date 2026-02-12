@@ -19,6 +19,7 @@ import '../bloc/auth_state.dart';
 import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/constants/storage_keys.dart';
 
+
 @RoutePage()
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,7 +30,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController uidController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final LocalAuthentication auth = LocalAuthentication();
 
@@ -49,33 +51,38 @@ class _LoginPageState extends State<LoginPage> {
     final prefs = await SharedPreferences.getInstance();
     final remember = prefs.getBool(StorageKeys.remember) ?? false;
 
-    if (!remember) return;
-
     setState(() {
-      isEmailSelected = prefs.getBool(StorageKeys.isEmail) ?? true;
+      final savedEmail = prefs.getString(StorageKeys.userEmail) ?? '';
+      final savedPhone = prefs.getString(StorageKeys.phoneNumber) ?? '';
 
-      final savedIdentifier = isEmailSelected
-          ? (prefs.getString(StorageKeys.userEmail) ?? '')
-          : (prefs.getString(StorageKeys.phoneNumber) ?? '');
-      uidController.text = savedIdentifier;
-      passwordController.text = prefs.getString(StorageKeys.userPassword) ?? '';
-      _countryCode = prefs.getString(StorageKeys.countryCode) ?? "+977";
-      _countryFlag = prefs.getString(StorageKeys.countryFlag) ?? "🇳🇵";
-      rememberMe = true;
+      if (savedEmail.isNotEmpty) emailController.text = savedEmail;
+      if (savedPhone.isNotEmpty) phoneController.text = savedPhone;
+
+      if (remember) {
+        isEmailSelected = prefs.getBool(StorageKeys.isEmail) ?? true;
+        passwordController.text =
+            prefs.getString(StorageKeys.userPassword) ?? '';
+        _countryCode = prefs.getString(StorageKeys.countryCode) ?? "+977";
+        _countryFlag = prefs.getString(StorageKeys.countryFlag) ?? "🇳🇵";
+        rememberMe = true;
+      }
     });
   }
 
   void _login() {
     if (!_formKey.currentState!.validate()) return;
 
-    final identifier = uidController.text.trim();
+    final identifier = isEmailSelected
+        ? emailController.text.trim()
+        : phoneController.text.trim();
     final password = passwordController.text.trim();
 
+    final fullIdentifier = isEmailSelected
+        ? identifier
+        : _countryCode + identifier;
+
     context.read<AuthBloc>().add(
-      AuthEvent.loginRequested(
-        identifier: isEmailSelected ? identifier : _countryCode + identifier,
-        password: password,
-      ),
+      AuthEvent.loginRequested(identifier: fullIdentifier, password: password),
     );
   }
 
@@ -120,7 +127,15 @@ class _LoginPageState extends State<LoginPage> {
           );
 
           if (savedUid != null && savedPassword != null) {
-            uidController.text = savedUid.replaceAll(_countryCode, "").trim();
+            if (savedUid.contains("@")) {
+              emailController.text = savedUid;
+              isEmailSelected = true;
+            } else {
+              phoneController.text = savedUid
+                  .replaceAll(_countryCode, "")
+                  .trim();
+              isEmailSelected = false;
+            }
             passwordController.text = savedPassword;
             if (mounted) {
               // Close bottom sheet if open
@@ -300,16 +315,22 @@ class _LoginPageState extends State<LoginPage> {
                               state.flow == AuthFlow.login) {
                             final prefs = await SharedPreferences.getInstance();
 
-                            // Always save fullName and email for ProfilePage regardless of rememberMe for the session
+                            /// Always save fullName and email for ProfilePage regardless of rememberMe for the session
                             if (state.user != null) {
-                              await prefs.setString(
-                                StorageKeys.fullName,
-                                state.user?.fullName ?? "",
-                              );
-                              await prefs.setString(
-                                StorageKeys.userEmail,
-                                state.user?.email ?? "",
-                              );
+                              if (state.user?.fullName != null &&
+                                  state.user!.fullName.isNotEmpty) {
+                                await prefs.setString(
+                                  StorageKeys.fullName,
+                                  state.user!.fullName,
+                                );
+                              }
+                              if (state.user?.email != null &&
+                                  state.user!.email.isNotEmpty) {
+                                await prefs.setString(
+                                  StorageKeys.userEmail,
+                                  state.user!.email,
+                                );
+                              }
                             }
 
                             if (rememberMe) {
@@ -321,12 +342,12 @@ class _LoginPageState extends State<LoginPage> {
                               if (isEmailSelected) {
                                 await prefs.setString(
                                   StorageKeys.userEmail,
-                                  uidController.text.trim(),
+                                  emailController.text.trim(),
                                 );
                               } else {
                                 await prefs.setString(
                                   StorageKeys.phoneNumber,
-                                  uidController.text.trim(),
+                                  phoneController.text.trim(),
                                 );
                               }
                               await prefs.setString(
@@ -343,8 +364,8 @@ class _LoginPageState extends State<LoginPage> {
                               );
 
                               final fullUid = isEmailSelected
-                                  ? uidController.text.trim()
-                                  : _countryCode + uidController.text.trim();
+                                  ? emailController.text.trim()
+                                  : _countryCode + phoneController.text.trim();
                               await prefs.setString(
                                 StorageKeys.userId,
                                 fullUid,
@@ -352,8 +373,6 @@ class _LoginPageState extends State<LoginPage> {
                             } else {
                               await prefs.remove(StorageKeys.remember);
                               await prefs.remove(StorageKeys.isEmail);
-                              // We keep email/fullName for profile display if that's the UX intention,
-                              // but let's clear the credentials if rememberMe is false
                               await prefs.remove(StorageKeys.phoneNumber);
                               await prefs.remove(StorageKeys.userPassword);
                               await prefs.remove(StorageKeys.countryCode);
@@ -476,7 +495,6 @@ class _LoginPageState extends State<LoginPage> {
           if (isEmailSelected == emailMode) return;
           setState(() {
             isEmailSelected = emailMode;
-            uidController.clear();
             _formKey.currentState?.reset();
           });
         },
@@ -509,7 +527,7 @@ class _LoginPageState extends State<LoginPage> {
     return CustomTextFormField(
       label: isEmailSelected ? tr.email : tr.phone,
       hint: isEmailSelected ? "example@gmail.com" : "98XXXXXXXX",
-      controller: uidController,
+      controller: isEmailSelected ? emailController : phoneController,
       keyboardType: isEmailSelected
           ? TextInputType.emailAddress
           : TextInputType.phone,
