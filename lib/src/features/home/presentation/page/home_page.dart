@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/themes/app_text_styles.dart';
@@ -10,8 +11,10 @@ import 'package:merova/src/core/widget/feature_button.dart';
 import 'package:merova/src/core/widget/padding_provider_widget.dart';
 import 'package:merova/src/core/widget/transaction_item.dart';
 import 'package:merova/src/features/fund/presentation/pages/fund_transfer.dart';
+import 'package:merova/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:merova/src/features/payment/presentation/pages/payment_pages.dart';
 import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
+import 'package:merova/src/init_dependencies.dart';
 
 @RoutePage()
 class HomePage extends StatefulWidget {
@@ -23,10 +26,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
-  bool _isBalanceVisible = true;
 
   final List<Widget> _pages = [
-    const _HomeContent(),
+    const _HomeContentWrapper(),
     const PaymentPages(),
     const Center(child: Text('Scanner Page')),
     const FundTransferPage(),
@@ -38,16 +40,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: AppColors.background,
       extendBody: true,
-      body: _currentIndex == 0
-          ? _HomeContent(
-        isBalanceVisible: _isBalanceVisible,
-        onVisibilityToggle: () {
-          setState(() {
-            _isBalanceVisible = !_isBalanceVisible;
-          });
-        },
-      )
-          : _pages[_currentIndex],
+      body: _pages[_currentIndex],
       bottomNavigationBar: ButtonNavBar(
         currentIndex: _currentIndex,
         onIndexChanged: (index) {
@@ -65,11 +58,64 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
+class _HomeContentWrapper extends StatelessWidget {
+  const _HomeContentWrapper();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<HomeBloc>()..add(FetchHomeData()),
+      child: const _HomeContentBody(),
+    );
+  }
+}
+
+class _HomeContentBody extends StatefulWidget {
+  const _HomeContentBody();
+
+  @override
+  State<_HomeContentBody> createState() => _HomeContentBodyState();
+}
+
+class _HomeContentBodyState extends State<_HomeContentBody> {
+  bool _isBalanceVisible = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        if (state is HomeLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is HomeError) {
+          return Center(child: Text(state.message));
+        } else if (state is HomeLoaded) {
+          final data = state.homeData;
+          return _HomeContent(
+            data: data,
+            isBalanceVisible: _isBalanceVisible,
+            onVisibilityToggle: () {
+              setState(() {
+                _isBalanceVisible = !_isBalanceVisible;
+              });
+            },
+          );
+        }
+        return const SizedBox.shrink();
+      },
+    );
+  }
+}
+
 class _HomeContent extends StatelessWidget {
+  final dynamic data;
   final bool isBalanceVisible;
   final VoidCallback? onVisibilityToggle;
 
-  const _HomeContent({this.isBalanceVisible = true, this.onVisibilityToggle});
+  const _HomeContent({
+    required this.data,
+    this.isBalanceVisible = true,
+    this.onVisibilityToggle,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +130,7 @@ class _HomeContent extends StatelessWidget {
           backgroundColor: AppColors.primary,
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
-              decoration: const BoxDecoration(
-                gradient: AppColors.homeGradient,
-              ),
+              decoration: const BoxDecoration(gradient: AppColors.homeGradient),
               child: SafeArea(
                 child: Padding(
                   padding: Dimensions.paddingSmall,
@@ -101,16 +145,12 @@ class _HomeContent extends StatelessWidget {
                             children: [
                               Text(
                                 tr.welcomeBack,
-                                style: AppTextStyles.homeText
-                                //   (
-                                //   color: AppColors.white,
-                                //   fontSize: 14,
-                                // ),
+                                style: AppTextStyles.homeText,
                               ),
                               const SizedBox(height: 4),
-                              const Text(
-                                "John Doe",
-                                style: TextStyle(
+                              Text(
+                                data.user.fullName,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
@@ -143,10 +183,10 @@ class _HomeContent extends StatelessWidget {
                       const SizedBox(height: 10),
                       // Balance Card
                       BalanceCard(
-                        balance: "NPR 1,25,450.00",
+                        balance: data.account.formattedBalance,
                         isVisible: isBalanceVisible,
                         onVisibilityToggle: onVisibilityToggle ?? () {},
-                        accountType: "Current Account",
+                        accountType: data.account.accountType,
                       ),
                     ],
                   ),
@@ -261,49 +301,15 @@ class _HomeContent extends StatelessWidget {
                 const SizedBox(height: 12),
 
                 // Transaction List
-                TransactionItem(
-                  icon: Icons.shopping_bag,
-                  title: "Shopping",
-                  subtitle: "Amazon Store",
-                  amount: "NPR 5,240.00",
-                  isDebit: true,
-                  iconBackgroundColor: AppColors.error,
-                ),
-
-                TransactionItem(
-                  icon: Icons.account_balance_wallet,
-                  title: "Salary Received",
-                  subtitle: "Monthly Salary",
-                  amount: "NPR 85,000.00",
-                  isDebit: false,
-                  iconBackgroundColor: AppColors.success,
-                ),
-
-                TransactionItem(
-                  icon: Icons.restaurant,
-                  title: "Restaurant",
-                  subtitle: "Cafe Delight",
-                  amount: "NPR 1,850.00",
-                  isDebit: true,
-                  iconBackgroundColor: const Color(0xFFFF9800),
-                ),
-
-                TransactionItem(
-                  icon: Icons.local_gas_station,
-                  title: "Fuel",
-                  subtitle: "Petrol Pump",
-                  amount: "NPR 3,200.00",
-                  isDebit: true,
-                  iconBackgroundColor: const Color(0xFF9C27B0),
-                ),
-
-                TransactionItem(
-                  icon: Icons.phone_android,
-                  title: "Mobile Recharge",
-                  subtitle: "Ncell Prepaid",
-                  amount: "NPR 500.00",
-                  isDebit: true,
-                  iconBackgroundColor: const Color(0xFF2196F3),
+                ...data.transactions.map<Widget>(
+                  (transaction) => TransactionItem(
+                    icon: transaction.icon,
+                    title: transaction.title,
+                    subtitle: transaction.subtitle,
+                    amount: transaction.formattedAmount,
+                    isDebit: transaction.isDebit,
+                    iconBackgroundColor: transaction.iconBackgroundColor,
+                  ),
                 ),
 
                 const SizedBox(height: 90),
