@@ -19,7 +19,6 @@ import '../bloc/auth_state.dart';
 import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/constants/storage_keys.dart';
 
-
 @RoutePage()
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -275,6 +274,12 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.text,
                         isPassword: true,
                         prefixIcon: Icons.lock_outline,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Password required";
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 12),
 
@@ -381,6 +386,15 @@ class _LoginPageState extends State<LoginPage> {
                             }
 
                             context.router.replaceAll([const HomeRoute()]);
+                          } else if (state.status.isError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  state.message ?? "Authentication failed",
+                                ),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
                           }
                         },
                         builder: (context, state) {

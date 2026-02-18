@@ -10,4 +10,5 @@ class StorageKeys {
   static const String isEmail = 'isEmail';
   static const String countryCode = 'countryCode';
   static const String countryFlag = 'countryFlag';
+  static const String profileImage = 'profileImage';
 }
