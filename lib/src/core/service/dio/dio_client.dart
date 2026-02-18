@@ -1,13 +1,12 @@
-import 'package:auth/src/core/interceptors/language_interceptor.dart';
-import 'package:auth/src/core/service/api/api_config.dart';
-import 'package:auth/src/core/service/responses/timeout_config.dart';
-import 'package:auth/src/core/storage/secure_storage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-
+import 'package:merova/src/core/interceptors/language_interceptor.dart';
+import 'package:merova/src/core/service/api/api_config.dart';
+import 'package:merova/src/core/storage/secure_storage.dart';
 import '../../interceptors/auth_interceptor.dart';
 import '../../interceptors/logging_interceptor.dart';
 import '../../interceptors/retry_interceptor.dart';
+import '../responses/timeout_config.dart';
 
 
 class DioClient {

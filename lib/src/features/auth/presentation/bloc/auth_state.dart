@@ -1,5 +1,6 @@
-import 'package:auth/src/core/enums/app_enum.dart';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
 
 part 'auth_state.freezed.dart';
 

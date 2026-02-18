@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:auth/app.dart';
-import 'package:auth/src/core/environment/app_environment.dart';
-import 'package:auth/src/core/environment/feature_flags.dart';
-import 'package:auth/src/core/routes/app_router.dart';
-import 'package:auth/src/init_dependencies.dart';
 import 'package:get_it/get_it.dart';
+import 'package:merova/src/core/environment/app_environment.dart';
+import 'package:merova/src/core/environment/feature_flags.dart';
+import 'package:merova/src/init_dependencies.dart';
+
+import 'app.dart';
+import 'src/core/routes/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

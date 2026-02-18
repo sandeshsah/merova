@@ -1,12 +1,12 @@
-
-import 'package:auth/src/core/routes/app_router.dart';
-import 'package:auth/src/core/themes/app_colors.dart';
-import 'package:auth/src/features/onboarding/presentation/pages/onboarding_data.dart';
-import 'package:auth/src/features/onboarding/presentation/widgets/onboarding_body.dart';
-import 'package:auth/src/features/onboarding/presentation/widgets/onboarding_footer.dart';
-import 'package:auth/src/features/onboarding/presentation/widgets/onboarding_header.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/routes/app_router.dart';
+import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/features/onboarding/presentation/widgets/onboarding_body.dart';
+import 'package:merova/src/features/onboarding/presentation/widgets/onboarding_footer.dart';
+import 'package:merova/src/features/onboarding/presentation/widgets/onboarding_header.dart';
+
+import 'onboarding_data.dart';
 
 @RoutePage()
 class OnboardingPage extends StatefulWidget {

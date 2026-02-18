@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'package:auth/src/features/auth/presentation/page/reset_password.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/widget/header_positioned.dart';
+import 'package:merova/src/features/auth/presentation/page/reset_password_page.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../../core/widget/custom_button.dart';
 import 'welcome_screen.dart';
@@ -83,7 +85,7 @@ class _OtpPageState extends State<OtpPage> {
       } else if (widget.flow == "forgotPassword") {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => ResetPassword()),
+          MaterialPageRoute(builder: (_) => ResetPasswordPage()),
         );
       }
     } else {
@@ -104,20 +106,10 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.white,
-      ),
+    return AppBarBackground(title: "OTP",
       body: Stack(
         children: [
-          Positioned(
-            top: 30,
-            left: 0,
-            right: 0,
-            bottom: 0,
+          BodyPositioned(
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,

@@ -11,7 +11,7 @@ class Dimensions {
   // Radius
   static const double radiusSmall = 8.0;
   static const double radiusMedium = 12.0;
-  static const double radiusLarge = 20.0;
+  static const double radiusLarge = 32.0;
 
   // Icon Sizes
   static const double iconSmall = 16.0;

@@ -37,5 +37,8 @@
     "orsignInWith": "वा यससँग साइन इन गर्नुहोस्",
     "useBiometricToLogin":"लगइन गर्न बायोमेट्रिक प्रयोग गर्नुहोस्",
     "dontHaveAnAccount": "तपाईंको खाता छैन",
-    "protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal": "नेपाल केन्द्रीय बैंकद्वारा नियमन गरिएको बैंक स्तरको एन्क्रिप्सनले सुरक्षित"
+    "protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal": "नेपाल केन्द्रीय बैंकद्वारा नियमन गरिएको बैंक स्तरको एन्क्रिप्सनले सुरक्षित",
+
+    "resetPassword": "पासवर्ड पुनः सेट गर्नुहोस्",
+    "profile": "प्रोफाइल"
 }

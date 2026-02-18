@@ -16,15 +16,13 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AuthEvent {
-  String get UId => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String get password => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(String UId, String email, String password)
         loginRequested,
     required TResult Function(String UId, String email, String password)
         registerRequested,
+    required TResult Function() logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -33,6 +31,7 @@ mixin _$AuthEvent {
         loginRequested,
     TResult? Function(String UId, String email, String password)?
         registerRequested,
+    TResult? Function()? logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -40,6 +39,7 @@ mixin _$AuthEvent {
     TResult Function(String UId, String email, String password)? loginRequested,
     TResult Function(String UId, String email, String password)?
         registerRequested,
+    TResult Function()? logoutRequested,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -47,24 +47,23 @@ mixin _$AuthEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginRequested value) loginRequested,
     required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_LogoutRequested value) logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginRequested value)? loginRequested,
     TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_LogoutRequested value)? logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginRequested value)? loginRequested,
     TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_LogoutRequested value)? logoutRequested,
     required TResult orElse(),
   }) =>
-      throw _privateConstructorUsedError;
-
-  @JsonKey(ignore: true)
-  $AuthEventCopyWith<AuthEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -72,8 +71,6 @@ mixin _$AuthEvent {
 abstract class $AuthEventCopyWith<$Res> {
   factory $AuthEventCopyWith(AuthEvent value, $Res Function(AuthEvent) then) =
       _$AuthEventCopyWithImpl<$Res, AuthEvent>;
-  @useResult
-  $Res call({String UId, String email, String password});
 }
 
 /// @nodoc
@@ -85,38 +82,13 @@ class _$AuthEventCopyWithImpl<$Res, $Val extends AuthEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? UId = null,
-    Object? email = null,
-    Object? password = null,
-  }) {
-    return _then(_value.copyWith(
-      UId: null == UId
-          ? _value.UId
-          : UId // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      password: null == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$LoginRequestedImplCopyWith<$Res>
-    implements $AuthEventCopyWith<$Res> {
+abstract class _$$LoginRequestedImplCopyWith<$Res> {
   factory _$$LoginRequestedImplCopyWith(_$LoginRequestedImpl value,
           $Res Function(_$LoginRequestedImpl) then) =
       __$$LoginRequestedImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String UId, String email, String password});
 }
@@ -199,6 +171,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
         loginRequested,
     required TResult Function(String UId, String email, String password)
         registerRequested,
+    required TResult Function() logoutRequested,
   }) {
     return loginRequested(UId, email, password);
   }
@@ -210,6 +183,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
         loginRequested,
     TResult? Function(String UId, String email, String password)?
         registerRequested,
+    TResult? Function()? logoutRequested,
   }) {
     return loginRequested?.call(UId, email, password);
   }
@@ -220,6 +194,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
     TResult Function(String UId, String email, String password)? loginRequested,
     TResult Function(String UId, String email, String password)?
         registerRequested,
+    TResult Function()? logoutRequested,
     required TResult orElse(),
   }) {
     if (loginRequested != null) {
@@ -233,6 +208,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginRequested value) loginRequested,
     required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_LogoutRequested value) logoutRequested,
   }) {
     return loginRequested(this);
   }
@@ -242,6 +218,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginRequested value)? loginRequested,
     TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_LogoutRequested value)? logoutRequested,
   }) {
     return loginRequested?.call(this);
   }
@@ -251,6 +228,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginRequested value)? loginRequested,
     TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_LogoutRequested value)? logoutRequested,
     required TResult orElse(),
   }) {
     if (loginRequested != null) {
@@ -266,25 +244,19 @@ abstract class _LoginRequested implements AuthEvent {
       required final String email,
       required final String password}) = _$LoginRequestedImpl;
 
-  @override
   String get UId;
-  @override
   String get email;
-  @override
   String get password;
-  @override
   @JsonKey(ignore: true)
   _$$LoginRequestedImplCopyWith<_$LoginRequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$RegisterRequestedImplCopyWith<$Res>
-    implements $AuthEventCopyWith<$Res> {
+abstract class _$$RegisterRequestedImplCopyWith<$Res> {
   factory _$$RegisterRequestedImplCopyWith(_$RegisterRequestedImpl value,
           $Res Function(_$RegisterRequestedImpl) then) =
       __$$RegisterRequestedImplCopyWithImpl<$Res>;
-  @override
   @useResult
   $Res call({String UId, String email, String password});
 }
@@ -367,6 +339,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
         loginRequested,
     required TResult Function(String UId, String email, String password)
         registerRequested,
+    required TResult Function() logoutRequested,
   }) {
     return registerRequested(UId, email, password);
   }
@@ -378,6 +351,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
         loginRequested,
     TResult? Function(String UId, String email, String password)?
         registerRequested,
+    TResult? Function()? logoutRequested,
   }) {
     return registerRequested?.call(UId, email, password);
   }
@@ -388,6 +362,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
     TResult Function(String UId, String email, String password)? loginRequested,
     TResult Function(String UId, String email, String password)?
         registerRequested,
+    TResult Function()? logoutRequested,
     required TResult orElse(),
   }) {
     if (registerRequested != null) {
@@ -401,6 +376,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginRequested value) loginRequested,
     required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_LogoutRequested value) logoutRequested,
   }) {
     return registerRequested(this);
   }
@@ -410,6 +386,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginRequested value)? loginRequested,
     TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_LogoutRequested value)? logoutRequested,
   }) {
     return registerRequested?.call(this);
   }
@@ -419,6 +396,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginRequested value)? loginRequested,
     TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_LogoutRequested value)? logoutRequested,
     required TResult orElse(),
   }) {
     if (registerRequested != null) {
@@ -434,14 +412,123 @@ abstract class _RegisterRequested implements AuthEvent {
       required final String email,
       required final String password}) = _$RegisterRequestedImpl;
 
-  @override
   String get UId;
-  @override
   String get email;
-  @override
   String get password;
-  @override
   @JsonKey(ignore: true)
   _$$RegisterRequestedImplCopyWith<_$RegisterRequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$LogoutRequestedImplCopyWith<$Res> {
+  factory _$$LogoutRequestedImplCopyWith(_$LogoutRequestedImpl value,
+          $Res Function(_$LogoutRequestedImpl) then) =
+      __$$LogoutRequestedImplCopyWithImpl<$Res>;
+}
+
+/// @nodoc
+class __$$LogoutRequestedImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$LogoutRequestedImpl>
+    implements _$$LogoutRequestedImplCopyWith<$Res> {
+  __$$LogoutRequestedImplCopyWithImpl(
+      _$LogoutRequestedImpl _value, $Res Function(_$LogoutRequestedImpl) _then)
+      : super(_value, _then);
+}
+
+/// @nodoc
+
+class _$LogoutRequestedImpl implements _LogoutRequested {
+  const _$LogoutRequestedImpl();
+
+  @override
+  String toString() {
+    return 'AuthEvent.logoutRequested()';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is _$LogoutRequestedImpl);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String UId, String email, String password)
+        loginRequested,
+    required TResult Function(String UId, String email, String password)
+        registerRequested,
+    required TResult Function() logoutRequested,
+  }) {
+    return logoutRequested();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String UId, String email, String password)?
+        loginRequested,
+    TResult? Function(String UId, String email, String password)?
+        registerRequested,
+    TResult? Function()? logoutRequested,
+  }) {
+    return logoutRequested?.call();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String UId, String email, String password)? loginRequested,
+    TResult Function(String UId, String email, String password)?
+        registerRequested,
+    TResult Function()? logoutRequested,
+    required TResult orElse(),
+  }) {
+    if (logoutRequested != null) {
+      return logoutRequested();
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoginRequested value) loginRequested,
+    required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_LogoutRequested value) logoutRequested,
+  }) {
+    return logoutRequested(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoginRequested value)? loginRequested,
+    TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_LogoutRequested value)? logoutRequested,
+  }) {
+    return logoutRequested?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoginRequested value)? loginRequested,
+    TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_LogoutRequested value)? logoutRequested,
+    required TResult orElse(),
+  }) {
+    if (logoutRequested != null) {
+      return logoutRequested(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _LogoutRequested implements AuthEvent {
+  const factory _LogoutRequested() = _$LogoutRequestedImpl;
 }

@@ -1,5 +1,5 @@
-import 'package:auth/src/core/enums/app_enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
 import '../../domain/usescase/login_usecase.dart';
 import '../../domain/usescase/register_usecase.dart';
 import 'auth_event.dart';
@@ -48,6 +48,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               state.copyWith(
                 status: AuthStatus.error,
                 message: 'Register failed',
+              ),
+            );
+          }
+        },
+        logoutRequested: () async {
+          emit(state.copyWith(status: AuthStatus.loading));
+          try {
+            // Clear persistent storage if needed, or rely on UI to do it.
+            // Ideally, the bloc should call a LogoutUseCase or Repository method.
+            // For now, we assume simple state reset.
+            // Note: ProfilePage logic was clearing SharedPreferences manually.
+            // We should really move that here or into a UseCase.
+            // But since I don't see a LogoutUseCase, I will just reset state.
+            // User's manual preference clearing is in UI. I'll leave it there or move it?
+            // Moving it here is cleaner but requires SharedPreferences in Bloc which is bad practice (should be in Repo).
+            // I'll stick to formatting the event loop first.
+            emit(AuthState.initial());
+          } catch (e) {
+            emit(
+              state.copyWith(
+                status: AuthStatus.error,
+                message: 'Logout failed',
               ),
             );
           }

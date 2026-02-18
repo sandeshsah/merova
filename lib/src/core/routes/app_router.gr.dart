@@ -15,6 +15,12 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    ForgotPasswordRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ForgotPasswordPage(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -44,10 +50,28 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    PasswordResetSuccessRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PasswordResetSuccessPage(),
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfilePage(),
+      );
+    },
     RegisterRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const RegisterPage(),
+      );
+    },
+    ResetPasswordRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ResetPasswordPage(),
       );
     },
     SplashRoute.name: (routeData) {
@@ -57,6 +81,20 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [ForgotPasswordPage]
+class ForgotPasswordRoute extends PageRouteInfo<void> {
+  const ForgotPasswordRoute({List<PageRouteInfo>? children})
+      : super(
+          ForgotPasswordRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ForgotPasswordRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -144,6 +182,34 @@ class OtpRouteArgs {
 }
 
 /// generated route for
+/// [PasswordResetSuccessPage]
+class PasswordResetSuccessRoute extends PageRouteInfo<void> {
+  const PasswordResetSuccessRoute({List<PageRouteInfo>? children})
+      : super(
+          PasswordResetSuccessRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PasswordResetSuccessRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ProfilePage]
+class ProfileRoute extends PageRouteInfo<void> {
+  const ProfileRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [RegisterPage]
 class RegisterRoute extends PageRouteInfo<void> {
   const RegisterRoute({List<PageRouteInfo>? children})
@@ -153,6 +219,20 @@ class RegisterRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'RegisterRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [ResetPasswordPage]
+class ResetPasswordRoute extends PageRouteInfo<void> {
+  const ResetPasswordRoute({List<PageRouteInfo>? children})
+      : super(
+          ResetPasswordRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ResetPasswordRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

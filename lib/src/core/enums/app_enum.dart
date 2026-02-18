@@ -95,6 +95,7 @@ enum AuthStatus {
   bool get isAuthenticated => this == AuthStatus.authenticated;
   bool get isLoggedIn => this == AuthStatus.authenticated;
   bool get isError => this == AuthStatus.error;
+  bool get isUnauthenticated => this == AuthStatus.unauthenticated;
 
   String get displayLabel {
     switch (this) {
@@ -113,6 +114,8 @@ enum AuthStatus {
 }
 
 enum AuthFlow { login, register }
+
+enum HeaderAlignment { center, start }
 
 // enum OrderStatus {
 

@@ -1,7 +1,8 @@
-import 'package:auth/src/core/routes/app_router.dart';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:merova/src/core/routes/app_router.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../../core/widget/custom_button.dart';
 import 'login_page.dart';

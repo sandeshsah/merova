@@ -1,12 +1,12 @@
-import 'package:auth/src/core/extension/context_extensions.dart';
-import 'package:auth/src/core/themes/dimensions.dart';
-import 'package:auth/src/core/widget/custom_text_form_field.dart';
-import 'package:auth/src/core/widget/header_positioned.dart';
-import 'package:auth/src/features/auth/presentation/page/otp_page.dart';
-import 'package:auth/src/features/auth/presentation/page/welcome_screen.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/extension/context_extensions.dart';
+import 'package:merova/src/core/themes/dimensions.dart';
+import 'package:merova/src/core/widget/custom_text_form_field.dart';
+import 'package:merova/src/core/widget/header_positioned.dart';
+import 'package:merova/src/features/auth/presentation/page/otp_page.dart';
+import 'package:merova/src/features/auth/presentation/page/welcome_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/themes/app_colors.dart';
 import '../../../../core/themes/app_text_styles.dart';
@@ -122,26 +122,11 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     final tr = context.tr;
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.white,
-        title: const Text(
-          "Register!",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+    return AppBarBackground(
+        title: tr.register,
       body: Stack(
         children: [
-          HeaderPositioned(
+          BodyPositioned(
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
