@@ -7,7 +7,7 @@ class CustomTextFormField extends StatefulWidget {
   final String label;
   final String hint;
   final bool isPassword;
-  final Widget? prefix;
+  final Widget? prefixWidget;
   final Widget? suffix;
   final int? maxLength;
   final IconData? prefixIcon;
@@ -26,7 +26,7 @@ class CustomTextFormField extends StatefulWidget {
     this.validator,
     this.onChange,
     this.prefixIcon,
-    this.prefix,
+    this.prefixWidget,
     this.suffix,
     this.maxLength,
   });
@@ -58,8 +58,15 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             counterText: "",
             filled: true,
             fillColor: AppColors.white,
-            prefixIcon: widget.prefixIcon != null ? Icon(widget.prefixIcon, color: Colors.black) : null,
-            prefix: widget.prefix,
+            prefixIcon: widget.prefixWidget != null
+                ? widget.prefixWidget
+                : widget.prefixIcon != null
+                ? Icon(widget.prefixIcon)
+                : null,
+            // prefixIconConstraints: const BoxConstraints(
+            //   minWidth: 0,
+            //   minHeight: 0,
+            // ),
             suffixIcon: widget.isPassword
                 ? IconButton(
               icon: Icon(_obscure ? Icons.visibility_off : Icons.visibility, color: AppColors.black),

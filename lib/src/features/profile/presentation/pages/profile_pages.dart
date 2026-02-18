@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
-import 'package:merova/src/core/themes/dimensions.dart';
-import 'package:merova/src/core/utils/image_picker_helper.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
 import 'package:merova/src/core/routes/app_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,8 +11,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
-
-import 'package:merova/src/core/constants/storage_keys.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
@@ -30,20 +24,11 @@ class _ProfilePage extends State<ProfilePage> {
   String fullName = "";
   String email = "";
   String phone = "";
-  File? _profileImage;
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
-    final authState = context.read<AuthBloc>().state;
-    if (authState.user != null) {
-      setState(() {
-        if (authState.user!.email.isNotEmpty) {
-          email = authState.user!.email;
-        }
-      });
-    }
   }
 
   Future<void> _loadUserData() async {
@@ -144,34 +129,6 @@ class _ProfilePage extends State<ProfilePage> {
           ),
         );
       },
-    );
-  }
-
-  Widget _imagePickerOption({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            padding: Dimensions.textFormField,
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: AppColors.primary, size: 30),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
-        ],
-      ),
     );
   }
 

@@ -321,6 +321,12 @@ abstract class AppLocalizations {
   /// **'Reset Password'**
   String get resetPassword;
 
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back'**
+  String get welcomeBack;
+
   /// No description provided for @profile.
   ///
   /// In en, this message translates to:

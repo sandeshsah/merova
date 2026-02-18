@@ -6,6 +6,7 @@ import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/themes/app_text_styles.dart';
 import 'package:merova/src/core/themes/dimensions.dart';
 import 'package:merova/src/core/widget/custom_button.dart';
+import 'package:merova/src/core/widget/custom_text_form_field.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'otp_page.dart';
@@ -21,14 +22,13 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final _formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
+  final TextEditingController uidController = TextEditingController();
 
   bool isLoading = false;
   bool isEmailSelected = true;
 
   String _countryCode = "+977";
-  String _countryFlag = "";
+  String _countryFlag = "🇳🇵";
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
@@ -52,10 +52,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         MaterialPageRoute(
           builder: (_) => OtpPage(
             flow: "forgotPassword",
-            emailOrPhone: isEmailSelected
-                ? emailController.text.trim()
-                : phoneController.text.trim(),
-          ),
+          //   emailOrPhone: isEmailSelected
+          //       ? emailController.text.trim()
+          //       : phoneController.text.trim(),
+           ),
         ),
       );
     });
@@ -106,7 +106,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      if (isEmailSelected) _emailField() else _phoneField(),
+                      //if (isEmailSelected) _emailField() else _phoneField(),
+                      _buildUidField(context),
                       const SizedBox(height: 24),
                       CustomButton(title: "Continue", isLoading: isLoading, onTap: _submit),
                       const SizedBox(height: 24),
@@ -143,39 +144,66 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
   }
 
-  Widget _emailField() {
-    return TextFormField(
-      controller: emailController,
-      keyboardType: TextInputType.emailAddress,
-      decoration: const InputDecoration(
-        hintText: "example@email.com",
-        contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) return "Email is required";
-        if (!RegExp(r'.+@.+\..+').hasMatch(value)) return "Enter valid email";
-        return null;
-      },
-    );
-  }
+  Widget _buildUidField(BuildContext context) {
+    final tr = context.tr;
 
-  Widget _phoneField() {
-    return TextFormField(
-      controller: phoneController,
-      keyboardType: TextInputType.number,
-      decoration:  InputDecoration(
-        prefix: Padding(
-          padding: Dimensions.countryCode,
-          child: countryCode(),
+    return CustomTextFormField(
+      label: isEmailSelected ? tr.email : tr.phone,
+      hint: isEmailSelected ? "example@gmail.com" : "98XXXXXXXX",
+      controller: uidController,
+      keyboardType:
+      isEmailSelected ? TextInputType.emailAddress : TextInputType.phone,
+      maxLength: isEmailSelected ? null : 10,
+      prefixWidget: isEmailSelected
+          ? null
+          : GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          showCountryPicker(
+            context: context,
+            showPhoneCode: true,
+            onSelect: (country) {
+              setState(() {
+                _countryCode = '+${country.phoneCode}';
+                _countryFlag = country.flagEmoji;
+              });
+            },
+          );
+        },
+        child: Padding(
+          padding: Dimensions.textFormField,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _countryFlag,
+                style: const TextStyle(fontSize: 16),
+              ),
+              const SizedBox(width: 6),
+              Text(
+                _countryCode,
+                style: AppTextStyles.label,
+              ),
+              const SizedBox(width: 4),
+              const Icon(Icons.arrow_drop_down),
+
+            ],
+          ),
         ),
-        hintText: "98XXXXXXXX",
-        contentPadding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12))),
       ),
       validator: (value) {
-        if (value == null || value.isEmpty) return "Phone required";
-        if (value.length != 10) return "Must be 10 digits";
+        if (value == null || value.isEmpty) {
+          return isEmailSelected ? "Email required" : "Phone number required";
+        }
+
+        if (isEmailSelected && !RegExp(r'.+@.+\..+').hasMatch(value)) {
+          return "Enter a valid email";
+        }
+
+        if (!isEmailSelected && value.length != 10) {
+          return "Must be 10 digits";
+        }
+
         return null;
       },
     );
@@ -187,28 +215,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         showCountryPicker(
           context: context,
           showPhoneCode: true,
-          onSelect: (country) async {
+          onSelect: (country) {
             setState(() {
               _countryCode = '+${country.phoneCode}';
               _countryFlag = country.flagEmoji;
             });
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setBool('remember', false);
-            await prefs.remove('userId');
-            await prefs.remove('userPassword');
           },
         );
       },
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            _countryFlag.isEmpty ? '🇳🇵 +977' : '$_countryFlag $_countryCode',
-            style: AppTextStyles.label,
-          ),
-          const Icon(Icons.arrow_drop_down),
-          const SizedBox(width: 6),
-        ],
+      child: Text(
+        "$_countryFlag $_countryCode",
+        style: AppTextStyles.label,
       ),
     );
   }

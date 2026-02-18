@@ -39,6 +39,12 @@ class AppColors {
     end: Alignment.topCenter,
   );
 
+  static const homeGradient =  LinearGradient(
+    colors: [Color(0xFF147BA0), Color(0xFF3FBCE6)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
   static const onBoarding = LinearGradient(
     colors: [background, Color(0xFF147BA0)],
     begin: Alignment.topCenter,

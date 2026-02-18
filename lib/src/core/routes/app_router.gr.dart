@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ForgotPasswordPage(),
       );
     },
+    FundTransferRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FundTransferPage(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -46,7 +52,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: OtpPage(
           flow: args.flow,
           emailOrPhone: args.emailOrPhone,
-          onPressed: args.onPressed,
         ),
       );
     },
@@ -54,6 +59,12 @@ abstract class _$AppRouter extends RootStackRouter {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const PasswordResetSuccessPage(),
+      );
+    },
+    PaymentRoutes.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const PaymentPages(),
       );
     },
     ProfileRoute.name: (routeData) {
@@ -80,6 +91,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const SplashPage(),
       );
     },
+    WelcomeRoute.name: (routeData) {
+      final args = routeData.argsAs<WelcomeRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: WelcomePage(
+          key: args.key,
+          uid: args.uid,
+        ),
+      );
+    },
   };
 }
 
@@ -93,6 +114,20 @@ class ForgotPasswordRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ForgotPasswordRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FundTransferPage]
+class FundTransferRoute extends PageRouteInfo<void> {
+  const FundTransferRoute({List<PageRouteInfo>? children})
+      : super(
+          FundTransferRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FundTransferRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -145,14 +180,12 @@ class OtpRoute extends PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
     required String flow,
     String? emailOrPhone,
-    void Function()? onPressed,
     List<PageRouteInfo>? children,
   }) : super(
           OtpRoute.name,
           args: OtpRouteArgs(
             flow: flow,
             emailOrPhone: emailOrPhone,
-            onPressed: onPressed,
           ),
           initialChildren: children,
         );
@@ -166,18 +199,15 @@ class OtpRouteArgs {
   const OtpRouteArgs({
     required this.flow,
     this.emailOrPhone,
-    this.onPressed,
   });
 
   final String flow;
 
   final String? emailOrPhone;
 
-  final void Function()? onPressed;
-
   @override
   String toString() {
-    return 'OtpRouteArgs{flow: $flow, emailOrPhone: $emailOrPhone, onPressed: $onPressed}';
+    return 'OtpRouteArgs{flow: $flow, emailOrPhone: $emailOrPhone}';
   }
 }
 
@@ -191,6 +221,20 @@ class PasswordResetSuccessRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'PasswordResetSuccessRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [PaymentPages]
+class PaymentRoutes extends PageRouteInfo<void> {
+  const PaymentRoutes({List<PageRouteInfo>? children})
+      : super(
+          PaymentRoutes.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PaymentRoutes';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -249,4 +293,42 @@ class SplashRoute extends PageRouteInfo<void> {
   static const String name = 'SplashRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [WelcomePage]
+class WelcomeRoute extends PageRouteInfo<WelcomeRouteArgs> {
+  WelcomeRoute({
+    Key? key,
+    required String uid,
+    List<PageRouteInfo>? children,
+  }) : super(
+          WelcomeRoute.name,
+          args: WelcomeRouteArgs(
+            key: key,
+            uid: uid,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'WelcomeRoute';
+
+  static const PageInfo<WelcomeRouteArgs> page =
+      PageInfo<WelcomeRouteArgs>(name);
+}
+
+class WelcomeRouteArgs {
+  const WelcomeRouteArgs({
+    this.key,
+    required this.uid,
+  });
+
+  final Key? key;
+
+  final String uid;
+
+  @override
+  String toString() {
+    return 'WelcomeRouteArgs{key: $key, uid: $uid}';
+  }
 }

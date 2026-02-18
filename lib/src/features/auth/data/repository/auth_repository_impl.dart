@@ -1,7 +1,8 @@
-import '../../domain/entity/auth_entity.dart';
-import '../../domain/repository/auth_repository.dart';
-import '../datasource/auth_remote_datasource.dart';
-import '../model/Auth_model.dart';
+import 'package:merova/src/features/auth/domain/entity/auth_entity.dart';
+import 'package:merova/src/features/auth/domain/repository/auth_repository.dart';
+import 'package:merova/src/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:merova/src/features/auth/data/model/Auth_model.dart';
+import 'package:merova/src/core/helper/token_storage.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDatasource datasource;
@@ -9,14 +10,52 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.datasource);
 
   @override
-  Future<AuthEntity> Login(String UId, String email, String password) async {
-    final res = await datasource.login(UId, email, password);
+  Future<AuthEntity> Login(String identifier, String credential) async {
+    final res = await datasource.login(identifier, credential);
+
+    final accessToken = res['access_token'] ?? res['accessToken'];
+    final refreshToken = res['refresh_token'] ?? res['refreshToken'];
+
+    if (accessToken != null && refreshToken != null) {
+      await TokenStorage.saveTokens(
+        accessToken: accessToken.toString(),
+        refreshToken: refreshToken.toString(),
+      );
+    }
+
     return AuthModel.fromJson(res);
   }
 
   @override
-  Future<AuthEntity> register(String UId, String email, String password) async {
-    final res = await datasource.register(UId, email, password);
-    return AuthModel.fromJson(res);
+  Future<Map<String, dynamic>> register(
+    String fullName,
+    String phoneNumber,
+    String email,
+    String password,
+  ) async {
+    final res = await datasource.register(
+      fullName,
+      phoneNumber,
+      email,
+      password,
+    );
+    return res;
+  }
+
+  @override
+  Future<Map<String, dynamic>> verifyOtp(String phoneNumber, String otp) async {
+    final res = await datasource.verifyOtp(phoneNumber, otp);
+
+    final accessToken = res['access_token'] ?? res['accessToken'];
+    final refreshToken = res['refresh_token'] ?? res['refreshToken'];
+
+    if (accessToken != null && refreshToken != null) {
+      await TokenStorage.saveTokens(
+        accessToken: accessToken.toString(),
+        refreshToken: refreshToken.toString(),
+      );
+    }
+
+    return res;
   }
 }

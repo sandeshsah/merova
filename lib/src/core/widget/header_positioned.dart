@@ -72,6 +72,7 @@ class AppBarBackground extends StatelessWidget {
   final Widget body;
   final bool showBack;
   final VoidCallback? onBack;
+  final bool centerTitle;
 
   const AppBarBackground({
     super.key,
@@ -80,6 +81,7 @@ class AppBarBackground extends StatelessWidget {
     this.subtitle,
     this.showBack = true,
     this.onBack,
+    this.centerTitle = false,
   });
 
   @override
@@ -91,7 +93,7 @@ class AppBarBackground extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         foregroundColor: Colors.white,
-        centerTitle: false, // better for title + subtitle
+        centerTitle: centerTitle,
         leading: showBack
             ? IconButton(
           icon: const Icon(Icons.arrow_back),

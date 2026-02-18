@@ -1,4 +1,3 @@
-import '../entity/auth_entity.dart';
 import '../repository/auth_repository.dart';
 
 class RegisterUseCase {
@@ -6,7 +5,7 @@ class RegisterUseCase {
 
   RegisterUseCase(this.repository);
 
-  Future<AuthEntity> call(String UId, String email, String password) {
-    return repository.register(UId, email, password);
+  Future<Map<String, dynamic>> call(String fullName, String phoneNumber, String email, String password) {
+    return repository.register(fullName, phoneNumber, email, password);
   }
 }

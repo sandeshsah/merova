@@ -55,4 +55,10 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     color: AppColors.textPrimary,
   );
+
+  static TextStyle homeText = GoogleFonts.poppins(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textWhite,
+  );
 }
