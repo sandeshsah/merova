@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/constants/storage_keys.dart';
 import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
@@ -11,6 +14,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
+
+import '../../../../core/utils/image_picker_helper.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
@@ -24,6 +29,7 @@ class _ProfilePage extends State<ProfilePage> {
   String fullName = "";
   String email = "";
   String phone = "";
+  File? _profileImage;
 
   @override
   void initState() {
@@ -47,7 +53,7 @@ class _ProfilePage extends State<ProfilePage> {
     }
   }
 
-  Future<void> _pickImage(bool fromGallery) async {
+  Future<void> _pickProfileImage(bool fromGallery) async {
     try {
       final image = fromGallery
           ? await ImagePickerHelper.pickFromGallery()
@@ -102,7 +108,7 @@ class _ProfilePage extends State<ProfilePage> {
                       label: "Gallery",
                       onTap: () {
                         Navigator.pop(context);
-                        _pickImage(true);
+                        _pickProfileImage(true);
                       },
                     ),
                     _imagePickerOption(
@@ -110,7 +116,7 @@ class _ProfilePage extends State<ProfilePage> {
                       label: "Camera",
                       onTap: () {
                         Navigator.pop(context);
-                        _pickImage(false);
+                        _pickProfileImage(false);
                       },
                     ),
                     if (_profileImage != null)
@@ -129,6 +135,42 @@ class _ProfilePage extends State<ProfilePage> {
           ),
         );
       },
+    );
+  }
+
+  Widget _imagePickerOption({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.primary.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: AppColors.primary, size: 28),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: AppColors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
