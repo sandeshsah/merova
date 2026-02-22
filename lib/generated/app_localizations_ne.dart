@@ -126,5 +126,8 @@ class AppLocalizationsNe extends AppLocalizations {
   String get resetPassword => 'पासवर्ड पुनः सेट गर्नुहोस्';
 
   @override
+  String get welcomeBack => 'फेरि स्वागत छ';
+
+  @override
   String get profile => 'प्रोफाइल';
 }

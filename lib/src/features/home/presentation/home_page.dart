@@ -1,11 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/core/themes/app_text_styles.dart';
+import 'package:merova/src/core/themes/dimensions.dart';
 import 'package:merova/src/core/widget/balance_card.dart';
 import 'package:merova/src/core/widget/button_nav_bar.dart';
 import 'package:merova/src/core/widget/feature_button.dart';
 import 'package:merova/src/core/widget/padding_provider_widget.dart';
 import 'package:merova/src/core/widget/transaction_item.dart';
+import 'package:merova/src/features/fund/presentation/pages/fund_transfer.dart';
+import 'package:merova/src/features/payment/presentation/pages/payment_pages.dart';
 import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
 
 @RoutePage()
@@ -22,9 +27,9 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     const _HomeContent(),
-    const Center(child: Text('OTP Page')),
+    const PaymentPages(),
     const Center(child: Text('Scanner Page')),
-    const Center(child: Text('Government Page')),
+    const FundTransferPage(),
     const ProfilePage(),
   ];
 
@@ -35,13 +40,13 @@ class _HomePageState extends State<HomePage> {
       extendBody: true,
       body: _currentIndex == 0
           ? _HomeContent(
-              isBalanceVisible: _isBalanceVisible,
-              onVisibilityToggle: () {
-                setState(() {
-                  _isBalanceVisible = !_isBalanceVisible;
-                });
-              },
-            )
+        isBalanceVisible: _isBalanceVisible,
+        onVisibilityToggle: () {
+          setState(() {
+            _isBalanceVisible = !_isBalanceVisible;
+          });
+        },
+      )
           : _pages[_currentIndex],
       bottomNavigationBar: ButtonNavBar(
         currentIndex: _currentIndex,
@@ -68,6 +73,7 @@ class _HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.tr;
     return CustomScrollView(
       slivers: [
         // App Bar with Gradient
@@ -79,15 +85,11 @@ class _HomeContent extends StatelessWidget {
           flexibleSpace: FlexibleSpaceBar(
             background: Container(
               decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF147BA0), Color(0xFF3FBCE6)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                gradient: AppColors.homeGradient,
               ),
               child: SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: Dimensions.paddingSmall,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -97,12 +99,13 @@ class _HomeContent extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Welcome Back,",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
-                                ),
+                              Text(
+                                tr.welcomeBack,
+                                style: AppTextStyles.homeText
+                                //   (
+                                //   color: AppColors.white,
+                                //   fontSize: 14,
+                                // ),
                               ),
                               const SizedBox(height: 4),
                               const Text(
@@ -303,7 +306,7 @@ class _HomeContent extends StatelessWidget {
                   iconBackgroundColor: const Color(0xFF2196F3),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 90),
               ],
             ),
           ),

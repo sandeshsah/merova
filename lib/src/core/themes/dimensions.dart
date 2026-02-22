@@ -4,9 +4,11 @@ class Dimensions {
   // Padding
   static const EdgeInsets paddingSmall = EdgeInsets.all(8.0);
   static const EdgeInsets paddingDefault = EdgeInsets.all(16.0);
-  static const EdgeInsets countryCode = EdgeInsets.only(left: 8);
+  static const EdgeInsets textFormField = EdgeInsets.only(left: 12, right: 6);
   static const EdgeInsets paddingProvider = EdgeInsets.symmetric(horizontal:  24);
   static const EdgeInsets paddingLarge = EdgeInsets.all(30);
+  static const EdgeInsets paddingMedium = EdgeInsets.only(bottom: 10);
+
 
   // Radius
   static const double radiusSmall = 8.0;

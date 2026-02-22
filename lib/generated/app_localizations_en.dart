@@ -124,5 +124,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetPassword => 'Reset Password';
 
   @override
+  String get welcomeBack => 'Welcome Back';
+
+  @override
   String get profile => 'Profile';
 }

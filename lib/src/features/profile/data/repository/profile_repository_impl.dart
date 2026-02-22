@@ -25,4 +25,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
     );
     return await remoteDataSource.updateProfile(userModel);
   }
+
+  @override
+  Future<UserEntity> uploadProfileImage(String filePath) async {
+    return await remoteDataSource.uploadProfileImage(filePath);
+  }
 }

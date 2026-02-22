@@ -1,6 +1,6 @@
-
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:merova/src/core/enums/app_enum.dart';
+import 'package:merova/src/features/auth/domain/entity/auth_entity.dart';
 
 part 'auth_state.freezed.dart';
 
@@ -9,6 +9,7 @@ class AuthState with _$AuthState {
   const factory AuthState({
     required AuthStatus status,
     required AuthFlow flow,
+    AuthEntity? user,
     String? message,
   }) = _AuthState;
 

@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthState {
   AuthStatus get status => throw _privateConstructorUsedError;
   AuthFlow get flow => throw _privateConstructorUsedError;
+  AuthEntity? get user => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +31,8 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({AuthStatus status, AuthFlow flow, String? message});
+  $Res call(
+      {AuthStatus status, AuthFlow flow, AuthEntity? user, String? message});
 }
 
 /// @nodoc
@@ -48,6 +50,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
   $Res call({
     Object? status = null,
     Object? flow = null,
+    Object? user = freezed,
     Object? message = freezed,
   }) {
     return _then(_value.copyWith(
@@ -59,6 +62,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.flow
           : flow // ignore: cast_nullable_to_non_nullable
               as AuthFlow,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as AuthEntity?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -75,7 +82,8 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({AuthStatus status, AuthFlow flow, String? message});
+  $Res call(
+      {AuthStatus status, AuthFlow flow, AuthEntity? user, String? message});
 }
 
 /// @nodoc
@@ -91,6 +99,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
   $Res call({
     Object? status = null,
     Object? flow = null,
+    Object? user = freezed,
     Object? message = freezed,
   }) {
     return _then(_$AuthStateImpl(
@@ -102,6 +111,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
           ? _value.flow
           : flow // ignore: cast_nullable_to_non_nullable
               as AuthFlow,
+      user: freezed == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as AuthEntity?,
       message: freezed == message
           ? _value.message
           : message // ignore: cast_nullable_to_non_nullable
@@ -114,18 +127,20 @@ class __$$AuthStateImplCopyWithImpl<$Res>
 
 class _$AuthStateImpl implements _AuthState {
   const _$AuthStateImpl(
-      {required this.status, required this.flow, this.message});
+      {required this.status, required this.flow, this.user, this.message});
 
   @override
   final AuthStatus status;
   @override
   final AuthFlow flow;
   @override
+  final AuthEntity? user;
+  @override
   final String? message;
 
   @override
   String toString() {
-    return 'AuthState(status: $status, flow: $flow, message: $message)';
+    return 'AuthState(status: $status, flow: $flow, user: $user, message: $message)';
   }
 
   @override
@@ -135,11 +150,12 @@ class _$AuthStateImpl implements _AuthState {
             other is _$AuthStateImpl &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.flow, flow) || other.flow == flow) &&
+            (identical(other.user, user) || other.user == user) &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, status, flow, message);
+  int get hashCode => Object.hash(runtimeType, status, flow, user, message);
 
   @JsonKey(ignore: true)
   @override
@@ -152,12 +168,15 @@ abstract class _AuthState implements AuthState {
   const factory _AuthState(
       {required final AuthStatus status,
       required final AuthFlow flow,
+      final AuthEntity? user,
       final String? message}) = _$AuthStateImpl;
 
   @override
   AuthStatus get status;
   @override
   AuthFlow get flow;
+  @override
+  AuthEntity? get user;
   @override
   String? get message;
   @override

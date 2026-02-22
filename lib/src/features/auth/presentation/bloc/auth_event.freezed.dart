@@ -18,27 +18,33 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$AuthEvent {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(String identifier, String password)
         loginRequested,
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(
+            String fullName, String phoneNumber, String email, String password)
         registerRequested,
+    required TResult Function(String phoneNumber, String otp)
+        verifyOtpRequested,
     required TResult Function() logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String UId, String email, String password)?
-        loginRequested,
-    TResult? Function(String UId, String email, String password)?
+    TResult? Function(String identifier, String password)? loginRequested,
+    TResult? Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult? Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult? Function()? logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String UId, String email, String password)? loginRequested,
-    TResult Function(String UId, String email, String password)?
+    TResult Function(String identifier, String password)? loginRequested,
+    TResult Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult Function()? logoutRequested,
     required TResult orElse(),
   }) =>
@@ -47,6 +53,7 @@ mixin _$AuthEvent {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginRequested value) loginRequested,
     required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_VerifyOtpRequested value) verifyOtpRequested,
     required TResult Function(_LogoutRequested value) logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
@@ -54,6 +61,7 @@ mixin _$AuthEvent {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginRequested value)? loginRequested,
     TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult? Function(_LogoutRequested value)? logoutRequested,
   }) =>
       throw _privateConstructorUsedError;
@@ -61,6 +69,7 @@ mixin _$AuthEvent {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginRequested value)? loginRequested,
     TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult Function(_LogoutRequested value)? logoutRequested,
     required TResult orElse(),
   }) =>
@@ -90,7 +99,7 @@ abstract class _$$LoginRequestedImplCopyWith<$Res> {
           $Res Function(_$LoginRequestedImpl) then) =
       __$$LoginRequestedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String UId, String email, String password});
+  $Res call({String identifier, String password});
 }
 
 /// @nodoc
@@ -104,18 +113,13 @@ class __$$LoginRequestedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? UId = null,
-    Object? email = null,
+    Object? identifier = null,
     Object? password = null,
   }) {
     return _then(_$LoginRequestedImpl(
-      UId: null == UId
-          ? _value.UId
-          : UId // ignore: cast_nullable_to_non_nullable
-              as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      identifier: null == identifier
+          ? _value.identifier
+          : identifier // ignore: cast_nullable_to_non_nullable
               as String,
       password: null == password
           ? _value.password
@@ -129,18 +133,16 @@ class __$$LoginRequestedImplCopyWithImpl<$Res>
 
 class _$LoginRequestedImpl implements _LoginRequested {
   const _$LoginRequestedImpl(
-      {required this.UId, required this.email, required this.password});
+      {required this.identifier, required this.password});
 
   @override
-  final String UId;
-  @override
-  final String email;
+  final String identifier;
   @override
   final String password;
 
   @override
   String toString() {
-    return 'AuthEvent.loginRequested(UId: $UId, email: $email, password: $password)';
+    return 'AuthEvent.loginRequested(identifier: $identifier, password: $password)';
   }
 
   @override
@@ -148,14 +150,14 @@ class _$LoginRequestedImpl implements _LoginRequested {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$LoginRequestedImpl &&
-            (identical(other.UId, UId) || other.UId == UId) &&
-            (identical(other.email, email) || other.email == email) &&
+            (identical(other.identifier, identifier) ||
+                other.identifier == identifier) &&
             (identical(other.password, password) ||
                 other.password == password));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, UId, email, password);
+  int get hashCode => Object.hash(runtimeType, identifier, password);
 
   @JsonKey(ignore: true)
   @override
@@ -167,38 +169,44 @@ class _$LoginRequestedImpl implements _LoginRequested {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(String identifier, String password)
         loginRequested,
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(
+            String fullName, String phoneNumber, String email, String password)
         registerRequested,
+    required TResult Function(String phoneNumber, String otp)
+        verifyOtpRequested,
     required TResult Function() logoutRequested,
   }) {
-    return loginRequested(UId, email, password);
+    return loginRequested(identifier, password);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String UId, String email, String password)?
-        loginRequested,
-    TResult? Function(String UId, String email, String password)?
+    TResult? Function(String identifier, String password)? loginRequested,
+    TResult? Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult? Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult? Function()? logoutRequested,
   }) {
-    return loginRequested?.call(UId, email, password);
+    return loginRequested?.call(identifier, password);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String UId, String email, String password)? loginRequested,
-    TResult Function(String UId, String email, String password)?
+    TResult Function(String identifier, String password)? loginRequested,
+    TResult Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult Function()? logoutRequested,
     required TResult orElse(),
   }) {
     if (loginRequested != null) {
-      return loginRequested(UId, email, password);
+      return loginRequested(identifier, password);
     }
     return orElse();
   }
@@ -208,6 +216,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginRequested value) loginRequested,
     required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_VerifyOtpRequested value) verifyOtpRequested,
     required TResult Function(_LogoutRequested value) logoutRequested,
   }) {
     return loginRequested(this);
@@ -218,6 +227,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginRequested value)? loginRequested,
     TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult? Function(_LogoutRequested value)? logoutRequested,
   }) {
     return loginRequested?.call(this);
@@ -228,6 +238,7 @@ class _$LoginRequestedImpl implements _LoginRequested {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginRequested value)? loginRequested,
     TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult Function(_LogoutRequested value)? logoutRequested,
     required TResult orElse(),
   }) {
@@ -240,12 +251,10 @@ class _$LoginRequestedImpl implements _LoginRequested {
 
 abstract class _LoginRequested implements AuthEvent {
   const factory _LoginRequested(
-      {required final String UId,
-      required final String email,
+      {required final String identifier,
       required final String password}) = _$LoginRequestedImpl;
 
-  String get UId;
-  String get email;
+  String get identifier;
   String get password;
   @JsonKey(ignore: true)
   _$$LoginRequestedImplCopyWith<_$LoginRequestedImpl> get copyWith =>
@@ -258,7 +267,8 @@ abstract class _$$RegisterRequestedImplCopyWith<$Res> {
           $Res Function(_$RegisterRequestedImpl) then) =
       __$$RegisterRequestedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String UId, String email, String password});
+  $Res call(
+      {String fullName, String phoneNumber, String email, String password});
 }
 
 /// @nodoc
@@ -272,14 +282,19 @@ class __$$RegisterRequestedImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? UId = null,
+    Object? fullName = null,
+    Object? phoneNumber = null,
     Object? email = null,
     Object? password = null,
   }) {
     return _then(_$RegisterRequestedImpl(
-      UId: null == UId
-          ? _value.UId
-          : UId // ignore: cast_nullable_to_non_nullable
+      fullName: null == fullName
+          ? _value.fullName
+          : fullName // ignore: cast_nullable_to_non_nullable
+              as String,
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
       email: null == email
           ? _value.email
@@ -297,10 +312,15 @@ class __$$RegisterRequestedImplCopyWithImpl<$Res>
 
 class _$RegisterRequestedImpl implements _RegisterRequested {
   const _$RegisterRequestedImpl(
-      {required this.UId, required this.email, required this.password});
+      {required this.fullName,
+      required this.phoneNumber,
+      required this.email,
+      required this.password});
 
   @override
-  final String UId;
+  final String fullName;
+  @override
+  final String phoneNumber;
   @override
   final String email;
   @override
@@ -308,7 +328,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
 
   @override
   String toString() {
-    return 'AuthEvent.registerRequested(UId: $UId, email: $email, password: $password)';
+    return 'AuthEvent.registerRequested(fullName: $fullName, phoneNumber: $phoneNumber, email: $email, password: $password)';
   }
 
   @override
@@ -316,14 +336,18 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RegisterRequestedImpl &&
-            (identical(other.UId, UId) || other.UId == UId) &&
+            (identical(other.fullName, fullName) ||
+                other.fullName == fullName) &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, UId, email, password);
+  int get hashCode =>
+      Object.hash(runtimeType, fullName, phoneNumber, email, password);
 
   @JsonKey(ignore: true)
   @override
@@ -335,38 +359,44 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(String identifier, String password)
         loginRequested,
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(
+            String fullName, String phoneNumber, String email, String password)
         registerRequested,
+    required TResult Function(String phoneNumber, String otp)
+        verifyOtpRequested,
     required TResult Function() logoutRequested,
   }) {
-    return registerRequested(UId, email, password);
+    return registerRequested(fullName, phoneNumber, email, password);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String UId, String email, String password)?
-        loginRequested,
-    TResult? Function(String UId, String email, String password)?
+    TResult? Function(String identifier, String password)? loginRequested,
+    TResult? Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult? Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult? Function()? logoutRequested,
   }) {
-    return registerRequested?.call(UId, email, password);
+    return registerRequested?.call(fullName, phoneNumber, email, password);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String UId, String email, String password)? loginRequested,
-    TResult Function(String UId, String email, String password)?
+    TResult Function(String identifier, String password)? loginRequested,
+    TResult Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult Function()? logoutRequested,
     required TResult orElse(),
   }) {
     if (registerRequested != null) {
-      return registerRequested(UId, email, password);
+      return registerRequested(fullName, phoneNumber, email, password);
     }
     return orElse();
   }
@@ -376,6 +406,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginRequested value) loginRequested,
     required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_VerifyOtpRequested value) verifyOtpRequested,
     required TResult Function(_LogoutRequested value) logoutRequested,
   }) {
     return registerRequested(this);
@@ -386,6 +417,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginRequested value)? loginRequested,
     TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult? Function(_LogoutRequested value)? logoutRequested,
   }) {
     return registerRequested?.call(this);
@@ -396,6 +428,7 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginRequested value)? loginRequested,
     TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult Function(_LogoutRequested value)? logoutRequested,
     required TResult orElse(),
   }) {
@@ -408,15 +441,184 @@ class _$RegisterRequestedImpl implements _RegisterRequested {
 
 abstract class _RegisterRequested implements AuthEvent {
   const factory _RegisterRequested(
-      {required final String UId,
+      {required final String fullName,
+      required final String phoneNumber,
       required final String email,
       required final String password}) = _$RegisterRequestedImpl;
 
-  String get UId;
+  String get fullName;
+  String get phoneNumber;
   String get email;
   String get password;
   @JsonKey(ignore: true)
   _$$RegisterRequestedImplCopyWith<_$RegisterRequestedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$VerifyOtpRequestedImplCopyWith<$Res> {
+  factory _$$VerifyOtpRequestedImplCopyWith(_$VerifyOtpRequestedImpl value,
+          $Res Function(_$VerifyOtpRequestedImpl) then) =
+      __$$VerifyOtpRequestedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({String phoneNumber, String otp});
+}
+
+/// @nodoc
+class __$$VerifyOtpRequestedImplCopyWithImpl<$Res>
+    extends _$AuthEventCopyWithImpl<$Res, _$VerifyOtpRequestedImpl>
+    implements _$$VerifyOtpRequestedImplCopyWith<$Res> {
+  __$$VerifyOtpRequestedImplCopyWithImpl(_$VerifyOtpRequestedImpl _value,
+      $Res Function(_$VerifyOtpRequestedImpl) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? phoneNumber = null,
+    Object? otp = null,
+  }) {
+    return _then(_$VerifyOtpRequestedImpl(
+      phoneNumber: null == phoneNumber
+          ? _value.phoneNumber
+          : phoneNumber // ignore: cast_nullable_to_non_nullable
+              as String,
+      otp: null == otp
+          ? _value.otp
+          : otp // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$VerifyOtpRequestedImpl implements _VerifyOtpRequested {
+  const _$VerifyOtpRequestedImpl(
+      {required this.phoneNumber, required this.otp});
+
+  @override
+  final String phoneNumber;
+  @override
+  final String otp;
+
+  @override
+  String toString() {
+    return 'AuthEvent.verifyOtpRequested(phoneNumber: $phoneNumber, otp: $otp)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VerifyOtpRequestedImpl &&
+            (identical(other.phoneNumber, phoneNumber) ||
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.otp, otp) || other.otp == otp));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, phoneNumber, otp);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VerifyOtpRequestedImplCopyWith<_$VerifyOtpRequestedImpl> get copyWith =>
+      __$$VerifyOtpRequestedImplCopyWithImpl<_$VerifyOtpRequestedImpl>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String identifier, String password)
+        loginRequested,
+    required TResult Function(
+            String fullName, String phoneNumber, String email, String password)
+        registerRequested,
+    required TResult Function(String phoneNumber, String otp)
+        verifyOtpRequested,
+    required TResult Function() logoutRequested,
+  }) {
+    return verifyOtpRequested(phoneNumber, otp);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String identifier, String password)? loginRequested,
+    TResult? Function(
+            String fullName, String phoneNumber, String email, String password)?
+        registerRequested,
+    TResult? Function(String phoneNumber, String otp)? verifyOtpRequested,
+    TResult? Function()? logoutRequested,
+  }) {
+    return verifyOtpRequested?.call(phoneNumber, otp);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String identifier, String password)? loginRequested,
+    TResult Function(
+            String fullName, String phoneNumber, String email, String password)?
+        registerRequested,
+    TResult Function(String phoneNumber, String otp)? verifyOtpRequested,
+    TResult Function()? logoutRequested,
+    required TResult orElse(),
+  }) {
+    if (verifyOtpRequested != null) {
+      return verifyOtpRequested(phoneNumber, otp);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_LoginRequested value) loginRequested,
+    required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_VerifyOtpRequested value) verifyOtpRequested,
+    required TResult Function(_LogoutRequested value) logoutRequested,
+  }) {
+    return verifyOtpRequested(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_LoginRequested value)? loginRequested,
+    TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_VerifyOtpRequested value)? verifyOtpRequested,
+    TResult? Function(_LogoutRequested value)? logoutRequested,
+  }) {
+    return verifyOtpRequested?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_LoginRequested value)? loginRequested,
+    TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_VerifyOtpRequested value)? verifyOtpRequested,
+    TResult Function(_LogoutRequested value)? logoutRequested,
+    required TResult orElse(),
+  }) {
+    if (verifyOtpRequested != null) {
+      return verifyOtpRequested(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _VerifyOtpRequested implements AuthEvent {
+  const factory _VerifyOtpRequested(
+      {required final String phoneNumber,
+      required final String otp}) = _$VerifyOtpRequestedImpl;
+
+  String get phoneNumber;
+  String get otp;
+  @JsonKey(ignore: true)
+  _$$VerifyOtpRequestedImplCopyWith<_$VerifyOtpRequestedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -458,10 +660,13 @@ class _$LogoutRequestedImpl implements _LogoutRequested {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(String identifier, String password)
         loginRequested,
-    required TResult Function(String UId, String email, String password)
+    required TResult Function(
+            String fullName, String phoneNumber, String email, String password)
         registerRequested,
+    required TResult Function(String phoneNumber, String otp)
+        verifyOtpRequested,
     required TResult Function() logoutRequested,
   }) {
     return logoutRequested();
@@ -470,10 +675,11 @@ class _$LogoutRequestedImpl implements _LogoutRequested {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String UId, String email, String password)?
-        loginRequested,
-    TResult? Function(String UId, String email, String password)?
+    TResult? Function(String identifier, String password)? loginRequested,
+    TResult? Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult? Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult? Function()? logoutRequested,
   }) {
     return logoutRequested?.call();
@@ -482,9 +688,11 @@ class _$LogoutRequestedImpl implements _LogoutRequested {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String UId, String email, String password)? loginRequested,
-    TResult Function(String UId, String email, String password)?
+    TResult Function(String identifier, String password)? loginRequested,
+    TResult Function(
+            String fullName, String phoneNumber, String email, String password)?
         registerRequested,
+    TResult Function(String phoneNumber, String otp)? verifyOtpRequested,
     TResult Function()? logoutRequested,
     required TResult orElse(),
   }) {
@@ -499,6 +707,7 @@ class _$LogoutRequestedImpl implements _LogoutRequested {
   TResult map<TResult extends Object?>({
     required TResult Function(_LoginRequested value) loginRequested,
     required TResult Function(_RegisterRequested value) registerRequested,
+    required TResult Function(_VerifyOtpRequested value) verifyOtpRequested,
     required TResult Function(_LogoutRequested value) logoutRequested,
   }) {
     return logoutRequested(this);
@@ -509,6 +718,7 @@ class _$LogoutRequestedImpl implements _LogoutRequested {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(_LoginRequested value)? loginRequested,
     TResult? Function(_RegisterRequested value)? registerRequested,
+    TResult? Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult? Function(_LogoutRequested value)? logoutRequested,
   }) {
     return logoutRequested?.call(this);
@@ -519,6 +729,7 @@ class _$LogoutRequestedImpl implements _LogoutRequested {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(_LoginRequested value)? loginRequested,
     TResult Function(_RegisterRequested value)? registerRequested,
+    TResult Function(_VerifyOtpRequested value)? verifyOtpRequested,
     TResult Function(_LogoutRequested value)? logoutRequested,
     required TResult orElse(),
   }) {
