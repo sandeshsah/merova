@@ -8,8 +8,8 @@ import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
 import 'package:merova/src/core/routes/app_router.dart';
+import 'package:merova/src/features/personalInformation/presentation/pages/personal_info_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
@@ -226,12 +226,12 @@ class _ProfilePage extends State<ProfilePage> {
                   icon: Icons.person_outline_rounded,
                   title: "Personal Information",
                   onTap: () {
-                    //Navigator.push(
-                    //context,
-                    // MaterialPageRoute(
-                    //   builder: (context) => const PersonalInfoPage(),
-                    // ),
-                    //);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PersonalInfoPage(),
+                      ),
+                    );
                   },
                 ),
                 _separator(),
@@ -329,12 +329,12 @@ class _ProfilePage extends State<ProfilePage> {
           child: _profileCard(
             context: context,
             onTap: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const PersonalInfoPage(),
-              //   ),
-              //);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const PersonalInfoPage(),
+                ),
+              );
             },
           ),
         ),
