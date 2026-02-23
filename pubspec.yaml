@@ -70,9 +70,7 @@ dependencies:
   talker_flutter: any
   talker_dio_logger: any
 
-  #image_picker
   image_picker: ^1.2.1
-
 
 
 # Dev Dependencies

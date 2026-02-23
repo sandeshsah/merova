@@ -12,6 +12,7 @@ import 'package:merova/src/features/fund/presentation/pages/fund_transfer.dart';
 import 'package:merova/src/features/home/presentation/page/home_page.dart';
 import 'package:merova/src/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:merova/src/features/payment/presentation/pages/payment_pages.dart';
+import 'package:merova/src/features/personalInformation/presentation/pages/personal_info_page.dart';
 import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
 import 'package:merova/src/features/splash/presentation/pages/splash_page.dart';
 
@@ -66,5 +67,7 @@ class AppRouter extends _$AppRouter {
     AutoRoute(page: WelcomeRoute.page),
     AutoRoute(page: PaymentRoutes.page),
     AutoRoute(page: FundTransferRoute.page),
+    AutoRoute(page: HomeRoute.page),
+    AutoRoute(page: PersonalInfoRoute.page),
   ];
 }
