@@ -16,6 +16,7 @@ import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
 
 import '../../../../core/utils/image_picker_helper.dart';
+import 'sections/terms_conditions_page.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
@@ -261,6 +262,7 @@ class _ProfilePage extends State<ProfilePage> {
                   },
                 ),
               ]),
+              /// SECURITY & PRIVACY
               const SizedBox(height: 24),
               _sectionHeader("SECURITY & PRIVACY"),
               _settingsGroup([
@@ -269,8 +271,12 @@ class _ProfilePage extends State<ProfilePage> {
                   icon: Icons.lock_outline,
                   title: "Change password",
                 ),
+
                 _separator(),
                 _settingItem(icon: Icons.fingerprint, title: "Use Biometric"),
+                _separator(),
+                _settingItem(icon: Icons.language, title: "Language"),
+                _separator(),
                 _settingItem(
                   icon: Icons.shield_outlined,
                   title: "Privacy Policy",
@@ -288,12 +294,12 @@ class _ProfilePage extends State<ProfilePage> {
                   icon: Icons.assignment_outlined,
                   title: "Term & Condition",
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const PrivacyPolicyPage(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TermsConditionsPage(),
+                      ),
+                    );
                   },
                 ),
               ]),
