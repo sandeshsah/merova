@@ -16,9 +16,21 @@ class AuthEvent with _$AuthEvent {
   }) = _RegisterRequested;
 
   const factory AuthEvent.verifyOtpRequested({
+    required String identifier,
     required String phoneNumber,
-    required String otp,
+    required String email,
+    required String phone_otp,
+    required String email_otp,
   }) = _VerifyOtpRequested;
+
+  const factory AuthEvent.forgotPasswordRequested({
+    required String identifier,
+  }) = _ForgotPasswordRequested;
+
+  const factory AuthEvent.resetPasswordRequested({
+    required String identifier,
+    required String password,
+  }) = _ResetPasswordRequested;
 
   const factory AuthEvent.logoutRequested() = _LogoutRequested;
 }

@@ -11,4 +11,6 @@ class StorageKeys {
   static const String countryCode = 'countryCode';
   static const String countryFlag = 'countryFlag';
   static const String profileImage = 'profileImage';
+  static const String isPhoneNumberSelected = 'isPhoneNumberSelected';
+  static const String isEmailSelected = 'isEmailSelected';
 }

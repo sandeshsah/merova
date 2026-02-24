@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:merova/src/core/constants/storage_keys.dart';
 import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
@@ -14,8 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
+import 'package:merova/src/core/constants/storage_keys.dart';
 
-import '../../../../core/utils/image_picker_helper.dart';
 import 'sections/terms_conditions_page.dart';
 
 @RoutePage()
@@ -30,12 +27,19 @@ class _ProfilePage extends State<ProfilePage> {
   String fullName = "";
   String email = "";
   String phone = "";
-  File? _profileImage;
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    final authState = context.read<AuthBloc>().state;
+    if (authState.user != null) {
+      setState(() {
+        if (authState.user!.email.isNotEmpty) {
+          email = authState.user!.email;
+        }
+      });
+    }
   }
 
   Future<void> _loadUserData() async {
@@ -46,133 +50,8 @@ class _ProfilePage extends State<ProfilePage> {
         fullName = prefs.getString(StorageKeys.fullName) ?? "";
         email = prefs.getString(StorageKeys.userEmail) ?? "";
         phone = prefs.getString(StorageKeys.phoneNumber) ?? "";
-        final imagePath = prefs.getString(StorageKeys.profileImage);
-        if (imagePath != null) {
-          _profileImage = File(imagePath);
-        }
       });
     }
-  }
-
-  Future<void> _pickProfileImage(bool fromGallery) async {
-    try {
-      final image = fromGallery
-          ? await ImagePickerHelper.pickFromGallery()
-          : await ImagePickerHelper.pickFromCamera();
-      if (image != null && mounted) {
-        setState(() {
-          _profileImage = image;
-        });
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString(StorageKeys.profileImage, image.path);
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text("Failed to pick image: $e")));
-      }
-    }
-  }
-
-  Future<void> _removeImage() async {
-    setState(() {
-      _profileImage = null;
-    });
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(StorageKeys.profileImage);
-  }
-
-  void _showImagePickerOptions() {
-    showModalBottomSheet(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "Choose Profile Image",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _imagePickerOption(
-                      icon: Icons.photo_library_rounded,
-                      label: "Gallery",
-                      onTap: () {
-                        Navigator.pop(context);
-                        _pickProfileImage(true);
-                      },
-                    ),
-                    _imagePickerOption(
-                      icon: Icons.camera_alt_rounded,
-                      label: "Camera",
-                      onTap: () {
-                        Navigator.pop(context);
-                        _pickProfileImage(false);
-                      },
-                    ),
-                    if (_profileImage != null)
-                      _imagePickerOption(
-                        icon: Icons.delete_outline_rounded,
-                        label: "Remove",
-                        onTap: () {
-                          Navigator.pop(context);
-                          _removeImage();
-                        },
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _imagePickerOption({
-    required IconData icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(icon, color: AppColors.primary, size: 28),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppColors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   @override
@@ -228,10 +107,10 @@ class _ProfilePage extends State<ProfilePage> {
                   title: "Personal Information",
                   onTap: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PersonalInfoPage(),
-                      ),
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PersonalInfoPage(),
+                    ),
                     );
                   },
                 ),
@@ -262,7 +141,6 @@ class _ProfilePage extends State<ProfilePage> {
                   },
                 ),
               ]),
-              /// SECURITY & PRIVACY
               const SizedBox(height: 24),
               _sectionHeader("SECURITY & PRIVACY"),
               _settingsGroup([
@@ -271,12 +149,8 @@ class _ProfilePage extends State<ProfilePage> {
                   icon: Icons.lock_outline,
                   title: "Change password",
                 ),
-
                 _separator(),
                 _settingItem(icon: Icons.fingerprint, title: "Use Biometric"),
-                _separator(),
-                _settingItem(icon: Icons.language, title: "Language"),
-                _separator(),
                 _settingItem(
                   icon: Icons.shield_outlined,
                   title: "Privacy Policy",
@@ -335,12 +209,12 @@ class _ProfilePage extends State<ProfilePage> {
           child: _profileCard(
             context: context,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const PersonalInfoPage(),
-                ),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const PersonalInfoPage(),
+              //   ),
+              //);
             },
           ),
         ),
@@ -368,28 +242,16 @@ class _ProfilePage extends State<ProfilePage> {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              GestureDetector(
-                onTap: _showImagePickerOptions,
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade200,
-                    shape: BoxShape.circle,
-                    image: _profileImage != null
-                        ? DecorationImage(
-                            image: FileImage(_profileImage!),
-                            fit: BoxFit.cover,
-                          )
-                        : null,
-                  ),
-                  child: _profileImage == null
-                      ? Icon(
-                          Icons.person_rounded,
-                          size: 32,
-                          color: Colors.grey.shade500,
-                        )
-                      : null,
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person_rounded,
+                  size: 32,
+                  color: Colors.grey.shade500,
                 ),
               ),
               const SizedBox(width: 16),

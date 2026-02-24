@@ -41,6 +41,9 @@
   "dontHaveAnAccount": "Don't Have An Account",
 
   "resetPassword": "Reset Password",
+  "enterNewPassword": "Enter New Password",
+  "confirmPassword": "Confirm Password",
+  "reEnterPasswordHere": "Re Enter Password Here",
 
   "welcomeBack": "Welcome Back",
 

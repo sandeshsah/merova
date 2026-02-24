@@ -95,7 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 physics: const ClampingScrollPhysics(),
                 child: BlocConsumer<AuthBloc, AuthState>(
                   listener: (context, state) async {
-                    if (state.status == AuthStatus.authenticated &&
+                    if (state.status == AuthStatus.otpSent &&
                         state.flow == AuthFlow.register) {
                       final prefs = await SharedPreferences.getInstance();
                       await prefs.setString(
@@ -127,7 +127,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                       );
                       context.router.replace(
-                        OtpRoute(flow: "register", emailOrPhone: fullPhone),
+                        OtpRoute(flow: "register", identifier: fullPhone),
                       );
                     } else if (state.status == AuthStatus.error) {
                       ScaffoldMessenger.of(context).showSnackBar(

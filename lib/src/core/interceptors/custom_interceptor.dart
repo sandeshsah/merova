@@ -20,9 +20,6 @@ class CustomInterceptor extends Interceptor {
     if (locale != null) {
       options.headers['Accept-Language'] = locale!.languageCode;
     }
-
-    // 2. Handle Authorization Header
-    // We can skip auth by setting options.extra['requiresAuth'] = false
     final requiresAuth = options.extra['requiresAuth'] ?? true;
 
     if (requiresAuth) {

@@ -89,6 +89,7 @@ enum AuthStatus {
   loading,
   authenticated,
   unauthenticated,
+  otpSent,
   error;
 
   bool get isLoading => this == AuthStatus.loading;
@@ -107,13 +108,15 @@ enum AuthStatus {
         return 'Authenticated';
       case AuthStatus.unauthenticated:
         return 'Login';
+      case AuthStatus.otpSent:
+        return 'OTP Sent';
       case AuthStatus.error:
         return 'Error';
     }
   }
 }
 
-enum AuthFlow { login, register }
+enum AuthFlow { login, register, forgotPassword }
 
 enum HeaderAlignment { center, start }
 

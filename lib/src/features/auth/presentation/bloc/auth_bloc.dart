@@ -5,6 +5,8 @@ import 'package:merova/src/features/auth/domain/entity/auth_entity.dart';
 import '../../domain/usescase/login_usecase.dart';
 import '../../domain/usescase/register_usecase.dart';
 import '../../domain/usescase/verify_otp_usecase.dart';
+import 'package:merova/src/features/auth/domain/usescase/forgot_password_usecase.dart';
+import '../../domain/usescase/reset_password_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
@@ -12,11 +14,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
   final RegisterUseCase registerUseCase;
   final VerifyOtpUseCase verifyOtpUseCase;
+  final ForgotPasswordUseCase forgotPasswordUseCase;
+  final ResetPasswordUseCase resetPasswordUseCase;
 
   AuthBloc({
     required this.loginUseCase,
     required this.registerUseCase,
     required this.verifyOtpUseCase,
+    required this.forgotPasswordUseCase,
+    required this.resetPasswordUseCase,
   }) : super(AuthState.initial()) {
     on<AuthEvent>((event, emit) async {
       await event.when(
@@ -56,7 +62,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             await registerUseCase(fullName, phoneNumber, email, password);
             emit(
               state.copyWith(
-                status: AuthStatus.authenticated,
+                status: AuthStatus.otpSent,
                 user: AuthEntity(
                   UId: '',
                   email: email,
@@ -86,11 +92,69 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             );
           }
         },
-        verifyOtpRequested: (phoneNumber, otp) async {
+        verifyOtpRequested:
+            (identifier, phoneNumber, email, phone_otp, email_otp) async {
+              emit(state.copyWith(status: AuthStatus.loading));
+              try {
+                await verifyOtpUseCase(
+                  identifier,
+                  phoneNumber,
+                  email,
+                  phone_otp,
+                  email_otp,
+                );
+                emit(state.copyWith(status: AuthStatus.authenticated));
+              } on DioException catch (e) {
+                final errorMsg = e.response?.data is Map
+                    ? (e.response?.data['detail'] ?? e.message)
+                    : e.message;
+                emit(
+                  state.copyWith(status: AuthStatus.error, message: errorMsg),
+                );
+              } catch (e) {
+                emit(
+                  state.copyWith(
+                    status: AuthStatus.error,
+                    message: e.toString(),
+                  ),
+                );
+              }
+            },
+        forgotPasswordRequested: (identifier) async {
+          emit(
+            state.copyWith(
+              status: AuthStatus.loading,
+              flow: AuthFlow.forgotPassword,
+            ),
+          );
+          try {
+            await forgotPasswordUseCase(identifier);
+            emit(
+              state.copyWith(
+                status: AuthStatus.otpSent,
+                flow: AuthFlow.forgotPassword,
+              ),
+            );
+          } on DioException catch (e) {
+            final errorMsg = e.response?.data is Map
+                ? (e.response?.data['detail'] ?? e.message)
+                : e.message;
+            emit(state.copyWith(status: AuthStatus.error, message: errorMsg));
+          } catch (e) {
+            emit(
+              state.copyWith(status: AuthStatus.error, message: e.toString()),
+            );
+          }
+        },
+        resetPasswordRequested: (identifier, password) async {
           emit(state.copyWith(status: AuthStatus.loading));
           try {
-            await verifyOtpUseCase(phoneNumber, otp);
-            emit(state.copyWith(status: AuthStatus.authenticated));
+            // 1. Reset Password
+            await resetPasswordUseCase(identifier, password);
+
+            // 2. Auto Login
+            final user = await loginUseCase(identifier, password);
+            emit(state.copyWith(status: AuthStatus.authenticated, user: user));
           } on DioException catch (e) {
             final errorMsg = e.response?.data is Map
                 ? (e.response?.data['detail'] ?? e.message)

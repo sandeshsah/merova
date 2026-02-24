@@ -40,6 +40,9 @@
     "protectedByBankGradeEncryptionRegulatedByCentralBankOfNepal": "नेपाल केन्द्रीय बैंकद्वारा नियमन गरिएको बैंक स्तरको एन्क्रिप्सनले सुरक्षित",
 
     "resetPassword": "पासवर्ड पुनः सेट गर्नुहोस्",
+    "enterNewPassword": "नयाँ पासवर्ड हाल्नुहोस्",
+    "confirmPassword": "पासवर्ड पुष्टि गर्नुहोस्",
+    "reEnterPasswordHere":"कृपया यहाँ पासवर्ड पुनः प्रविष्ट गर्नुहोस्",
 
     "welcomeBack": "फेरि स्वागत छ",
 

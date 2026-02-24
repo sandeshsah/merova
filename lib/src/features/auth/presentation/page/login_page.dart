@@ -19,7 +19,6 @@ import '../bloc/auth_state.dart';
 import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/constants/storage_keys.dart';
 
-
 @RoutePage()
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -36,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   final LocalAuthentication auth = LocalAuthentication();
 
   bool isEmailSelected = true;
+  bool isPhoneNumberSelected = true;
   bool rememberMe = false;
 
   String _countryCode = "+977";
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _loadSavedCredentials() async {
     final prefs = await SharedPreferences.getInstance();
     final remember = prefs.getBool(StorageKeys.remember) ?? false;
-
+    if (!remember) return;
     setState(() {
       final savedEmail = prefs.getString(StorageKeys.userEmail) ?? '';
       final savedPhone = prefs.getString(StorageKeys.phoneNumber) ?? '';
@@ -60,8 +60,8 @@ class _LoginPageState extends State<LoginPage> {
 
       if (remember) {
         isEmailSelected = prefs.getBool(StorageKeys.isEmail) ?? true;
-        passwordController.text =
-            prefs.getString(StorageKeys.userPassword) ?? '';
+        isPhoneNumberSelected = prefs.getBool(StorageKeys.isPhoneNumberSelected) ?? true;
+        //passwordController.text = prefs.getString(StorageKeys.userPassword) ?? '';
         _countryCode = prefs.getString(StorageKeys.countryCode) ?? "+977";
         _countryFlag = prefs.getString(StorageKeys.countryFlag) ?? "🇳🇵";
         rememberMe = true;
@@ -275,6 +275,12 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.text,
                         isPassword: true,
                         prefixIcon: Icons.lock_outline,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Password required";
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 12),
 
@@ -381,6 +387,15 @@ class _LoginPageState extends State<LoginPage> {
                             }
 
                             context.router.replaceAll([const HomeRoute()]);
+                          } else if (state.status.isError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  state.message ?? "Authentication failed",
+                                ),
+                                backgroundColor: Colors.redAccent,
+                              ),
+                            );
                           }
                         },
                         builder: (context, state) {
