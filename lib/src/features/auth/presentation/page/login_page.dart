@@ -35,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   final LocalAuthentication auth = LocalAuthentication();
 
   bool isEmailSelected = true;
+  bool isPhoneNumberSelected = true;
   bool rememberMe = false;
 
   String _countryCode = "+977";
@@ -49,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> _loadSavedCredentials() async {
     final prefs = await SharedPreferences.getInstance();
     final remember = prefs.getBool(StorageKeys.remember) ?? false;
-
+    if (!remember) return;
     setState(() {
       final savedEmail = prefs.getString(StorageKeys.userEmail) ?? '';
       final savedPhone = prefs.getString(StorageKeys.phoneNumber) ?? '';
@@ -59,8 +60,8 @@ class _LoginPageState extends State<LoginPage> {
 
       if (remember) {
         isEmailSelected = prefs.getBool(StorageKeys.isEmail) ?? true;
-        passwordController.text =
-            prefs.getString(StorageKeys.userPassword) ?? '';
+        isPhoneNumberSelected = prefs.getBool(StorageKeys.isPhoneNumberSelected) ?? true;
+        //passwordController.text = prefs.getString(StorageKeys.userPassword) ?? '';
         _countryCode = prefs.getString(StorageKeys.countryCode) ?? "+977";
         _countryFlag = prefs.getString(StorageKeys.countryFlag) ?? "🇳🇵";
         rememberMe = true;

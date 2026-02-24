@@ -124,6 +124,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetPassword => 'Reset Password';
 
   @override
+  String get enterNewPassword => 'Enter New Password';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get reEnterPasswordHere => 'Re Enter Password Here';
+
+  @override
   String get welcomeBack => 'Welcome Back';
 
   @override

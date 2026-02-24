@@ -126,6 +126,16 @@ class AppLocalizationsNe extends AppLocalizations {
   String get resetPassword => 'पासवर्ड पुनः सेट गर्नुहोस्';
 
   @override
+  String get enterNewPassword => 'नयाँ पासवर्ड हाल्नुहोस्';
+
+  @override
+  String get confirmPassword => 'पासवर्ड पुष्टि गर्नुहोस्';
+
+  @override
+  String get reEnterPasswordHere =>
+      'कृपया यहाँ पासवर्ड पुनः प्रविष्ट गर्नुहोस्';
+
+  @override
   String get welcomeBack => 'फेरि स्वागत छ';
 
   @override

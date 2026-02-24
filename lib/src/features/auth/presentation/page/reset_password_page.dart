@@ -1,16 +1,24 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:merova/src/core/routes/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
+import 'package:merova/src/core/themes/app_text_styles.dart';
 import 'package:merova/src/core/themes/dimensions.dart';
-import 'package:merova/src/core/widget/auth_text_field.dart';
 import 'package:merova/src/core/widget/custom_button.dart';
+import 'package:merova/src/core/widget/custom_text_form_field.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
+import '../../../../core/enums/app_enum.dart';
+import '../bloc/auth_bloc.dart';
+import '../bloc/auth_event.dart';
+import '../bloc/auth_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 @RoutePage()
 class ResetPasswordPage extends StatefulWidget {
-  const ResetPasswordPage({super.key});
+  final String identifier;
+  const ResetPasswordPage({super.key, required this.identifier});
 
   @override
   State<ResetPasswordPage> createState() => _ResetPasswordState();
@@ -34,11 +42,12 @@ class _ResetPasswordState extends State<ResetPasswordPage> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Password reset successfully")),
+      context.read<AuthBloc>().add(
+        AuthEvent.resetPasswordRequested(
+          identifier: widget.identifier,
+          password: _passwordController.text.trim(),
+        ),
       );
-
-      context.router.replace(const PasswordResetSuccessRoute());
     }
   }
 
@@ -58,104 +67,83 @@ class _ResetPasswordState extends State<ResetPasswordPage> {
                   topRight: Radius.circular(30),
                 ),
               ),
-              child: SingleChildScrollView(
-                padding: Dimensions.paddingDefault,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Reset password",
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.black,
+              child: BlocConsumer<AuthBloc, AuthState>(
+                listener: (context, state) {
+                  if (state.status == AuthStatus.authenticated) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Password reset successfully! Logged in.",
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        "Change your password.",
-                        style: TextStyle(color: Colors.grey),
+                    );
+                    context.router.replaceAll([const PasswordResetSuccessRoute()]);
+                  } else if (state.status == AuthStatus.error) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message ?? "Reset failed"),
+                        backgroundColor: Colors.red,
                       ),
-                      const SizedBox(height: 20),
-                      const Text(
-                        "Password",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      AuthTextField(
-                        controller: _passwordController,
-                        hint: "Enter new Password here",
-                        prefix: const Icon(Icons.lock_outline),
-                        obscure: obscureNew,
-                        suffix: IconButton(
-                          icon: Icon(
-                            obscureNew
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return SingleChildScrollView(
+                    padding: Dimensions.paddingDefault,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Change your password.",
+                            style: AppTextStyles.headline2,
                           ),
-                          onPressed: () {
-                            setState(() {
-                              obscureNew = !obscureNew;
-                            });
-                          },
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Enter new Password here";
-                          }
-                          if (value.length < 6) {
-                            return "Password must be at least 6 characters";
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      const Text(
-                        "Confirm Password",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      AuthTextField(
-                        controller: _confirmPasswordController,
-                        hint: "Re-enter Password here",
-                        prefix: const Icon(Icons.lock_outline),
-                        obscure: obscureConfirm,
-                        suffix: IconButton(
-                          icon: Icon(
-                            obscureConfirm
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                          SizedBox(height: 10.h),
+                          CustomTextFormField(
+                            label: tr.password,
+                            controller: _passwordController,
+                            hint: tr.enterNewPassword,
+                            keyboardType: TextInputType.text,
+                            isPassword: true,
+                            prefixIcon: Icons.lock_outline,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Password required";
+                              }
+                              return null;
+                            },
                           ),
-                          onPressed: () {
-                            setState(() {
-                              obscureConfirm = !obscureConfirm;
-                            });
-                          },
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Re-enter Password here";
-                          }
-                          if (value != _passwordController.text) {
-                            return "Passwords do not match";
-                          }
-                          return null;
-                        },
+                          const SizedBox(height: 16),
+                          CustomTextFormField(
+                            label: tr.confirmPassword,
+                            controller: _confirmPasswordController,
+                            hint: tr.reEnterPasswordHere,
+                            keyboardType: TextInputType.text,
+                            isPassword: true,
+                            prefixIcon: Icons.lock_outline,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Re-enter Password here";
+                              }
+                              if (value != _passwordController.text) {
+                                return "Passwords do not match";
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 30),
+                          CustomButton(
+                            title: "Submit",
+                            isLoading: state.status == AuthStatus.loading,
+                            onTap: _submit,
+                          ),
+                          const SizedBox(height: 40),
+                        ],
                       ),
-                      const SizedBox(height: 30),
-                      CustomButton(title: "Submit", onTap: _submit),
-                      const SizedBox(height: 40),
-                    ],
-                  ),
-                ),
+                    ),
+                  );
+                },
               ),
             ),
           ),

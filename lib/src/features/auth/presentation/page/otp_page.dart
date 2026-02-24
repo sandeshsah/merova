@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:merova/src/core/routes/app_router.dart';
@@ -14,10 +13,10 @@ import '../../../../core/widget/custom_button.dart';
 
 @RoutePage()
 class OtpPage extends StatefulWidget {
-  final String? emailOrPhone;
+  final String identifier;
   final String flow;
 
-  const OtpPage({required this.flow, this.emailOrPhone});
+  const OtpPage({required this.flow, required this.identifier});
 
   @override
   State<OtpPage> createState() => _OtpPageState();
@@ -68,10 +67,15 @@ class _OtpPageState extends State<OtpPage> {
       return;
     }
 
+    final bool isEmail = widget.identifier.contains('@');
+
     context.read<AuthBloc>().add(
       AuthEvent.verifyOtpRequested(
-        phoneNumber: widget.emailOrPhone ?? "",
-        otp: enteredOtp,
+        identifier: widget.identifier,
+        phoneNumber: isEmail ? "" : widget.identifier,
+        email: isEmail ? widget.identifier : "",
+        phone_otp: isEmail ? "" : enteredOtp,
+        email_otp: isEmail ? enteredOtp : "",
       ),
     );
   }
@@ -107,10 +111,12 @@ class _OtpPageState extends State<OtpPage> {
                     if (state.status == AuthStatus.authenticated) {
                       if (widget.flow == "register") {
                         context.router.replace(
-                          WelcomeRoute(uid: widget.emailOrPhone ?? "UNKNOWN"),
+                          WelcomeRoute(uid: widget.identifier ?? "UNKNOWN"),
                         );
                       } else if (widget.flow == "forgotPassword") {
-                        context.router.replace(const ResetPasswordRoute());
+                        context.router.replace(
+                          ResetPasswordRoute(identifier: widget.identifier),
+                        );
                       }
                     } else if (state.status == AuthStatus.error) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -144,7 +150,7 @@ class _OtpPageState extends State<OtpPage> {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  widget.emailOrPhone ?? widget.flow,
+                                  widget.identifier ?? widget.flow,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),

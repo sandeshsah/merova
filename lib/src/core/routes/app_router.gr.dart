@@ -51,7 +51,7 @@ abstract class _$AppRouter extends RootStackRouter {
         routeData: routeData,
         child: OtpPage(
           flow: args.flow,
-          emailOrPhone: args.emailOrPhone,
+          identifier: args.identifier,
         ),
       );
     },
@@ -86,9 +86,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     ResetPasswordRoute.name: (routeData) {
+      final args = routeData.argsAs<ResetPasswordRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ResetPasswordPage(),
+        child: ResetPasswordPage(
+          key: args.key,
+          identifier: args.identifier,
+        ),
       );
     },
     SplashRoute.name: (routeData) {
@@ -185,13 +189,13 @@ class OnboardingRoute extends PageRouteInfo<void> {
 class OtpRoute extends PageRouteInfo<OtpRouteArgs> {
   OtpRoute({
     required String flow,
-    String? emailOrPhone,
+    required String identifier,
     List<PageRouteInfo>? children,
   }) : super(
           OtpRoute.name,
           args: OtpRouteArgs(
             flow: flow,
-            emailOrPhone: emailOrPhone,
+            identifier: identifier,
           ),
           initialChildren: children,
         );
@@ -204,16 +208,16 @@ class OtpRoute extends PageRouteInfo<OtpRouteArgs> {
 class OtpRouteArgs {
   const OtpRouteArgs({
     required this.flow,
-    this.emailOrPhone,
+    required this.identifier,
   });
 
   final String flow;
 
-  final String? emailOrPhone;
+  final String identifier;
 
   @override
   String toString() {
-    return 'OtpRouteArgs{flow: $flow, emailOrPhone: $emailOrPhone}';
+    return 'OtpRouteArgs{flow: $flow, identifier: $identifier}';
   }
 }
 
@@ -289,16 +293,40 @@ class RegisterRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ResetPasswordPage]
-class ResetPasswordRoute extends PageRouteInfo<void> {
-  const ResetPasswordRoute({List<PageRouteInfo>? children})
-      : super(
+class ResetPasswordRoute extends PageRouteInfo<ResetPasswordRouteArgs> {
+  ResetPasswordRoute({
+    Key? key,
+    required String identifier,
+    List<PageRouteInfo>? children,
+  }) : super(
           ResetPasswordRoute.name,
+          args: ResetPasswordRouteArgs(
+            key: key,
+            identifier: identifier,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'ResetPasswordRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<ResetPasswordRouteArgs> page =
+      PageInfo<ResetPasswordRouteArgs>(name);
+}
+
+class ResetPasswordRouteArgs {
+  const ResetPasswordRouteArgs({
+    this.key,
+    required this.identifier,
+  });
+
+  final Key? key;
+
+  final String identifier;
+
+  @override
+  String toString() {
+    return 'ResetPasswordRouteArgs{key: $key, identifier: $identifier}';
+  }
 }
 
 /// generated route for

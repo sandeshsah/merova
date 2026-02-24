@@ -321,6 +321,24 @@ abstract class AppLocalizations {
   /// **'Reset Password'**
   String get resetPassword;
 
+  /// No description provided for @enterNewPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter New Password'**
+  String get enterNewPassword;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @reEnterPasswordHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Re Enter Password Here'**
+  String get reEnterPasswordHere;
+
   /// No description provided for @welcomeBack.
   ///
   /// In en, this message translates to:

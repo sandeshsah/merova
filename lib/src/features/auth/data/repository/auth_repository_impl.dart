@@ -43,8 +43,20 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> verifyOtp(String phoneNumber, String otp) async {
-    final res = await datasource.verifyOtp(phoneNumber, otp);
+  Future<Map<String, dynamic>> verifyOtp(
+    String identifier,
+    String phoneNumber,
+    String email,
+    String phone_otp,
+    String email_otp,
+  ) async {
+    final res = await datasource.verifyOtp(
+      identifier,
+      phoneNumber,
+      email,
+      phone_otp,
+      email_otp,
+    );
 
     final accessToken = res['access_token'] ?? res['accessToken'];
     final refreshToken = res['refresh_token'] ?? res['refreshToken'];
@@ -57,5 +69,18 @@ class AuthRepositoryImpl implements AuthRepository {
     }
 
     return res;
+  }
+
+  @override
+  Future<Map<String, dynamic>> forgotPassword(String identifier) async {
+    return await datasource.forgotPassword(identifier);
+  }
+
+  @override
+  Future<Map<String, dynamic>> resetPassword(
+    String identifier,
+    String new_password,
+  ) async {
+    return await datasource.resetPassword(identifier, new_password);
   }
 }

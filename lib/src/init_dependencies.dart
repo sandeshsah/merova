@@ -10,6 +10,8 @@ import 'package:merova/src/features/auth/domain/repository/auth_repository.dart'
 import 'package:merova/src/features/auth/domain/usescase/login_usecase.dart';
 import 'package:merova/src/features/auth/domain/usescase/register_usecase.dart';
 import 'package:merova/src/features/auth/domain/usescase/verify_otp_usecase.dart';
+import 'package:merova/src/features/auth/domain/usescase/forgot_password_usecase.dart';
+import 'package:merova/src/features/auth/domain/usescase/reset_password_usecase.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/home/data/datasource/home_datasource.dart';
 import 'package:merova/src/features/home/data/datasource/home_mock_datasource.dart';
@@ -53,6 +55,8 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => VerifyOtpUseCase(sl()));
+  sl.registerLazySingleton(() => ForgotPasswordUseCase(sl()));
+  sl.registerLazySingleton(() => ResetPasswordUseCase(sl()));
 
   // Bloc
   sl.registerFactory(
@@ -60,6 +64,8 @@ Future<void> initDependencies() async {
       loginUseCase: sl(),
       registerUseCase: sl(),
       verifyOtpUseCase: sl(),
+      forgotPasswordUseCase: sl(),
+      resetPasswordUseCase: sl(),
     ),
   );
 
