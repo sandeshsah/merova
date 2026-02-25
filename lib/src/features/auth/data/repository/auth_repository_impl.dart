@@ -1,11 +1,11 @@
 import 'package:merova/src/features/auth/domain/entity/auth_entity.dart';
 import 'package:merova/src/features/auth/domain/repository/auth_repository.dart';
-import 'package:merova/src/features/auth/data/datasource/auth_remote_datasource.dart';
+import 'package:merova/src/features/auth/data/datasource/auth_datasource.dart';
 import 'package:merova/src/features/auth/data/model/Auth_model.dart';
 import 'package:merova/src/core/helper/token_storage.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  final AuthRemoteDatasource datasource;
+  final AuthDataSource datasource;
 
   AuthRepositoryImpl(this.datasource);
 

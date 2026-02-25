@@ -5,7 +5,9 @@ import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
 import 'package:merova/src/core/routes/app_router.dart';
+import 'package:merova/src/features/auth/presentation/page/reset_password_page.dart';
 import 'package:merova/src/features/personalInformation/presentation/pages/personal_info_page.dart';
+import 'package:merova/src/features/profile/presentation/pages/sections/help_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
@@ -13,7 +15,9 @@ import 'package:merova/src/features/auth/presentation/bloc/auth_event.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
 import 'package:merova/src/core/constants/storage_keys.dart';
 
+import 'sections/about_app_page.dart';
 import 'sections/terms_conditions_page.dart';
+import 'biometric_settings_page.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
@@ -107,10 +111,10 @@ class _ProfilePage extends State<ProfilePage> {
                   title: "Personal Information",
                   onTap: () {
                     Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PersonalInfoPage(),
-                    ),
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const PersonalInfoPage(),
+                      ),
                     );
                   },
                 ),
@@ -148,9 +152,28 @@ class _ProfilePage extends State<ProfilePage> {
                 _settingItem(
                   icon: Icons.lock_outline,
                   title: "Change password",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResetPasswordPage(identifier: ''),
+                      ),
+                    );
+                  },
                 ),
                 _separator(),
-                _settingItem(icon: Icons.fingerprint, title: "Use Biometric"),
+                _settingItem(
+                  icon: Icons.fingerprint,
+                  title: "Use Biometric",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BiometricSettingsPage(),
+                      ),
+                    );
+                  },
+                ),
                 _settingItem(
                   icon: Icons.shield_outlined,
                   title: "Privacy Policy",
@@ -184,16 +207,25 @@ class _ProfilePage extends State<ProfilePage> {
                   icon: Icons.info_outline_rounded,
                   title: "About App",
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const AboutAppPage(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AboutAppPage(),
+                      ),
+                    );
                   },
                 ),
                 _separator(),
-                _settingItem(icon: Icons.help_center, title: "Help"),
+                _settingItem(
+                    icon: Icons.help_center,
+                    title: "Help",
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)
+                      => const HelpPage(),
+                      ),
+                      );
+                    }),
+
               ]),
               const SizedBox(height: 32),
               _signOutButton(),
@@ -260,7 +292,7 @@ class _ProfilePage extends State<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      fullName.isEmpty ? "Merova User" : fullName,
+                      fullName.isEmpty ? " " : fullName,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

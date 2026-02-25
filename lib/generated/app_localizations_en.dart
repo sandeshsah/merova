@@ -137,4 +137,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get profile => 'Profile';
+
+  @override
+  String get biometricSetting => 'Biometric Setting';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get help => 'Help';
 }

@@ -48,5 +48,9 @@
   "welcomeBack": "Welcome Back",
 
 
-  "profile": "Profile"
+  "profile": "Profile",
+  "biometricSetting": "Biometric Setting",
+
+  "about": "About",
+  "help": "Help"
 }

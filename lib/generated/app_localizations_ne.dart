@@ -140,4 +140,13 @@ class AppLocalizationsNe extends AppLocalizations {
 
   @override
   String get profile => 'प्रोफाइल';
+
+  @override
+  String get biometricSetting => 'बायोमेट्रिक सेटिंग';
+
+  @override
+  String get about => 'बारे';
+
+  @override
+  String get help => 'मद्दत';
 }
