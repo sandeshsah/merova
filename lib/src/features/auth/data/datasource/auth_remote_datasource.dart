@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
+import 'auth_datasource.dart';
 
-class AuthRemoteDatasource {
+class AuthRemoteDatasource implements AuthDataSource {
   final Dio _dio;
 
   AuthRemoteDatasource(this._dio);
@@ -97,9 +98,7 @@ class AuthRemoteDatasource {
     try {
       final response = await _dio.post(
         '/auth/forgot-password',
-        data: {
-          "identifier": identifier
-        },
+        data: {"identifier": identifier},
       );
 
       if (response.statusCode == 200) {
@@ -123,10 +122,7 @@ class AuthRemoteDatasource {
     try {
       final response = await _dio.post(
         '/auth/reset-password',
-        data: {
-          "identifier": identifier,
-          "password": password
-        },
+        data: {"identifier": identifier, "password": password},
       );
 
       if (response.statusCode == 200) {

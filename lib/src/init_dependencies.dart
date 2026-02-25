@@ -4,6 +4,11 @@ import 'package:get_it/get_it.dart';
 import 'package:merova/src/core/helper/token_storage.dart';
 import 'package:merova/src/core/routes/app_router.dart';
 import 'package:merova/src/core/service/dio/dio_client.dart';
+import 'package:merova/src/core/environment/feature_flags.dart';
+import 'package:merova/src/core/service/security_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:merova/src/features/auth/data/datasource/auth_datasource.dart';
+import 'package:merova/src/features/auth/data/datasource/auth_mock_datasource.dart';
 import 'package:merova/src/features/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:merova/src/features/auth/data/repository/auth_repository_impl.dart';
 import 'package:merova/src/features/auth/domain/repository/auth_repository.dart';
@@ -15,10 +20,13 @@ import 'package:merova/src/features/auth/domain/usescase/reset_password_usecase.
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:merova/src/features/home/data/datasource/home_datasource.dart';
 import 'package:merova/src/features/home/data/datasource/home_mock_datasource.dart';
+import 'package:merova/src/features/home/data/datasource/home_remote_datasource.dart';
 import 'package:merova/src/features/home/data/repository/home_repository_impl.dart';
 import 'package:merova/src/features/home/domain/repository/home_repository.dart';
 import 'package:merova/src/features/home/domain/usescase/get_transaction_usecase.dart';
 import 'package:merova/src/features/home/presentation/bloc/home_bloc.dart';
+import 'package:merova/src/features/profile/data/datasource/profile_datasource.dart';
+import 'package:merova/src/features/profile/data/datasource/profile_mock_datasource.dart';
 import 'package:merova/src/features/profile/data/datasource/profile_remote_datasource.dart';
 import 'package:merova/src/features/profile/data/repository/profile_repository_impl.dart';
 import 'package:merova/src/features/profile/domain/repository/profile_repository.dart';
@@ -29,11 +37,18 @@ import 'package:merova/src/features/profile/presentation/bloc/profile_bloc.dart'
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
+  // External
+  final sharedPrefs = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPrefs);
+
   // Router
   sl.registerSingleton<AppRouter>(AppRouter());
 
   // Core Services
   sl.registerLazySingleton<TokenStorage>(() => TokenStorage());
+  sl.registerLazySingleton<SecurityService>(
+    () => SecurityService(sl<SharedPreferences>()),
+  );
 
   // Dio Client
   sl.registerLazySingleton<Dio>(
@@ -43,13 +58,19 @@ Future<void> initDependencies() async {
     ),
   );
 
+  // Determine if we should use mock data
+  final useMock = FeatureFlags.isEnabled('use_mock_data');
+
+  // Auth Feature
   // Data Sources
-  sl.registerLazySingleton<AuthRemoteDatasource>(
-    () => AuthRemoteDatasource(sl<Dio>()),
+  sl.registerLazySingleton<AuthDataSource>(
+    () => useMock ? AuthMockDataSource() : AuthRemoteDatasource(sl()),
   );
 
   // Repositories
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(sl<AuthDataSource>()),
+  );
 
   // Use Cases
   sl.registerLazySingleton(() => LoginUseCase(sl()));
@@ -71,11 +92,13 @@ Future<void> initDependencies() async {
 
   // Profile Feature
   // Data Sources
-  sl.registerLazySingleton(() => ProfileRemoteDataSource());
+  sl.registerLazySingleton<ProfileDataSource>(
+    () => useMock ? ProfileMockDataSource() : ProfileRemoteDataSource(),
+  );
 
   // Repositories
   sl.registerLazySingleton<ProfileRepository>(
-    () => ProfileRepositoryImpl(sl()),
+    () => ProfileRepositoryImpl(sl<ProfileDataSource>()),
   );
 
   // Use Cases
@@ -89,7 +112,9 @@ Future<void> initDependencies() async {
 
   // Home Feature
   // Data Sources
-  sl.registerLazySingleton<HomeDataSource>(() => HomeMockDataSource());
+  sl.registerLazySingleton<HomeDataSource>(
+    () => useMock ? HomeMockDataSource() : HomeRemoteDataSource(sl()),
+  );
 
   // Repositories
   sl.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl()));

@@ -1,34 +1,28 @@
 import '../model/profile_model.dart';
+import 'profile_datasource.dart';
 
-class ProfileRemoteDataSource {
+class ProfileRemoteDataSource implements ProfileDataSource {
+  @override
   Future<UserModel> getUserProfile() async {
-    // Mock implementation
-    await Future.delayed(const Duration(seconds: 1));
-    return UserModel(
-      fullName: 'Sandesh Sah',
-      email: 'sandesh@merova.com',
-      phone: '+977 9800000000',
-      dob: '2000-01-01',
-      address: 'Kathmandu, Nepal',
-      profileImage: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+    // TODO: Implement real API call using Dio
+    throw UnimplementedError(
+      "ProfileRemoteDataSource.getUserProfile not implemented",
     );
   }
 
+  @override
   Future<UserModel> updateProfile(UserModel userModel) async {
-    // Mock implementation
-    await Future.delayed(const Duration(seconds: 1));
-    return userModel;
+    // TODO: Implement real API call using Dio
+    throw UnimplementedError(
+      "ProfileRemoteDataSource.updateProfile not implemented",
+    );
   }
 
+  @override
   Future<UserModel> uploadProfileImage(String filePath) async {
-    await Future.delayed(Duration(seconds: 1));
-    return UserModel(
-      fullName: 'Sandesh Sah',
-      email: 'sandesh@merova.com',
-      phone: '+977 9800000000',
-      dob: '2000-01-01',
-      address: 'Kathmandu, Nepal',
-      profileImage: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+    // TODO: Implement real API call using Dio
+    throw UnimplementedError(
+      "ProfileRemoteDataSource.uploadProfileImage not implemented",
     );
   }
 }

@@ -56,6 +56,8 @@ class _ResetPasswordState extends State<ResetPasswordPage> {
     final tr = context.tr;
     return AppBarBackground(
       title: tr.resetPassword,
+      showBack: true,
+      centerTitle: true,
       body: Stack(
         children: [
           BodyPositioned(

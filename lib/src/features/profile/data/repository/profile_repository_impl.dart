@@ -1,16 +1,16 @@
 import '../../domain/entities/entities.dart';
 import '../../domain/repository/profile_repository.dart';
-import '../datasource/profile_remote_datasource.dart';
+import '../datasource/profile_datasource.dart';
 import '../model/profile_model.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository {
-  final ProfileRemoteDataSource remoteDataSource;
+  final ProfileDataSource dataSource;
 
-  ProfileRepositoryImpl(this.remoteDataSource);
+  ProfileRepositoryImpl(this.dataSource);
 
   @override
   Future<UserEntity> getUserProfile() async {
-    return await remoteDataSource.getUserProfile();
+    return await dataSource.getUserProfile();
   }
 
   @override
@@ -23,11 +23,11 @@ class ProfileRepositoryImpl implements ProfileRepository {
       address: userEntity.address,
       profileImage: userEntity.profileImage,
     );
-    return await remoteDataSource.updateProfile(userModel);
+    return await dataSource.updateProfile(userModel);
   }
 
   @override
   Future<UserEntity> uploadProfileImage(String filePath) async {
-    return await remoteDataSource.uploadProfileImage(filePath);
+    return await dataSource.uploadProfileImage(filePath);
   }
 }
