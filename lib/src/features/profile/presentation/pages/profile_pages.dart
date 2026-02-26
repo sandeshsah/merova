@@ -17,7 +17,7 @@ import 'package:merova/src/core/constants/storage_keys.dart';
 
 import 'sections/about_app_page.dart';
 import 'sections/terms_conditions_page.dart';
-import 'biometric_settings_page.dart';
+import 'sections/biometric_settings_page.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
