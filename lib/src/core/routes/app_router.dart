@@ -14,6 +14,7 @@ import 'package:merova/src/features/onboarding/presentation/pages/onboarding_pag
 import 'package:merova/src/features/payment/presentation/pages/payment_pages.dart';
 import 'package:merova/src/features/personalInformation/presentation/pages/personal_info_page.dart';
 import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
+import 'package:merova/src/features/profile/presentation/pages/sections/notifications_page.dart';
 import 'package:merova/src/features/splash/presentation/pages/splash_page.dart';
 
 part 'app_router.gr.dart';

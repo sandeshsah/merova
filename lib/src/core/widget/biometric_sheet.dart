@@ -54,7 +54,7 @@ class BiometricSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Trigger biometric automatically after sheet enters
-    Future.delayed(const Duration(milliseconds: 500), () async {
+    Future.delayed(const Duration(milliseconds: 200), () async {
       final success = await sl<SecurityService>().authenticateBiometric(
         reason: reason,
       );
@@ -93,7 +93,7 @@ class BiometricSheet extends StatelessWidget {
             width: double.infinity,
             child: TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child:  Text(
+              child: Text(
                 "CANCEL",
                 style: TextStyle(
                   color: AppColors.error,

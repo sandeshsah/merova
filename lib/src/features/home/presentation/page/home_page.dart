@@ -14,6 +14,7 @@ import 'package:merova/src/features/fund/presentation/pages/fund_transfer.dart';
 import 'package:merova/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:merova/src/features/payment/presentation/pages/payment_pages.dart';
 import 'package:merova/src/features/profile/presentation/pages/profile_pages.dart';
+import 'package:merova/src/core/routes/app_router.dart';
 import 'package:merova/src/init_dependencies.dart';
 
 @RoutePage()
@@ -222,17 +223,23 @@ class _HomeContent extends StatelessWidget {
                     FeatureButton(
                       icon: Icons.send,
                       label: "Transfer",
-                      onTap: () {},
+                      onTap: () {
+                        context.pushRoute(const FundTransferRoute());
+                      },
                     ),
                     FeatureButton(
                       icon: Icons.receipt_long,
                       label: "Pay Bills",
-                      onTap: () {},
+                      onTap: () {
+                        context.pushRoute(const PaymentRoutes());
+                      },
                     ),
                     FeatureButton(
                       icon: Icons.phone_android,
                       label: "Mobile\nRecharge",
-                      onTap: () {},
+                      onTap: () {
+                        context.pushRoute(const PaymentRoutes());
+                      },
                     ),
                     FeatureButton(
                       icon: Icons.more_horiz,

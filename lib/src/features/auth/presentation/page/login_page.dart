@@ -113,17 +113,32 @@ class _LoginPageState extends State<LoginPage> {
       final String? savedUid = credentials['identifier'];
       final String? savedPassword = credentials['password'];
 
-      if (savedUid != null && savedPassword != null) {
-        if (savedUid.contains("@")) {
-          emailController.text = savedUid;
-          isEmailSelected = true;
-        } else {
-          phoneController.text = savedUid.replaceAll(_countryCode, "").trim();
-          isEmailSelected = false;
-        }
-        passwordController.text = savedPassword;
+      if (savedUid != null &&
+          savedPassword != null &&
+          savedUid.isNotEmpty &&
+          savedPassword.isNotEmpty) {
+        setState(() {
+          if (savedUid.contains("@")) {
+            emailController.text = savedUid;
+            isEmailSelected = true;
+          } else {
+            // Robust prefix handling: remove leading '+' and digits until we likely have the local number
+            // or just use the savedUid if it's already what we need.
+            // For now, replacing the current UI country code if it matches the start of savedUid
+            if (savedUid.startsWith(_countryCode)) {
+              phoneController.text = savedUid
+                  .substring(_countryCode.length)
+                  .trim();
+            } else {
+              // If it doesn't match the current UI prefix, just put the whole thing in or try to find where it starts
+              phoneController.text = savedUid;
+            }
+            isEmailSelected = false;
+          }
+          passwordController.text = savedPassword;
+        });
 
-        // Perform Login
+        // Perform Login with saved credentials
         blocContext.read<AuthBloc>().add(
           AuthEvent.loginRequested(
             identifier: savedUid,
@@ -131,13 +146,15 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "No saved credentials found. Login manually once to enable biometric login.",
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                "No saved credentials found. Login manually once to enable biometric login.",
+              ),
             ),
-          ),
-        );
+          );
+        }
       }
     }
   }
@@ -254,7 +271,9 @@ class _LoginPageState extends State<LoginPage> {
                             final password = passwordController.text.trim();
 
                             // Always save credentials securely if biometric login is enabled
-                            if (securityService.isBiometricLoginEnabled()) {
+                            if (securityService.isBiometricLoginEnabled() &&
+                                fullUid.isNotEmpty &&
+                                password.isNotEmpty) {
                               await securityService.saveCredentials(
                                 fullUid,
                                 password,

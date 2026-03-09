@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:merova/src/core/enums/app_enum.dart';
 import 'package:merova/src/core/extension/context_extensions.dart';
 import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
@@ -49,7 +48,7 @@ class AboutAppPage extends StatelessWidget {
                   const SizedBox(height: 8),
                   const Text(
                     "Version 1.0.0",
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: AppColors.grey),
                   ),
                   const SizedBox(height: 32),
                   const Text(
