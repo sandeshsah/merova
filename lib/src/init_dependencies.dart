@@ -33,6 +33,23 @@ import 'package:merova/src/features/profile/domain/repository/profile_repository
 import 'package:merova/src/features/profile/domain/usecase/get_User_Profile.dart';
 import 'package:merova/src/features/profile/domain/usecase/update_profile.dart';
 import 'package:merova/src/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:merova/src/features/payment/data/datasource/payment_datasource.dart';
+import 'package:merova/src/features/payment/data/datasource/payment_mock_datasource.dart';
+import 'package:merova/src/features/payment/data/datasource/payment_remote_datasource.dart';
+import 'package:merova/src/features/payment/data/repository/payment_repository_impl.dart';
+import 'package:merova/src/features/payment/domain/repository/payment_repository.dart';
+import 'package:merova/src/features/payment/domain/usescase/get_payment_categories_usecase.dart';
+import 'package:merova/src/features/payment/domain/usescase/get_payment_services_usecase.dart';
+import 'package:merova/src/features/payment/domain/usescase/process_payment_usecase.dart';
+import 'package:merova/src/features/payment/presentation/bloc/payment_bloc.dart';
+import 'package:merova/src/features/fund/data/datasource/fund_transfer_datasource.dart';
+import 'package:merova/src/features/fund/data/datasource/fund_transfer_mock_datasource.dart';
+import 'package:merova/src/features/fund/data/datasource/fund_transfer_remote_datasource.dart';
+import 'package:merova/src/features/fund/data/repository/fund_transfer_repository_impl.dart';
+import 'package:merova/src/features/fund/domain/repository/fund_transfer_repository.dart';
+import 'package:merova/src/features/fund/domain/usescase/get_recent_contacts_usecase.dart';
+import 'package:merova/src/features/fund/domain/usescase/perform_transfer_usecase.dart';
+import 'package:merova/src/features/fund/presentation/bloc/fund_transfer_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -124,4 +141,54 @@ Future<void> initDependencies() async {
 
   // Bloc
   sl.registerFactory(() => HomeBloc(repository: sl()));
+
+  // Payment Feature
+  // Data Sources
+  sl.registerLazySingleton<PaymentDataSource>(
+    () => useMock ? PaymentMockDataSource() : PaymentRemoteDataSource(sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<PaymentRepository>(
+    () => PaymentRepositoryImpl(sl<PaymentDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetPaymentCategoriesUseCase(sl()));
+  sl.registerLazySingleton(() => GetPaymentServicesUseCase(sl()));
+  sl.registerLazySingleton(() => ProcessPaymentUseCase(sl()));
+
+  // Bloc
+  sl.registerFactory(
+    () => PaymentBloc(
+      getCategoriesUseCase: sl(),
+      getServicesUseCase: sl(),
+      processPaymentUseCase: sl(),
+    ),
+  );
+
+  // Fund Transfer Feature
+  // Data Sources
+  sl.registerLazySingleton<FundTransferDataSource>(
+    () => useMock
+        ? FundTransferMockDataSource()
+        : FundTransferRemoteDataSource(sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<FundTransferRepository>(
+    () => FundTransferRepositoryImpl(sl<FundTransferDataSource>()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetRecentContactsUseCase(sl()));
+  sl.registerLazySingleton(() => PerformTransferUseCase(sl()));
+
+  // Bloc
+  sl.registerFactory(
+    () => FundTransferBloc(
+      getRecentContactsUseCase: sl(),
+      performTransferUseCase: sl(),
+    ),
+  );
 }

@@ -16,6 +16,7 @@ import 'package:merova/src/features/auth/presentation/bloc/auth_state.dart';
 import 'package:merova/src/core/constants/storage_keys.dart';
 
 import 'sections/about_app_page.dart';
+import 'sections/notifications_page.dart';
 import 'sections/terms_conditions_page.dart';
 import 'sections/biometric_settings_page.dart';
 
@@ -136,12 +137,12 @@ class _ProfilePage extends State<ProfilePage> {
                   icon: Icons.notifications_none_rounded,
                   title: "Notifications",
                   onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const NotificationsPage(),
-                    //   ),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NotificationsPage(),
+                      ),
+                    );
                   },
                 ),
               ]),
@@ -217,15 +218,15 @@ class _ProfilePage extends State<ProfilePage> {
                 ),
                 _separator(),
                 _settingItem(
-                    icon: Icons.help_center,
-                    title: "Help",
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)
-                      => const HelpPage(),
-                      ),
-                      );
-                    }),
-
+                  icon: Icons.help_center,
+                  title: "Help",
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HelpPage()),
+                    );
+                  },
+                ),
               ]),
               const SizedBox(height: 32),
               _signOutButton(),
