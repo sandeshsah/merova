@@ -1,9 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
 import '../../domain/usescase/get_recent_contacts_usecase.dart';
 import '../../domain/usescase/perform_transfer_usecase.dart';
 import 'fund_transfer_event.dart';
 import 'fund_transfer_state.dart';
-import '../../domain/entity/transfer_entity.dart';
+
 
 class FundTransferBloc extends Bloc<FundTransferEvent, FundTransferState> {
   final GetRecentContactsUseCase getRecentContactsUseCase;

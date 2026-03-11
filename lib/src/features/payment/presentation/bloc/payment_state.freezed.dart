@@ -17,10 +17,17 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$PaymentState {
   PaymentStatus get status => throw _privateConstructorUsedError;
+  PaymentStep get currentStep => throw _privateConstructorUsedError;
   List<PaymentCategoryEntity>? get categories =>
       throw _privateConstructorUsedError;
   List<PaymentServiceEntity>? get services =>
       throw _privateConstructorUsedError;
+  PaymentCategoryEntity? get selectedCategory =>
+      throw _privateConstructorUsedError;
+  PaymentServiceEntity? get selectedService =>
+      throw _privateConstructorUsedError;
+  double? get amount => throw _privateConstructorUsedError;
+  String? get accountIdentifier => throw _privateConstructorUsedError;
   Map<String, dynamic>? get paymentResult => throw _privateConstructorUsedError;
   String? get message => throw _privateConstructorUsedError;
 
@@ -37,8 +44,13 @@ abstract class $PaymentStateCopyWith<$Res> {
   @useResult
   $Res call(
       {PaymentStatus status,
+      PaymentStep currentStep,
       List<PaymentCategoryEntity>? categories,
       List<PaymentServiceEntity>? services,
+      PaymentCategoryEntity? selectedCategory,
+      PaymentServiceEntity? selectedService,
+      double? amount,
+      String? accountIdentifier,
       Map<String, dynamic>? paymentResult,
       String? message});
 }
@@ -57,8 +69,13 @@ class _$PaymentStateCopyWithImpl<$Res, $Val extends PaymentState>
   @override
   $Res call({
     Object? status = null,
+    Object? currentStep = null,
     Object? categories = freezed,
     Object? services = freezed,
+    Object? selectedCategory = freezed,
+    Object? selectedService = freezed,
+    Object? amount = freezed,
+    Object? accountIdentifier = freezed,
     Object? paymentResult = freezed,
     Object? message = freezed,
   }) {
@@ -67,6 +84,10 @@ class _$PaymentStateCopyWithImpl<$Res, $Val extends PaymentState>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as PaymentStatus,
+      currentStep: null == currentStep
+          ? _value.currentStep
+          : currentStep // ignore: cast_nullable_to_non_nullable
+              as PaymentStep,
       categories: freezed == categories
           ? _value.categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -75,6 +96,22 @@ class _$PaymentStateCopyWithImpl<$Res, $Val extends PaymentState>
           ? _value.services
           : services // ignore: cast_nullable_to_non_nullable
               as List<PaymentServiceEntity>?,
+      selectedCategory: freezed == selectedCategory
+          ? _value.selectedCategory
+          : selectedCategory // ignore: cast_nullable_to_non_nullable
+              as PaymentCategoryEntity?,
+      selectedService: freezed == selectedService
+          ? _value.selectedService
+          : selectedService // ignore: cast_nullable_to_non_nullable
+              as PaymentServiceEntity?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      accountIdentifier: freezed == accountIdentifier
+          ? _value.accountIdentifier
+          : accountIdentifier // ignore: cast_nullable_to_non_nullable
+              as String?,
       paymentResult: freezed == paymentResult
           ? _value.paymentResult
           : paymentResult // ignore: cast_nullable_to_non_nullable
@@ -97,8 +134,13 @@ abstract class _$$PaymentStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {PaymentStatus status,
+      PaymentStep currentStep,
       List<PaymentCategoryEntity>? categories,
       List<PaymentServiceEntity>? services,
+      PaymentCategoryEntity? selectedCategory,
+      PaymentServiceEntity? selectedService,
+      double? amount,
+      String? accountIdentifier,
       Map<String, dynamic>? paymentResult,
       String? message});
 }
@@ -115,8 +157,13 @@ class __$$PaymentStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? status = null,
+    Object? currentStep = null,
     Object? categories = freezed,
     Object? services = freezed,
+    Object? selectedCategory = freezed,
+    Object? selectedService = freezed,
+    Object? amount = freezed,
+    Object? accountIdentifier = freezed,
     Object? paymentResult = freezed,
     Object? message = freezed,
   }) {
@@ -125,6 +172,10 @@ class __$$PaymentStateImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as PaymentStatus,
+      currentStep: null == currentStep
+          ? _value.currentStep
+          : currentStep // ignore: cast_nullable_to_non_nullable
+              as PaymentStep,
       categories: freezed == categories
           ? _value._categories
           : categories // ignore: cast_nullable_to_non_nullable
@@ -133,6 +184,22 @@ class __$$PaymentStateImplCopyWithImpl<$Res>
           ? _value._services
           : services // ignore: cast_nullable_to_non_nullable
               as List<PaymentServiceEntity>?,
+      selectedCategory: freezed == selectedCategory
+          ? _value.selectedCategory
+          : selectedCategory // ignore: cast_nullable_to_non_nullable
+              as PaymentCategoryEntity?,
+      selectedService: freezed == selectedService
+          ? _value.selectedService
+          : selectedService // ignore: cast_nullable_to_non_nullable
+              as PaymentServiceEntity?,
+      amount: freezed == amount
+          ? _value.amount
+          : amount // ignore: cast_nullable_to_non_nullable
+              as double?,
+      accountIdentifier: freezed == accountIdentifier
+          ? _value.accountIdentifier
+          : accountIdentifier // ignore: cast_nullable_to_non_nullable
+              as String?,
       paymentResult: freezed == paymentResult
           ? _value._paymentResult
           : paymentResult // ignore: cast_nullable_to_non_nullable
@@ -150,8 +217,13 @@ class __$$PaymentStateImplCopyWithImpl<$Res>
 class _$PaymentStateImpl implements _PaymentState {
   const _$PaymentStateImpl(
       {required this.status,
+      this.currentStep = PaymentStep.selectCategory,
       final List<PaymentCategoryEntity>? categories,
       final List<PaymentServiceEntity>? services,
+      this.selectedCategory,
+      this.selectedService,
+      this.amount,
+      this.accountIdentifier,
       final Map<String, dynamic>? paymentResult,
       this.message})
       : _categories = categories,
@@ -160,6 +232,9 @@ class _$PaymentStateImpl implements _PaymentState {
 
   @override
   final PaymentStatus status;
+  @override
+  @JsonKey()
+  final PaymentStep currentStep;
   final List<PaymentCategoryEntity>? _categories;
   @override
   List<PaymentCategoryEntity>? get categories {
@@ -180,6 +255,14 @@ class _$PaymentStateImpl implements _PaymentState {
     return EqualUnmodifiableListView(value);
   }
 
+  @override
+  final PaymentCategoryEntity? selectedCategory;
+  @override
+  final PaymentServiceEntity? selectedService;
+  @override
+  final double? amount;
+  @override
+  final String? accountIdentifier;
   final Map<String, dynamic>? _paymentResult;
   @override
   Map<String, dynamic>? get paymentResult {
@@ -195,7 +278,7 @@ class _$PaymentStateImpl implements _PaymentState {
 
   @override
   String toString() {
-    return 'PaymentState(status: $status, categories: $categories, services: $services, paymentResult: $paymentResult, message: $message)';
+    return 'PaymentState(status: $status, currentStep: $currentStep, categories: $categories, services: $services, selectedCategory: $selectedCategory, selectedService: $selectedService, amount: $amount, accountIdentifier: $accountIdentifier, paymentResult: $paymentResult, message: $message)';
   }
 
   @override
@@ -204,9 +287,18 @@ class _$PaymentStateImpl implements _PaymentState {
         (other.runtimeType == runtimeType &&
             other is _$PaymentStateImpl &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.currentStep, currentStep) ||
+                other.currentStep == currentStep) &&
             const DeepCollectionEquality()
                 .equals(other._categories, _categories) &&
             const DeepCollectionEquality().equals(other._services, _services) &&
+            (identical(other.selectedCategory, selectedCategory) ||
+                other.selectedCategory == selectedCategory) &&
+            (identical(other.selectedService, selectedService) ||
+                other.selectedService == selectedService) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.accountIdentifier, accountIdentifier) ||
+                other.accountIdentifier == accountIdentifier) &&
             const DeepCollectionEquality()
                 .equals(other._paymentResult, _paymentResult) &&
             (identical(other.message, message) || other.message == message));
@@ -216,8 +308,13 @@ class _$PaymentStateImpl implements _PaymentState {
   int get hashCode => Object.hash(
       runtimeType,
       status,
+      currentStep,
       const DeepCollectionEquality().hash(_categories),
       const DeepCollectionEquality().hash(_services),
+      selectedCategory,
+      selectedService,
+      amount,
+      accountIdentifier,
       const DeepCollectionEquality().hash(_paymentResult),
       message);
 
@@ -231,17 +328,32 @@ class _$PaymentStateImpl implements _PaymentState {
 abstract class _PaymentState implements PaymentState {
   const factory _PaymentState(
       {required final PaymentStatus status,
+      final PaymentStep currentStep,
       final List<PaymentCategoryEntity>? categories,
       final List<PaymentServiceEntity>? services,
+      final PaymentCategoryEntity? selectedCategory,
+      final PaymentServiceEntity? selectedService,
+      final double? amount,
+      final String? accountIdentifier,
       final Map<String, dynamic>? paymentResult,
       final String? message}) = _$PaymentStateImpl;
 
   @override
   PaymentStatus get status;
   @override
+  PaymentStep get currentStep;
+  @override
   List<PaymentCategoryEntity>? get categories;
   @override
   List<PaymentServiceEntity>? get services;
+  @override
+  PaymentCategoryEntity? get selectedCategory;
+  @override
+  PaymentServiceEntity? get selectedService;
+  @override
+  double? get amount;
+  @override
+  String? get accountIdentifier;
   @override
   Map<String, dynamic>? get paymentResult;
   @override

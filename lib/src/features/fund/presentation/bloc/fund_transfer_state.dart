@@ -1,21 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
 import '../../domain/entity/transfer_entity.dart';
 
 part 'fund_transfer_state.freezed.dart';
 
-enum FundTransferStatus { initial, loading, loaded, success, error }
-
-enum TransferStep {
-  selectOption,
-  enterDetails,
-  overview,
-  pinVerification,
-  success,
-}
-
-enum TransferType { scb, otherBank, mobileBanking }
-
-enum VerificationMethod { biometric, email, sms }
 
 @freezed
 class FundTransferState with _$FundTransferState {

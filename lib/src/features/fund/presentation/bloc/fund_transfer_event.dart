@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:merova/src/core/enums/app_enum.dart';
 import 'fund_transfer_state.dart';
 import '../../domain/entity/transfer_entity.dart';
 

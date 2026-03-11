@@ -8,5 +8,13 @@ class PaymentEvent with _$PaymentEvent {
   const factory PaymentEvent.fetchCategories() = FetchCategories;
   const factory PaymentEvent.fetchServices({required String categoryId}) =
       FetchServices;
+  const factory PaymentEvent.selectCategory(PaymentCategoryEntity category) = SelectCategory;
+  const factory PaymentEvent.selectService(PaymentServiceEntity service) = SelectService;
+  const factory PaymentEvent.updatePaymentDetails({
+    double? amount,
+    String? accountIdentifier,
+  }) = UpdatePaymentDetails;
+  const factory PaymentEvent.nextStep() = NextStep;
+  const factory PaymentEvent.previousStep() = PreviousStep;
   const factory PaymentEvent.pay({required PaymentRequestEntity request}) = Pay;
 }
