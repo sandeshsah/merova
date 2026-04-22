@@ -101,6 +101,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    RewardRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const RewardPage(),
+      );
+    },
     SplashRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -347,6 +353,20 @@ class ResetPasswordRouteArgs {
   String toString() {
     return 'ResetPasswordRouteArgs{key: $key, identifier: $identifier}';
   }
+}
+
+/// generated route for
+/// [RewardPage]
+class RewardRoute extends PageRouteInfo<void> {
+  const RewardRoute({List<PageRouteInfo>? children})
+      : super(
+          RewardRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RewardRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

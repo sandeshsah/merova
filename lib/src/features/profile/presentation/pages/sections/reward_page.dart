@@ -1,8 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:merova/src/core/enums/app_enum.dart';
+import 'package:loyalty/loyalty.dart';
+
 import 'package:merova/src/core/themes/app_colors.dart';
 import 'package:merova/src/core/widget/header_positioned.dart';
 
+@RoutePage()
 class RewardPage extends StatelessWidget {
   const RewardPage({super.key});
 
@@ -14,27 +17,20 @@ class RewardPage extends StatelessWidget {
         children: [
           const HeaderPositioned(
             title: "Rewards",
-            alignment: HeaderAlignment.center,
           ),
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.star_rounded, size: 80, color: AppColors.primary),
-                  const SizedBox(height: 16),
-                  const Text(
-                    "Your Rewards",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text("View and redeem your rewards here."),
-                ],
-              ),
+
+          const SizedBox(height: 20),
+
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
+                LoyaltySDK.open(context);
+              },
+              child: const Text("Open Loyalty Rewards"),
             ),
           ),
         ],
       ),
     );
   }
-}
+} 

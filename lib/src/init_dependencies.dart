@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:loyalty/loyalty.dart' hide AuthBloc;
 import 'package:merova/src/core/helper/token_storage.dart';
 import 'package:merova/src/core/routes/app_router.dart';
 import 'package:merova/src/core/service/dio/dio_client.dart';
@@ -54,6 +55,20 @@ import 'package:merova/src/features/fund/presentation/bloc/fund_transfer_bloc.da
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
+  // Initialize Loyalty SDK
+  await initializeLoyaltySDK(
+    apiBaseUrl: 'https://api.loyalty.example.com/v1',
+    enableLogging: true,
+  );
+  try {
+    await LoyaltyMethodChannel.initializeSDK(
+      apiBaseUrl: 'https://api.loyalty.example.com/v1',
+      enableLogging: true,
+    );
+  } catch (e) {
+    debugPrint('Loyalty native initialization skipped: $e');
+  }
+
   // External
   final sharedPrefs = await SharedPreferences.getInstance();
   sl.registerLazySingleton<SharedPreferences>(() => sharedPrefs);

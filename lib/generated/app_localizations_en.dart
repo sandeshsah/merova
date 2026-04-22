@@ -78,8 +78,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get setUpPasswordHere => 'Set up password here';
 
   @override
-  String
-  get iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations =>
+  String get iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations =>
       'I agree to the Terms of Service and Privacy Policy. I understand my data is protected under Merova regulations';
 
   @override

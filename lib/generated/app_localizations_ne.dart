@@ -79,8 +79,7 @@ class AppLocalizationsNe extends AppLocalizations {
   String get setUpPasswordHere => 'पासवर्ड यहाँ सेट गर्नुहोस्';
 
   @override
-  String
-  get iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations =>
+  String get iAgreeToTheTermsofServiceAndPrivacyPolicyIUnderstandMyDataIsProtectedUnderMerovaRegulations =>
       'म सेवा सर्त र गोपनीयता नीति स्वीकार गर्दछु। म बुझ्छु कि मेरो डेटा मेरोवा नियमहरू अन्तर्गत सुरक्षित छ।';
 
   @override

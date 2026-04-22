@@ -8,6 +8,7 @@ import 'package:merova/src/core/routes/app_router.dart';
 import 'package:merova/src/features/auth/presentation/page/reset_password_page.dart';
 import 'package:merova/src/features/personalInformation/presentation/pages/personal_info_page.dart';
 import 'package:merova/src/features/profile/presentation/pages/sections/help_page.dart';
+import 'package:merova/src/features/profile/presentation/pages/sections/reward_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:merova/src/features/auth/presentation/bloc/auth_bloc.dart';
@@ -102,7 +103,14 @@ class _ProfilePage extends State<ProfilePage> {
             children: [
               _sectionHeader("Reward"),
               _settingsGroup([
-                _settingItem(icon: Icons.star, title: "Reward", onTap: () {}),
+                _settingItem(icon: Icons.star, title: "Reward", 
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RewardPage()),
+                  );
+                },),
               ]),
               const SizedBox(height: 24),
               _sectionHeader("Personal Setting"),
